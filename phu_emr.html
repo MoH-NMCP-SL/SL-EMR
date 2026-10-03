@@ -1020,6 +1020,24 @@ body[data-view="dict"].dwide .dmapw{max-height:calc(100dvh - 330px);min-height:3
 .appbar .bnav .e-vlist button.on::after{content:"";margin-left:auto;width:6px;height:12px;border:solid #fff;border-width:0 3px 3px 0;transform:rotate(45deg) translate(-2px,-2px)}
 .appbar .bnav .e-vlist button.det:not(.on){outline:2px dashed var(--dhis2);outline-offset:-2px}
 main{padding-top:6px}
+
+/* ---------- tick all that apply: a dropdown with checkboxes ---------- */
+details.ddck{border:2px solid var(--line);border-radius:14px;background:#fff;margin-top:2px}
+details.ddck[open]{border-color:var(--dhis2)}
+details.ddck > summary.ddsum{display:flex;align-items:center;gap:10px;min-height:54px;padding:12px 16px;cursor:pointer;list-style:none;font-size:16px;font-weight:700;color:var(--ink)}
+details.ddck > summary.ddsum::-webkit-details-marker{display:none}
+details.ddck .ddtxt{flex:1;min-width:0;overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-height:1.3}
+details.ddck .ddtxt.none{color:var(--dhis2);font-weight:500}
+details.ddck .ddn{flex:0 0 auto;min-width:26px;height:26px;padding:0 7px;border-radius:13px;background:var(--dhis2);color:#fff;font-size:13px;display:grid;place-items:center}
+details.ddck .ddchev{flex:0 0 auto;width:10px;height:10px;border-right:3px solid var(--dhis2);border-bottom:3px solid var(--dhis2);transform:rotate(45deg);margin:0 4px 4px 2px;transition:transform .15s}
+details.ddck[open] .ddchev{transform:rotate(-135deg);margin:4px 4px 0 2px}
+details.ddck .ddpanel{border-top:1px solid var(--line);padding:10px;max-height:55vh;overflow:auto}
+details.ddck .pills{margin:0}
+details.ddck .pills.checks{gap:8px}
+details.ddck .pills.checks .pl,details.ddck .multi .pills.checks .pl{min-height:46px;padding:10px 12px;font-size:15px;border-radius:12px}
+details.ddck .csearch{margin-bottom:8px}
+details.ddck .cbox{max-height:none;border:0;padding:0;background:none}
+.qcard details.ddck .ddpanel{max-height:none}
 </style>
 </head>
 <body>
@@ -2348,6 +2366,13 @@ function vForm(m){
   collect();
 }
 
+/* "tick all that apply" lists sit in a dropdown: closed it shows what is ticked, open it shows the checkboxes */
+/* lab null: the ticked items already show as chips above, so the closed dropdown only counts them */
+const ddText = (list, lab) => !list || !list.length ? '<span class="ddtxt none">Tap to choose</span>'
+  : (lab ? '<span class="ddtxt">' + esc(list.map(lab).join(', ')) + '</span>' : '<span class="ddtxt none">Tap to change</span>') + '<b class="ddn">' + list.length + '</b>';
+const DDOPEN = (f, v, lab) => '<details class="ddck" data-ddf="' + f.id + '"><summary class="ddsum">' + ddText(v, lab) + '<i class="ddchev" aria-hidden="true"></i></summary><div class="ddpanel">';
+const DDCLOSE = '</div></details>';
+const ddWrap = (f, inner, v, lab) => DDOPEN(f, v, lab) + inner + DDCLOSE;
 function fieldHTML(f, v){
   const id = 'f_' + f.id; let h = '';
   switch (f.t){
@@ -2382,15 +2407,16 @@ function fieldHTML(f, v){
       h = '<div class="pills radios" data-f="' + f.id + '" data-t="pill" role="radiogroup" aria-label="' + esc(f.l) + '">' + f.o.map(o => { const val = Array.isArray(o) ? o[0] : o, lab = Array.isArray(o) ? o[1] : o;
         return '<button type="button" class="pl' + (v === val ? ' on' : '') + '" data-v="' + esc(val) + '" role="radio" aria-checked="' + (v === val) + '">' + '<i class="rdot" aria-hidden="true"></i>' + esc(lab).replace(/-ve\b/g, '&#8209;ve') + '</button>'; }).join('') + '</div>'; break;
     case 'multi':
-      h = '<div class="pills multi checks" data-f="' + f.id + '" data-t="multi" role="group" aria-label="' + esc(f.l) + '">' + f.o.map(o => '<button type="button" class="pl' + ((v || []).includes(o) ? ' on' : '') + '" data-v="' + esc(o) + '" role="checkbox" aria-checked="' + (v || []).includes(o) + '"><i class="cbx" aria-hidden="true"></i>' + esc(o) + '</button>').join('') + '</div>'; break;
+      h = '<div class="pills multi checks" data-f="' + f.id + '" data-t="multi" role="group" aria-label="' + esc(f.l) + '">' + f.o.map(o => '<button type="button" class="pl' + ((v || []).includes(o) ? ' on' : '') + '" data-v="' + esc(o) + '" role="checkbox" aria-checked="' + (v || []).includes(o) + '"><i class="cbx" aria-hidden="true"></i>' + esc(o) + '</button>').join('') + '</div>';
+      h = ddWrap(f, h, v, x => x); break;
     case 'conds1': case 'conds6': {
       const rows = f.t === 'conds1' ? HF1.filter(r => !HF1_AUTO.test(r[0])) : HF5;
       h = (f.t === 'conds1' ? '<p class="hint">Malaria, ARI, pneumonia, diarrhoea and disability are counted from their own fields, so they are not in this list.</p>' : '') +
+        '<div class="chosen" id="ch_' + f.id + '"></div>' + DDOPEN(f, v, null) +
         '<input type="search" class="csearch" data-for="' + f.id + '" placeholder="Search conditions" aria-label="Search conditions">' +
-        '<div class="chosen" id="ch_' + f.id + '"></div>' +
         '<div class="cbox multi" data-f="' + f.id + '" data-t="multi">' + groupsOf(rows).map(g =>
           '<div class="cgrp"><div class="gh">' + esc(g[0]) + '</div><div class="pills checks">' + g[1].map(r =>
-            '<button type="button" class="pl' + ((v || []).includes(r[0]) ? ' on' : '') + '" data-v="' + r[0] + '" role="checkbox" aria-checked="' + (v || []).includes(r[0]) + '" data-s="' + esc((r[2] + ' ' + r[3]).toLowerCase()) + '"><i class="cbx" aria-hidden="true"></i>' + esc(r[2] + (r[3] ? ' · ' + r[3] : '')) + '</button>').join('') + '</div></div>').join('') + '</div>';
+            '<button type="button" class="pl' + ((v || []).includes(r[0]) ? ' on' : '') + '" data-v="' + r[0] + '" role="checkbox" aria-checked="' + (v || []).includes(r[0]) + '" data-s="' + esc((r[2] + ' ' + r[3]).toLowerCase()) + '"><i class="cbx" aria-hidden="true"></i>' + esc(r[2] + (r[3] ? ' · ' + r[3] : '')) + '</button>').join('') + '</div></div>').join('') + '</div>' + DDCLOSE;
       break; }
     case 'qty':
       h = '<div class="qty" data-f="' + f.id + '" data-t="qty">' + f.o.map(o => '<div><span>' + esc(o) + '</span><input type="number" min="0" step="1" inputmode="numeric" data-q="' + esc(o) + '" value="' + esc(v && v[o] != null ? v[o] : '') + '" aria-label="' + esc(o) + '"></div>').join('') + '</div>'; break;
@@ -2483,6 +2509,10 @@ function collect(){
       const chk = w.querySelector('[data-do="' + k + '"]'), sel = w.querySelector('[data-ds="' + k + '"]');
       const gs = w.querySelector('[data-dg="' + k + '"]');
       o[k] = { date: i.value }; if (chk) o[k].out = chk.checked; if (sel) o[k].site = sel.value; if (gs) o[k].grp = gs.value; }); d[f.id] = o; }
+    if (f.t === 'multi' || f.t === 'conds1' || f.t === 'conds6'){
+      const sm = w.querySelector('.ddsum');
+      if (sm) sm.innerHTML = ddText(d[f.id], f.t === 'multi' ? (x => x) : null) + '<i class="ddchev" aria-hidden="true"></i>';
+    }
     if (f.t === 'conds1' || f.t === 'conds6'){
       const ch = document.getElementById('ch_' + f.id);
       if (ch) ch.innerHTML = d[f.id].length ? d[f.id].map(k => '<span class="chip">✓ ' + esc(LABEL[k]) + '</span>').join('') : '<span class="hint" style="margin:0">Nothing ticked yet</span>';
@@ -2911,13 +2941,19 @@ function waOffer(reg, d){
     closeSheet(true);
   };
 }
-const SYNC_URL = 'https://script.google.com/macros/s/AKfycbzkFzdHxdmAKIVqFSK-Jj9OSu8g6iy_orlOCDphaj3b9k1wjnt5EZ7Rqnc2SdFpPIXHPw/exec';
+const SYNC_URL = 'https://script.google.com/macros/s/AKfycbwuOj1MHyXBzMr6vo8WjwIMqu0x2kNbn_5NdfKCSXRQY5l0CdhmdW4fiYerW2XHL2hq/exec';   /* the one ICF-SL Server for the whole EMR (EMR_Server.gs) */
+/* earlier server addresses: a device still holding one moves to SYNC_URL by itself */
+const OLD_SYNC_URLS = ['https://script.google.com/macros/s/AKfycbzkFzdHxdmAKIVqFSK-Jj9OSu8g6iy_orlOCDphaj3b9k1wjnt5EZ7Rqnc2SdFpPIXHPw/exec'];
 const SYNC_FORMS = ['HF1','HF2','HF3','HF5','HF6'];
 const CAT_VER = 'emr-cat-1';
 /* raise this when a summary form's layout changes: every device then resends all its summaries once */
 const SUM_VER = 'forms-4';
 function syncCfg(){
   DB.sync = DB.sync || {};
+  /* moving to the new server: send every record, patient and summary again so the new database has them all */
+  if (DB.sync.url && OLD_SYNC_URLS.indexOf(DB.sync.url) > -1){
+    DB.sync.url = SYNC_URL; DB.sync.sent = {}; DB.sync.psent = {}; DB.sync.hsent = {}; DB.sync.aggSent = {}; DB.sync.lastPull = ''; DB.sync.lastErr = '';
+  }
   if (!DB.sync.url) delete DB.sync.url;
   if (!DB.sync.token) delete DB.sync.token;
   return Object.assign(DB.sync, Object.assign({ url: SYNC_URL, token: SYNC_KEY, device:'', scope:'mine', sent:{}, psent:{}, hsent:{}, aggSent:{}, lastPull:'', lastSync:'', lastErr:'' }, DB.sync));
