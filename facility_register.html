@@ -413,23 +413,163 @@ html.w-p .e-vtabs button{font-size:12px;gap:4px}
 body{background:#eef2f6;padding-bottom:110px}
 .wrap{max-width:var(--e-appw);padding-left:18px;padding-right:18px}
 html.w-l .wrap{padding-left:12px;padding-right:12px}
-.tabs{display:none!important}
+/* screen view: the first item of the menu, opening a sub menu */
+.e-menu .e-subtog{position:relative}
+.e-menu .e-subtxt{flex:1;display:flex;flex-direction:column;line-height:1.2}
+.e-menu .e-subtxt small{font-size:12.5px;font-weight:700;color:var(--e-dhis2)}
+.e-menu .e-chev{width:10px;height:10px;border-right:3px solid currentColor;border-bottom:3px solid currentColor;transform:rotate(45deg);margin:0 6px 4px 0;transition:transform .15s}
+.e-menu .e-subtog[aria-expanded="true"]{background:#e3eef9;color:var(--e-dhis2)}
+.e-menu .e-subtog[aria-expanded="true"] .e-chev{transform:rotate(-135deg);margin:4px 6px 0 0}
+.e-menu .e-vlist{display:flex;flex-direction:column;gap:2px;margin:2px 0 4px 22px;padding-left:10px;border-left:3px solid var(--e-line)}
+.e-menu .e-vlist[hidden]{display:none}
+.e-menu .e-vlist button{padding:10px 12px;font-size:15px}
+.e-menu .e-vlist button span{display:flex;flex-direction:column;line-height:1.2}
+.e-menu .e-vlist button small{font-size:12px;font-weight:700}
+.e-menu .e-vlist button.on{background:var(--e-dhis2);color:#fff}
+.e-menu .e-vlist button.on::after{content:"";margin-left:auto;width:6px;height:12px;border:solid #fff;border-width:0 3px 3px 0;transform:rotate(45deg) translate(-2px,-2px)}
+.e-menu .e-vlist button.det:not(.on){outline:2px dashed var(--e-dhis2);outline-offset:-2px}
+.e-menu{max-height:calc(100dvh - 140px);overflow-y:auto}
+/* the register's own tabs, in the EMR style, under the header */
+nav.tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;overflow:visible;background:none!important;padding:8px 14px 0;max-width:var(--e-appw);margin:0 auto}
+nav.tabs .tab{min-width:0;min-height:44px;padding:8px 6px;border-radius:12px;border:2px solid var(--e-line)!important;background:#fff!important;color:var(--e-dhis3)!important;
+  font:800 13.5px/1.2 Roboto,Arial,sans-serif;letter-spacing:0;text-transform:none;white-space:normal;text-align:center;cursor:pointer}
+nav.tabs .tab.on{background:var(--e-dhis2)!important;border-color:var(--e-dhis2)!important;color:#fff!important}
+nav.tabs .tab:focus-visible{outline:3px solid var(--e-dhis2);outline-offset:2px}
+html:not(.w-p) nav.tabs{grid-template-columns:repeat(6,minmax(0,1fr))}
+html:not(.w-p) nav.tabs .tab{font-size:14px}
 .modal{z-index:1100}
 body.mapmode .e-frame{display:none}
+
+/* ===== views: the chosen view decides the layout, whatever the window size ===== */
+/* phone: one column, everything stacked */
+html.w-p .wrap{padding-left:12px;padding-right:12px}
+html.w-p .card{padding:12px}
+html.w-p .row{flex-wrap:wrap;row-gap:0}
+html.w-p .row .field{flex:1 1 100% !important;width:100%;min-width:0}
+html.w-p .grid{grid-template-columns:1fr}
+html.w-p .fac dt{flex:0 0 78px}
+html.w-p .video-notes ul{columns:1}
+html.w-p .form-foot .btn{flex:1 1 100%}
+html.w-p .mfilters,html.w-p #panelMaster .mfilters{grid-template-columns:1fr 1fr}
+html.w-p #panelMaster .filter-actions{flex-wrap:wrap}
+html.w-p #panelMaster .mstats{flex-direction:row;flex-wrap:wrap}
+html.w-p #panelMaster .mstat{flex:1 1 40%}
+html.w-p .staffrow .who{flex:1 1 100%}
+html.w-p .modal .box{max-height:84vh}
+/* phone and tablet: the map page stacks filters, map and profile */
+html.w-p .maplayout,html.w-t .maplayout{grid-template-columns:1fr}
+html.w-p .maplayout .mapcard,html.w-t .maplayout .mapcard{position:static}
+html.w-p .maplayout .filtercard,html.w-t .maplayout .filtercard,
+html.w-p .maplayout .profilecard,html.w-t .maplayout .profilecard{position:static;max-height:none;overflow:visible;grid-column:auto}
+html.w-p #hfMap,html.w-t #hfMap{max-width:100%;min-height:280px;max-height:none}
+html.w-t #panelMaster .mfilters{grid-template-columns:repeat(3,minmax(0,1fr))}
+html.w-t #panelMaster .mstats{flex-direction:row;flex-wrap:wrap}
+html.w-t .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+/* phone and tablet keep the map page inside the EMR frame */
+html.w-p body.mapmode .wrap,html.w-t body.mapmode .wrap{max-width:var(--e-appw)}
+html.w-p body.mapmode .e-frame,html.w-t body.mapmode .e-frame{display:block}
+/* laptop: the map page uses the whole window with its three panels */
+html.w-l .maplayout{grid-template-columns:280px minmax(0,1fr) 420px}
+html.w-l #hfMap{max-width:100%}
+/* the phone browser must not enlarge text on its own when the Tablet or Laptop view is drawn wider than the screen */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+/* tables never push the page sideways */
+.tablewrap,.fsbody{max-width:100%;overflow-x:auto}
+
+/* ===== fit on every phone: smaller header on narrow phones, a slim header and footer in landscape ===== */
+@media (max-width:430px){
+  .e-appbar{padding:16px 14px;gap:12px}
+  .e-logo{width:64px;height:64px}
+  .e-ctx b{font-size:20px}
+  .e-ctx small{font-size:13.5px}
+  .e-iconbtn{width:46px;height:46px;border-radius:12px}
+  .e-iconbtn svg{width:22px;height:22px}
+  .e-menubtn{gap:5px} .e-menubtn span{width:20px}
+  .e-menubtn.open span:nth-child(1){transform:translateY(8px) rotate(45deg)}
+  .e-menubtn.open span:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
+  .e-foot .f1{font-size:12px} .e-foot .f2{font-size:11px}
+}
+@media (max-width:360px){
+  .e-appbar{padding:12px 10px;gap:8px}
+  .e-logo{width:52px;height:52px;box-shadow:0 0 0 2px #fff}
+  .e-ctx b{font-size:17px}
+  .e-ctx small{font-size:12.5px}
+  .e-iconbtn{width:42px;height:42px}
+  .e-foot .f1{font-size:11px} .e-foot .f2{font-size:10px}
+}
+@media (max-height:500px) and (orientation:landscape){
+  .e-appbar{padding:6px 14px;gap:12px}
+  .e-logo{width:40px;height:40px;box-shadow:0 0 0 2px #fff}
+  .e-ctx b{font-size:17px;line-height:1.15}
+  .e-ctx small{font-size:12px;margin-top:0}
+  .e-iconbtn{width:40px;height:40px;border-radius:10px}
+  .e-iconbtn svg{width:20px;height:20px}
+  .e-menubtn{gap:4px} .e-menubtn span{width:18px;height:2.5px}
+  .e-menubtn.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+  .e-menubtn.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+  .e-menu{max-height:calc(100dvh - 64px)}
+  .e-foot{flex-direction:row;justify-content:center;flex-wrap:wrap;column-gap:14px;row-gap:0;padding:4px 8px calc(4px + env(safe-area-inset-bottom,0px));border-top-width:4px}
+  .e-foot .f1,.e-foot .f2{font-size:11px}
+  .e-appbar{border-bottom-width:4px}
+}
+@media (max-height:500px) and (orientation:landscape){ body{padding-bottom:56px} }
+
+/* ===== small screens: every phone size, upright or on its side ===== */
+.e-foot .f2{text-wrap:balance}
+@media (max-width:380px){ .e-foot .f2{font-size:2.8vw;white-space:nowrap} }
+@media (max-width:430px){
+  .e-appbar{padding:14px 12px;gap:10px}
+  .e-logo{width:60px;height:60px;box-shadow:0 0 0 2px #fff}
+  .e-iconbtn{width:44px;height:44px;border-radius:12px}
+  .e-iconbtn svg{width:22px;height:22px}
+  .e-menubtn span{width:20px}
+  .e-menubtn.open span:nth-child(1){transform:translateY(9px) rotate(45deg)}
+  .e-ctx b{font-size:18px}
+  .e-ctx small{font-size:13px}
+}
+@media (max-width:360px){
+  .e-logo{width:50px;height:50px}
+  .e-ctx b{font-size:16.5px}
+  .e-ctx small{font-size:12px}
+}
+@media (max-width:360px){
+  html.w-p #panelMaster .mfilters,html.w-p .mfilters{grid-template-columns:1fr}
+  html.w-p #panelMaster .mstat{flex:1 1 100%}
+  nav.tabs .tab{font-size:12.5px;padding:6px 4px}
+}
 </style>
 </head>
 <body>
 <script>
 /* Screen view, shared with the PHU EMR: Auto follows the window width (phone below 700 px, tablet 700 to 1099, laptop from 1100). */
-function detectedView(){ var w = window.innerWidth; return w >= 1100 ? 'l' : w >= 700 ? 't' : 'p'; }
+/* the device's own width, read while the page is at device width, so a forced view does not change what Auto means */
+var DEVICE_W = 0;
+function deviceWidth(){
+  var vp = document.querySelector('meta[name=viewport]');
+  if (!DEVICE_W || (vp && vp.getAttribute('content').indexOf('device-width') > -1)) DEVICE_W = window.innerWidth;
+  return DEVICE_W;
+}
+function detectedView(){ var w = deviceWidth(); return w >= 1100 ? 'l' : w >= 700 ? 't' : 'p'; }
+/* on a phone or tablet, Tablet and Laptop draw the page at 820 or 1280 px wide and fit it to the screen */
+var VIEW_PX = { t: 820, l: 1280 };
+function setViewport(v){
+  var vp = document.querySelector('meta[name=viewport]'); if (!vp) return;
+  var want = VIEW_PX[v] && VIEW_PX[v] > deviceWidth() ? 'width=' + VIEW_PX[v] + ', viewport-fit=cover'
+                                                     : 'width=device-width, initial-scale=1, viewport-fit=cover';
+  if (vp.getAttribute('content') !== want) vp.setAttribute('content', want);
+}
 function viewChoice(){ try { return localStorage.getItem('phu_emr_view') || 'auto'; } catch(e){ return 'auto'; } }
 function applyView(){
   var c = viewChoice(), v = c === 'auto' ? detectedView() : c, h = document.documentElement;
   h.classList.remove('w-p','w-t','w-l'); h.classList.add('w-' + v);
+  setViewport(c === 'auto' ? 'p' : v);   /* Auto always keeps the device's own width */
+  if (typeof hfMap !== 'undefined' && hfMap) setTimeout(function(){ try { hfMap.invalidateSize(false); } catch(e){} }, 200);
   var tabs = document.getElementById('vtabs');
   if (tabs){
     tabs.querySelectorAll('[data-vw]').forEach(function(b){ b.classList.toggle('on', b.dataset.vw === c); b.classList.toggle('det', b.dataset.vw === detectedView()); b.setAttribute('aria-selected', b.dataset.vw === c); });
-    document.getElementById('vtauto').textContent = { p:'Phone', t:'Tablet', l:'Laptop' }[detectedView()];
+    document.getElementById('vtauto').textContent = { p:'Phone', t:'Tablet', l:'Computer' }[detectedView()];
+    var now = document.getElementById('eViewNow');
+    if (now) now.textContent = c === 'auto' ? 'Auto (' + { p:'Phone', t:'Tablet', l:'Computer' }[detectedView()] + ')' : { p:'Phone', t:'Tablet', l:'Computer' }[c];
   }
 }
 applyView();
@@ -440,14 +580,9 @@ applyView();
   <div class="e-ctx"><b>Health Facility Register</b><small>Ministry of Health</small></div>
   <a class="e-iconbtn" href="index.html" title="Back to EMR home" aria-label="Back to EMR home"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></a>
   <button class="e-iconbtn e-menubtn" id="eMenuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="eMenu"><span></span><span></span><span></span></button>
-  <nav class="e-menu" id="eMenu" aria-label="Main menu"><a href="index.html"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><span>EMR home</span></a><hr><button data-fv="guide" onclick="show('guide')" class="on"><svg viewBox="0 0 24 24"><path d="M5 4h10a4 4 0 0 1 4 4v12H9a4 4 0 0 1-4-4z"/><path d="M5 16a4 4 0 0 1 4-4h10"/></svg><span>Guide</span></button><button data-fv="master" onclick="show('master')"><svg viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2z"/><path d="M9 4v14M15 6v14"/></svg><span>Master list &amp; map</span></button><button data-fv="new" onclick="show('new')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg><span>Add facility</span></button><button data-fv="reg" onclick="show('reg')"><svg viewBox="0 0 24 24"><path d="M9 6h12M9 12h12M9 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg><span>Register</span></button><button data-fv="bulk" onclick="show('bulk')"><svg viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg><span>Bulk upload</span></button><button data-fv="adm" onclick="show('adm')"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><span>Admin</span></button></nav>
+  <nav class="e-menu" id="eMenu" aria-label="Main menu"><button type="button" class="e-subtog" id="eViewTog" aria-expanded="false" aria-controls="vtabs"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/></svg><span class="e-subtxt">Screen view<small id="eViewNow"></small></span><i class="e-chev" aria-hidden="true"></i></button><div class="e-vlist" id="vtabs" role="tablist" aria-label="Screen view" hidden><button data-vw="auto" role="tab"><svg viewBox="0 0 24 24"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg><span>Auto<small id="vtauto"></small></span></button><button data-vw="p" role="tab"><svg viewBox="0 0 24 24"><rect x="7" y="2.5" width="10" height="19" rx="2"/><path d="M11 18.5h2"/></svg><span>Phone</span></button><button data-vw="t" role="tab"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M11 18h2"/></svg><span>Tablet</span></button><button data-vw="l" role="tab"><svg viewBox="0 0 24 24"><rect x="4" y="4.5" width="16" height="11" rx="1.5"/><path d="M2 19h20"/></svg><span>Computer</span></button></div><hr><a href="index.html"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><span>EMR home</span></a><hr><button data-fv="guide" onclick="show('guide')" class="on"><svg viewBox="0 0 24 24"><path d="M5 4h10a4 4 0 0 1 4 4v12H9a4 4 0 0 1-4-4z"/><path d="M5 16a4 4 0 0 1 4-4h10"/></svg><span>Guide</span></button><button data-fv="master" onclick="show('master')"><svg viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2z"/><path d="M9 4v14M15 6v14"/></svg><span>Master list &amp; map</span></button><button data-fv="new" onclick="show('new')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg><span>Add facility</span></button><button data-fv="reg" onclick="show('reg')"><svg viewBox="0 0 24 24"><path d="M9 6h12M9 12h12M9 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg><span>Register</span></button><button data-fv="bulk" onclick="show('bulk')"><svg viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg><span>Bulk upload</span></button><button data-fv="adm" onclick="show('adm')"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><span>Admin</span></button></nav>
 </header>
-<div class="e-vtabs" id="vtabs" role="tablist" aria-label="Screen view">
-  <button data-vw="auto" role="tab"><svg viewBox="0 0 24 24"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg><span>Auto<small id="vtauto"></small></span></button>
-  <button data-vw="p" role="tab"><svg viewBox="0 0 24 24"><rect x="7" y="2.5" width="10" height="19" rx="2"/><path d="M11 18.5h2"/></svg><span>Phone</span></button>
-  <button data-vw="t" role="tab"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M11 18h2"/></svg><span>Tablet</span></button>
-  <button data-vw="l" role="tab"><svg viewBox="0 0 24 24"><rect x="4" y="4.5" width="16" height="11" rx="1.5"/><path d="M2 19h20"/></svg><span>Laptop</span></button>
-</div>
+
 
 <nav class="tabs">
   <button class="tab on" id="tabGuide" onclick="show('guide')">Guide</button>
@@ -464,15 +599,16 @@ applyView();
   <!-- ================= GUIDE ================= -->
   <section class="panel on" id="panelGuide">
     <div class="card video-card">
-      <h2>Watch this first: how to use the register</h2>
+      <h2>What this register does</h2>
+      <!-- video guide removed for now; to bring it back, put this under the heading:
       <div class="video-frame">
         <iframe src="https://www.youtube-nocookie.com/embed/LHI9Tl7VFGo?rel=0"
                 title="How to use the Health Facility Register" loading="lazy" frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowfullscreen></iframe>
       </div>
-      <div class="video-notes">
-        <h3>What this register does</h3>
+      -->
+      <div class="video-notes" style="margin-top:0">
         <ul>
           <li>Master list and map holds the official facility list, filtered and mapped.</li>
           <li>Add facility submits a new facility for the admin to accept or reject.</li>
@@ -512,7 +648,7 @@ applyView();
       <div class="form-foot filter-actions">
         <button class="btn ghost" onclick="mlReset()">Clear filters</button>
         <button class="btn ghost" onclick="mlExport()">Download</button>
-        <button class="btn ghost" id="btnSheetRefresh" onclick="refreshFromSheet()">Refresh sheet</button>
+        <button class="btn ghost" id="btnSheetRefresh" onclick="refreshFromSheet()">Refresh database</button>
         <button class="btn ghost" id="btnOffline" onclick="saveForOffline()">Save for offline</button>
       </div>
       <div class="mstats">
@@ -658,7 +794,7 @@ applyView();
       </div>
 
       <h3>Infrastructure</h3>
-      <div class="hint" style="margin:-6px 0 10px">What the facility has on the ground. These go to the Facilities sheet and fill the Infrastructure panel on the map.</div>
+      <div class="hint" style="margin:-6px 0 10px">What the facility has on the ground. These are saved to the database and fill the Infrastructure panel on the map.</div>
       <div class="mfilters" id="nInfra"></div>
 
       <h3>Services offered</h3>
@@ -1211,6 +1347,8 @@ function pullAll(loud){
     .then(function(r){ return r.json(); })
     .then(function(d){
       if (!d || !d.ok) throw new Error(d && d.error ? d.error : 'bad reply');
+      /* a server without the register (not yet updated to EMR_Server.gs) must not empty the register on this device */
+      if (!Array.isArray(d.facilities)) throw new Error('the server did not send the register');
       facilities = d.facilities || []; staff = d.staff || [];
       requests = d.requests || []; transfers = d.transfers || [];
       if (d.overrides) overrides = d.overrides;
@@ -1229,8 +1367,9 @@ function pullAll(loud){
       if (loud) note('Register updated, ' + facilities.length + ' facilities on file.', 'ok');
     })
     .catch(function(e){
+      /* no message on screen: the copy held on this device is shown, and the next opening tries again */
+      if (window.console) console.warn('Register not fetched: ' + (e && e.message ? e.message : e));
       paintAll();
-      note('The server could not be read. Showing the last copy held on this device.', 'bad');
     });
 }
 
@@ -1422,7 +1561,7 @@ function submitNewFacility(){
   api('newFacility', { facility: fac, staff: rows, request: req }).then(function(res){
     busy('btnNewSubmit', false);
     if (res && res.ok){
-      note('Facility submitted. It sits with the admin for review and is written to the Facilities sheet.', 'ok');
+      note('Facility submitted. It sits with the admin for review and is saved to the database.', 'ok');
       resetNewFacility();
       paintAll();
     } else {
@@ -1757,7 +1896,7 @@ function parseBulk(rows){
     if (!g.incName) g.problems.push('No in-charge name');
     if (g.incPhone && !phoneOk(g.incPhone)) g.problems.push('In-charge telephone is not 9 digits');
     g.members.forEach(function(m){ if (m.phone && !phoneOk(m.phone)) g.problems.push(m.name + ' telephone is not 9 digits'); });
-    if (g.stated && g.members.length && g.stated !== g.members.length) g.problems.push('Sheet says ' + g.stated + ' staff, ' + g.members.length + ' listed');
+    if (g.stated && g.members.length && g.stated !== g.members.length) g.problems.push('The file says ' + g.stated + ' staff, ' + g.members.length + ' listed');
     var dup = facilities.some(function(f){
       return f.status !== 'Rejected' && f.district === g.district
         && String(f.chiefdom).toLowerCase() === String(g.chiefdom).toLowerCase()
@@ -3315,7 +3454,7 @@ function mlProfile(){
     box.innerHTML = '<h2>Facility profile</h2>'
       + '<p class="pempty">Click any point on the map to read that facility here: its infrastructure, '
       + 'the services it offers, the staff with cadre and telephone, and the key indicators for '
-      + 'Malaria, TB, HIV, NTD, Nutrition and EPI, all read from the Google Sheet.</p>';
+      + 'Malaria, TB, HIV, NTD, Nutrition and EPI, all read from the database.</p>';
     if (fsId) fsClose();
     return;
   }
@@ -3345,21 +3484,21 @@ function mlProfile(){
   Object.keys(x.infrastructure).forEach(function(k){
     infra += '<div class="pkv"><span>' + esc(k) + '</span><b>' + esc(x.infrastructure[k]) + '</b></div>';
   });
-  PARTS.infra = { title:'Infrastructure', html: x.has.infrastructure ? infra : none('Facilities sheet'), dummy:false };
+  PARTS.infra = { title:'Infrastructure', html: x.has.infrastructure ? infra : none('database'), dummy:false };
 
   var svc = '<div class="pchips">';
   Object.keys(x.services).forEach(function(k){
     svc += '<span class="pchip ' + (x.services[k] ? 'yes' : 'no') + '">' + esc(k) + '</span>';
   });
   svc += '</div>';
-  PARTS.services = { title:'Services offered', html: x.has.services ? svc : none('Facilities sheet'), dummy:false };
+  PARTS.services = { title:'Services offered', html: x.has.services ? svc : none('database'), dummy:false };
 
   var stf = list.length
     ? '<table class="ptable"><tr><th>Name</th><th>Cadre</th><th>Telephone</th></tr>'
       + list.map(function(s){
           return '<tr><td>' + esc(s.name) + '</td><td>' + esc(s.cadre) + '</td><td>' + esc(s.phone) + '</td></tr>';
         }).join('') + '</table>'
-    : none('Staff sheet');
+    : none('database');
   PARTS.staff = { title:'Staff (' + list.length + ')', html:stf, dummy:false };
 
   var state = indState[f.key], prog;
@@ -3367,11 +3506,11 @@ function mlProfile(){
     prog = '';
     x.programmes.forEach(function(pg){ prog += progAcc(pg, x); });
   } else if (state === 'loading' || state === undefined){
-    prog = '<p class="pempty">Reading the Indicators sheet for this facility.</p>';
+    prog = '<p class="pempty">Reading the indicators for this facility from the database.</p>';
   } else if (state === 'failed'){
-    prog = '<p class="pempty">The Indicators sheet could not be read. Check that the sheet is shared with anyone who has the link.</p>';
+    prog = '<p class="pempty">The indicators could not be read from the database. Check the connection and try again.</p>';
   } else {
-    prog = none('Indicators sheet');
+    prog = none('database');
   }
   PARTS.indicators = { title:'Key indicators by programme', html:prog, dummy:false };
 
@@ -3400,8 +3539,8 @@ function mlPaint(){
 
   var note = document.getElementById('missNote');
   var srcNote = (masterFromSheet
-    ? ' The list is read from the Google Sheet, so an edit there shows here on the next refresh.'
-    : ' The list built into this file is in use, no Google Sheet is set.') + cacheNote();
+    ? ' The list is read from the database, so a change there shows here on the next refresh.'
+    : ' The list built into this file is in use, no database is set.') + cacheNote();
   if (missing === 0) note.textContent = 'Every facility in this selection has coordinates.' + srcNote;
   else {
     var names = rows.filter(function(f){ return f.lat === null || f.lng === null; })
@@ -3456,7 +3595,7 @@ function mlPaint(){
 }
 /* pull the whole Indicators tab once and keep it, so every facility reads offline */
 function saveForOffline(){
-  if (!SHEET_ID){ note('No Google Sheet is set, so there is nothing to save.', 'bad'); return; }
+  if (!SHEET_ID){ note('No database is set, so there is nothing to save.', 'bad'); return; }
   busy('btnOffline', true);
   note('Saving everything for offline use. The Indicators tab is the big one, give it a moment.', 'wait');
 
@@ -3489,9 +3628,9 @@ function saveForOffline(){
 
 /* pull the sheet again without reopening the app */
 function refreshFromSheet(){
-  if (!SHEET_ID){ note('No Google Sheet is set. Paste the sheet id into SHEET_ID at the top of this file.', 'bad'); return; }
+  if (!SHEET_ID){ note('No database is set. Paste the database id into SHEET_ID at the top of this file.', 'bad'); return; }
   busy('btnSheetRefresh', true);
-  note('Reading the Google Sheet.', 'wait');
+  note('Reading from the database.', 'wait');
   loadSheetWorkbook().then(function(r){
     busy('btnSheetRefresh', false);
     if (!mlReady || true){
@@ -3503,10 +3642,10 @@ function refreshFromSheet(){
     }
     mlProfile();
     mlPaint();
-    note('Sheet read: ' + (r && r.master ? r.master + ' facilities, ' : '') + (r ? r.staff + ' staff rows and ' + r.ind + ' indicator rows.' : 'nothing came back.'), 'ok');
+    note('Database read: ' + (r && r.master ? r.master + ' facilities, ' : '') + (r ? r.staff + ' staff rows and ' + r.ind + ' indicator rows.' : 'nothing came back.'), 'ok');
   }, function(){
     busy('btnSheetRefresh', false);
-    note('The Google Sheet could not be read. Check the sheet id and that the sheet is shared with anyone who has the link.', 'bad');
+    note('The database could not be read. Check the connection and try again.', 'bad');
   });
 }
 function mlReset(){
@@ -3967,11 +4106,11 @@ function boot(){
     return bootStep(40, 'Loading the facilities file', function(){ return loadFacilitiesCsv(); });
   })
   .then(function(){
-    return bootStep(50, SHEET_ID ? 'Reading the Google Sheet, Facilities, Staff and Indicators'
-                                 : 'No Google Sheet is set, using the list built into this file',
+    return bootStep(50, SHEET_ID ? 'Reading from the database: facilities, staff and indicators'
+                                 : 'No database is set, using the list built into this file',
       function(){
         return loadSheetWorkbook().then(function(r){
-          if (r && r.master) bootSet(50, 'Master list taken from the sheet, ' + r.master + ' facilities');
+          if (r && r.master) bootSet(50, 'Master list taken from the database, ' + r.master + ' facilities');
         });
       });
   })
@@ -4003,7 +4142,7 @@ function boot(){
     }
     if (usedCache){
       bootSet(100, 'Ready, working from the saved copy');
-      setTimeout(function(){ note('No connection to the Google Sheet. The app is working from the copy saved on this device'
+      setTimeout(function(){ note('No connection to the database. The app is working from the copy saved on this device'
         + (cacheStamp ? ' on ' + nice(cacheStamp) : '') + '.', 'wait'); }, 600);
     }
     bootSet(100, usedCache ? 'Ready, working from the saved copy' : 'Ready');
@@ -4036,7 +4175,9 @@ show('guide');
   if (mb && mn){
     mb.onclick = function(e){ e.stopPropagation(); var o = !mn.classList.contains('open'); mn.classList.toggle('open', o); mb.classList.toggle('open', o); mb.setAttribute('aria-expanded', o); };
     document.addEventListener('click', function(e){ if (!mn.contains(e.target)) { mn.classList.remove('open'); mb.classList.remove('open'); mb.setAttribute('aria-expanded', false); } });
-    mn.addEventListener('click', function(e){ if (e.target.closest('button,a')) { mn.classList.remove('open'); mb.classList.remove('open'); } });
+    var tog = document.getElementById('eViewTog'), vl = document.getElementById('vtabs');
+    if (tog && vl) tog.onclick = function(){ var o = vl.hidden; vl.hidden = !o; tog.setAttribute('aria-expanded', o); };
+    mn.addEventListener('click', function(e){ var t = e.target.closest('button,a'); if (t && t !== tog) { mn.classList.remove('open'); mb.classList.remove('open'); if (vl){ vl.hidden = true; tog.setAttribute('aria-expanded', false); } } });
   }
 })();
 </script>
