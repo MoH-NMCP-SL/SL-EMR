@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analytics Training | NMDR Sierra Leone</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --blue:#2c6793;--blue-dk:#1f4a6a;--blue-lt:#e8f0f7;
+  --white:#ffffff;--bg:#f0f5f9;--border:#d0dde8;--muted:#6c7a89;--gold:#ffc107;
+}
+body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);padding:24px;min-height:100vh;}
+
+.hero{background:var(--white);border-radius:12px;padding:20px 24px;margin-bottom:20px;box-shadow:0 2px 12px rgba(0,0,0,0.08);border-left:4px solid var(--blue);}
+.hero-tag{display:inline-block;background:var(--blue-lt);color:var(--blue);font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:8px;}
+.hero h1{font-size:24px;color:var(--blue);font-weight:700;margin-bottom:6px;}
+.hero p{font-size:13px;color:var(--muted);line-height:1.6;}
+
+.tab-row{display:flex;gap:4px;flex-wrap:wrap;border-bottom:2px solid var(--border);margin-bottom:22px;}
+.tab-btn{padding:10px 20px;border:none;background:transparent;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;font-family:inherit;transition:all .2s;}
+.tab-btn:hover{color:var(--blue);}
+.tab-btn.active{color:var(--blue);border-bottom-color:var(--blue);}
+
+.pane{display:none;}
+.pane.active{display:block;}
+
+.app-frame-wrap{border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.1);border:2px solid var(--border);background:var(--white);}
+.app-frame-wrap iframe{width:100%;height:85vh;border:none;display:block;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-tag">Capacity Building</div>
+  <h1>Analytics Training</h1>
+  <p>Epidemiological data training resources, datasets, and learning materials for malaria data analysts in Sierra Leone.</p>
+</div>
+
+<div class="tab-row">
+  <button class="tab-btn active" data-tab="r">R Training</button>
+  <button class="tab-btn" data-tab="snt">SNT Code Library</button>
+  <button class="tab-btn" data-tab="dmat">D-MAT Software</button>
+</div>
+
+<div id="pane-r" class="pane active">
+  <div class="app-frame-wrap">
+    <iframe src="https://mohamedsillahkanu.github.io/student-training/" title="R Training" loading="lazy" allow="fullscreen" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+  </div>
+</div>
+
+<div id="pane-snt" class="pane">
+  <div class="app-frame-wrap">
+    <iframe src="https://ahadi-analytics.github.io/snt-code-library/" title="SNT Code Library" loading="lazy" allow="fullscreen" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+  </div>
+</div>
+
+<div id="pane-dmat" class="pane">
+  <div class="app-frame-wrap">
+    <iframe src="https://informatics-consultancy-firm.github.io/d-mat-v6/" title="D-MAT Software" loading="lazy" allow="fullscreen" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+  </div>
+</div>
+
+<script>
+document.querySelectorAll('.tab-btn').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+    document.querySelectorAll('.pane').forEach(function(p){ p.classList.remove('active'); });
+    this.classList.add('active');
+    document.getElementById('pane-' + this.dataset.tab).classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
