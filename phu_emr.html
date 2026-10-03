@@ -2167,7 +2167,9 @@ function paintBar(){}
 /* ===================== NAVIGATION ===================== */
 let VIEW = 'home';
 const navOf = v => ['hf12','backup','sync'].includes(v) ? 'more' : (v === 'form' || v === 'fsearch') ? 'home' : v === 'stage' ? 'compare' : v;
-function go(v){ VIEW = v; render(); window.scrollTo(0, 0); if (v !== 'form' && v !== 'sync' && v !== 'vdata' && typeof syncSoon === 'function' && DB.sync && DB.sync.url) syncSoon(); }
+function go(v){ VIEW = v; render(); window.scrollTo(0, 0);
+  /* only when there is something new on this device to send; the server is read once, on opening */
+  if (v !== 'form' && v !== 'sync' && v !== 'vdata' && typeof syncSoon === 'function' && DB.sync && DB.sync.url && pendingCount() > 0) syncSoon(); }
 /* when no facility is chosen yet, start on the facility and month of the newest record */
 function autoCtx(){
   if (C().facility || !DB.recs.length) return;
@@ -3158,16 +3160,93 @@ async function reportSheetLine(){
   const c = C();
   el.innerHTML = '<span class="muted sm">Checking the ICF-SL Server…</span>';
   try {
-    const r = await post('status', { facility: { district: c.district, chiefdom: c.chiefdom, facility: c.facility }, period: c.year + String(c.month).padStart(2, '0') });
+    const r = await localStatus({ facility: { district: c.district, chiefdom: c.chiefdom, facility: c.facility }, period: c.year + String(c.month).padStart(2, '0') });
     const f = (r.forms || {})[REPORT];
     if (document.getElementById('gsline') !== el) return;
     el.innerHTML = f ? '<b>ICF-SL Server:</b> ' + f.values + ' values saved ' + esc(String(f.savedAt).slice(0, 16).replace('T', ' '))
       : '<b>ICF-SL Server:</b> nothing saved yet for this facility and month.';
-  } catch(e){ el.innerHTML = '<span class="muted sm">The ICF-SL Server could not be reached: ' + esc(e.message) + '</span>'; }
+  } catch(e){ el.innerHTML = '<span class="muted sm">' + esc(e.message) + '</span>'; }
 }
 
 
-/* ===================== VIEW DATA (from Google Sheets) ===================== */
+
+/* ===================== DATA FETCHED ONCE ON OPENING, KEPT ON THE DEVICE =====================
+   When the EMR opens it reads everything View data and the reports need from the server in one
+   request and keeps a copy on this device. Changing a filter, Case based / Aggregate or a form
+   then reads that copy, never the server. With no internet the saved copy is used. */
+const SNAPDB = {
+  open(){ return new Promise((res, rej) => { try { const rq = indexedDB.open('phu_emr_cache', 1);
+    rq.onupgradeneeded = () => rq.result.createObjectStore('kv'); rq.onsuccess = () => res(rq.result); rq.onerror = () => rej(rq.error); } catch(e){ rej(e); } }); },
+  async get(k){ try { const db = await this.open(); return await new Promise(res => { const q = db.transaction('kv', 'readonly').objectStore('kv').get(k); q.onsuccess = () => res(q.result || null); q.onerror = () => res(null); }); } catch(e){ return null; } },
+  async set(k, v){ try { const db = await this.open(); await new Promise(res => { const tx = db.transaction('kv', 'readwrite'); tx.objectStore('kv').put(v, k); tx.oncomplete = res; tx.onerror = res; }); } catch(e){} }
+};
+let SNAP = null, SNAP_AT = '', SNAP_READY = Promise.resolve();
+function openSnapshot(){
+  SNAP_READY = (async () => {
+    const c = await SNAPDB.get('snap');
+    if (c && c.data){ SNAP = c.data; SNAP_AT = c.at || ''; }
+    const s = syncCfg();
+    if (!s.url || !s.token) return;
+    if (!navigator.onLine){ toast(SNAP ? 'No internet, using the cached data' : 'No internet and no cached data yet'); return; }
+    try {
+      const r = await post('snapshot', {});
+      SNAP = { cases: r.cases || {}, aggs: r.aggs || {} }; SNAP_AT = r.at || new Date().toISOString();
+      SNAPDB.set('snap', { data: SNAP, at: SNAP_AT });
+      toast('Updated from the server');
+    } catch(e){
+      toast(e.message === 'Unknown action.' ? 'Update the server (EMR_Server.gs) to read the data' : SNAP ? 'No internet, using the cached data' : 'No internet and no cached data yet');
+    }
+  })();
+}
+async function snapNeeded(){
+  await SNAP_READY;
+  if (!SNAP) throw new Error('No data yet. Open the EMR once with internet to read it from the server.');
+  return SNAP;
+}
+const snapNorm = x => String(x || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+const snapPeriod = p => String(p).replace(/[^0-9]/g, '').slice(0, 6);
+/* the records of one register, from the copy (same filters and order as the server) */
+async function localCases(b){
+  const t = (await snapNeeded()).cases[String(b.sheet || '')];
+  if (!t || !t.rows.length) return { ok: true, head: [], rows: [], total: 0 };
+  const is = (want, have) => !want || snapNorm(want) === snapNorm(have);
+  const yr = String(b.year || ''), mo = b.month ? String(b.month).padStart(2, '0') : '', iS = t.head.indexOf('Synced at');
+  const rows = t.rows.filter(r => is(b.district, r[2]) && is(b.chiefdom, r[3]) && is(b.facility, r[4]) && is(b.ftype, r[5]) &&
+    (!yr || String(r[6]).slice(0, 4) === yr) && (!mo || String(r[6]).slice(5, 7) === mo));
+  rows.sort((x, y) => String(y[6]).localeCompare(String(x[6])) || String(y[iS] || '').localeCompare(String(x[iS] || '')));
+  return { ok: true, head: t.head, rows: rows.slice(0, 2000), total: rows.length };
+}
+/* one summary form added up over the facilities and months that match, from the copy */
+async function localSummary(b){
+  const all = (await snapNeeded()).aggs[b.form] || [];
+  const yr = String(b.year || ''), mo = b.month ? String(b.month).padStart(2, '0') : '';
+  const is = (want, have) => !want || snapNorm(want) === snapNorm(have);
+  const mine = all.filter(r => is(b.district, r[0]) && is(b.chiefdom, r[1]) && is(b.facility, r[2]) && is(b.ftype, r[3]) &&
+    (!yr || String(r[4]).slice(0, 4) === yr) && (!mo || String(r[4]).slice(4, 6) === mo));
+  const sum = {}, text = {}, facs = {}, months = {};
+  let savedAt = '';
+  mine.forEach(r => {
+    const k = [r[5], r[6], r[8]].join('|'), v = String(r[10]);
+    if (r[5] !== 'hdr' && v !== '' && !isNaN(Number(v))) sum[k] = (sum[k] || 0) + Number(v);
+    else if (v !== ''){ text[k] = text[k] || []; if (text[k].indexOf(v) < 0) text[k].push(v); }
+    facs[snapNorm(r[0]) + '|' + snapNorm(r[2])] = 1; months[String(r[4])] = 1;
+    if (String(r[11]) > savedAt) savedAt = String(r[11]);
+  });
+  const cells = Object.keys(sum).map(k => k.split('|').concat([String(sum[k])]))
+    .concat(Object.keys(text).filter(k => sum[k] == null).map(k => k.split('|').concat([text[k].join(', ')])));
+  return { ok: true, cells, facilities: Object.keys(facs).length, months: Object.keys(months).length, savedAt };
+}
+/* what the copy holds for one facility and month, per summary form */
+async function localStatus(b){
+  const sn = await snapNeeded(), f = b.facility || {}, period = snapPeriod(b.period), forms = {};
+  Object.keys(sn.aggs || {}).forEach(form => {
+    const mine = sn.aggs[form].filter(r => snapNorm(r[2]) === snapNorm(f.facility) && snapPeriod(r[4]) === period);
+    if (mine.length) forms[form] = { values: mine.length, savedAt: mine[0][11] };
+  });
+  return { ok: true, forms };
+}
+
+/* ===================== VIEW DATA (from the copy fetched on opening) ===================== */
 let VD = { mode:'cases', reg:'yi', form:'HF1', empty:false };
 const VD_FORMS = [['HF1','Out-patient morbidity, PHU'],['HF2','Immunization and nutrition'],['HF3','Td and HPV'],['HF5','In-patient morbidity, hospital'],['HF6','Out-patient morbidity, hospital'],['HF12','Facility profile']];
 /* View data: every choice is a dropdown. Type, register or summary form, district, chiefdom,
@@ -3222,12 +3301,12 @@ function vData(m){
   on('vd_fac', v => { f.facility = v; const hits = rows.filter(x => x.n === v && (!f.district || x.d === f.district) && (!f.chiefdom || x.c === f.chiefdom)); if (hits.length === 1){ const r = hits[0]; f.district = r.d; f.chiefdom = r.c; f.ftype = r.t; } else if (hits[0] && !f.ftype) f.ftype = hits[0].t; });
   const out = $('#vdout');
   if (!cases && !f.facility){ out.innerHTML = '<div class="empty">Choose a facility name above to see its summary form.</div>'; return; }
-  out.innerHTML = '<div class="empty">Reading the ICF-SL Server…</div>';
-  (cases ? vdCases(out) : vdAgg(out)).catch(e => { if (out.isConnected) out.innerHTML = '<div class="empty">' + (e.message === 'Unknown action.' ? 'Update the server to see summaries for many facilities.' : 'The ICF-SL Server could not be read: ' + esc(e.message)) + '</div>'; });
+  out.innerHTML = '<div class="empty">Reading the data…</div>';
+  (cases ? vdCases(out) : vdAgg(out)).catch(e => { if (out.isConnected) out.innerHTML = '<div class="empty">' + esc(e.message) + '</div>'; });
 }
 async function vdCases(out){
   const f = Object.assign({}, VDF), reg = VD.reg;
-  const r = await post('cases', { sheet: sheetName(reg), district: f.district, chiefdom: f.chiefdom, ftype: f.ftype, facility: f.facility, year: f.year, month: f.month });
+  const r = await localCases({ sheet: sheetName(reg), district: f.district, chiefdom: f.chiefdom, ftype: f.ftype, facility: f.facility, year: f.year, month: f.month });
   if (!out.isConnected || VD.mode !== 'cases' || VD.reg !== reg) return;
   const at = l => r.head.indexOf(l), iD = at('District'), iC = at('Chiefdom'), iF = at('Facility'), iT = at('Facility type'), iDt = at('Date');
   /* the same filters here too, so an older Apps Script still gives the right rows */
@@ -3257,7 +3336,7 @@ function vdTables(form){
 }
 async function vdAgg(out){
   const f = Object.assign({}, VDF), form = VD.form;
-  const r = await post('summary', { form, district: f.district, chiefdom: f.chiefdom, ftype: f.ftype, facility: f.facility, year: f.year, month: f.month });
+  const r = await localSummary({ form, district: f.district, chiefdom: f.chiefdom, ftype: f.ftype, facility: f.facility, year: f.year, month: f.month });
   if (!out.isConnected || VD.mode !== 'agg' || VD.form !== form) return;
   if (!(r.cells || []).length){ out.innerHTML = '<div class="empty">No ' + form + ' is on the ICF-SL Server for ' + vdScope() + '.</div>'; return; }
   const val = {}; r.cells.forEach(([t, rk, ck, v]) => { val[t + '|' + rk + '|' + ck] = v; });
@@ -4425,7 +4504,8 @@ const FU_NUT = [['fuWeight','weight'],['fuHeight','height'],['fuWhz','whz'],['fu
     u2:'EPI / Under 2 Register', td:'EPI Tetanus Diphtheria (Td) and HPV Register', ipc:'Hospital Inpatient Register 29 days to <18 yrs', ipa:'Hospital In-patient Register' };
   Object.entries(NAMES).forEach(([k, n]) => { REG[k].title = n; if (REG[k + '_fu']) REG[k + '_fu'].title = n + ' · follow-up'; });
 })();
-window.addEventListener('online', () => syncSoon(1000));
+window.addEventListener('online', () => { if (pendingCount() > 0) syncSoon(1000); });
+openSnapshot();
 setTimeout(() => syncNow(false), 1500);
 go('home');
 </script>
