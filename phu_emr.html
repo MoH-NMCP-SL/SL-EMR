@@ -947,6 +947,79 @@ body[data-view="dict"].dwide .dmapw{max-height:calc(100dvh - 330px);min-height:3
 .homelink svg{width:26px;height:26px;fill:none;stroke:#fff;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
 @media (max-width:360px){ .homelink{width:46px;height:46px} }
 @media print{ .homelink{display:none!important} }
+
+/* ===== fit on every phone: smaller header on narrow phones, a slim header and footer in landscape ===== */
+@media (max-width:430px){
+  .appbar{padding:16px 14px;gap:12px}
+  .mohlogo{width:64px;height:64px}
+  .appbar .ctxbtn b{font-size:20px}
+  .appbar .ctxbtn small{font-size:13.5px}
+  .menubtn,.homelink{width:46px;height:46px;border-radius:12px}
+  .homelink svg{width:22px;height:22px}
+  .menubtn{gap:5px} .menubtn span{width:20px}
+  .menubtn.open span:nth-child(1){transform:translateY(8px) rotate(45deg)}
+  .menubtn.open span:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
+  .foot .f1{font-size:12px} .foot .f2{font-size:11px}
+}
+@media (max-width:360px){
+  .appbar{padding:12px 10px;gap:8px}
+  .mohlogo{width:52px;height:52px;box-shadow:0 0 0 2px #fff}
+  .appbar .ctxbtn b{font-size:17px}
+  .appbar .ctxbtn small{font-size:12.5px}
+  .menubtn,.homelink{width:42px;height:42px}
+  .foot .f1{font-size:11px} .foot .f2{font-size:10px}
+}
+@media (max-height:500px) and (orientation:landscape){
+  .appbar{padding:6px 14px;gap:12px;border-bottom-width:4px}
+  .mohlogo{width:40px;height:40px;box-shadow:0 0 0 2px #fff}
+  .appbar .ctxbtn b{font-size:17px;line-height:1.15}
+  .appbar .ctxbtn small{font-size:12px;margin-top:0}
+  .menubtn,.homelink{width:40px;height:40px;border-radius:10px}
+  .homelink svg{width:20px;height:20px}
+  .menubtn{gap:4px} .menubtn span{width:18px;height:2.5px}
+  .menubtn.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+  .menubtn.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+  .appbar .bnav{max-height:calc(100dvh - 64px);overflow-y:auto}
+  .foot{flex-direction:row;justify-content:center;flex-wrap:wrap;column-gap:14px;row-gap:0;padding:4px 8px calc(4px + env(safe-area-inset-bottom,0px));border-top-width:4px}
+  .foot .f1,.foot .f2{font-size:11px}
+  .app{padding-bottom:56px}
+}
+
+/* ===== small screens: every phone size, upright or on its side ===== */
+.foot .f2{text-wrap:balance}
+@media (max-width:440px){ .foot .f2{font-size:2.55vw;white-space:nowrap} .foot .f1{font-size:3vw} }
+@media (max-width:430px){
+  .appbar{padding:14px 12px;gap:10px}
+  .mohlogo{width:60px;height:60px;box-shadow:0 0 0 2px #fff}
+  .menubtn,.homelink{width:44px;height:44px;border-radius:12px}
+  .menubtn span{width:20px}
+  .homelink svg{width:22px;height:22px}
+  .appbar .ctxbtn b{font-size:18px}
+  .appbar .ctxbtn small{font-size:13px}
+}
+@media (max-width:360px){
+  .mohlogo{width:50px;height:50px}
+  .appbar .ctxbtn b{font-size:16.5px}
+  .appbar .ctxbtn small{font-size:12px}
+}
+
+/* screen view: the first item of the menu, opening a sub menu */
+.appbar .bnav{max-height:calc(100dvh - 140px);overflow-y:auto}
+.appbar .bnav .bsep{border:0;border-top:1px solid var(--line);margin:4px 6px;width:auto}
+.appbar .bnav .e-subtxt{flex:1;display:flex;flex-direction:column;line-height:1.2;text-align:left}
+.appbar .bnav .e-subtxt small{font-size:12.5px;font-weight:700;color:var(--dhis2)}
+.appbar .bnav .e-chev{width:10px;height:10px;border-right:3px solid currentColor;border-bottom:3px solid currentColor;transform:rotate(45deg);margin:0 6px 4px 0;transition:transform .15s}
+.appbar .bnav .e-subtog[aria-expanded="true"]{background:#e3eef9;color:var(--dhis2)}
+.appbar .bnav .e-subtog[aria-expanded="true"] .e-chev{transform:rotate(-135deg);margin:4px 6px 0 0}
+.appbar .bnav .e-vlist{display:flex;flex-direction:column;gap:2px;margin:2px 0 4px 22px;padding-left:10px;border-left:3px solid var(--line)}
+.appbar .bnav .e-vlist[hidden]{display:none}
+.appbar .bnav .e-vlist button{padding:10px 12px;font-size:15px}
+.appbar .bnav .e-vlist button span{display:flex;flex-direction:column;line-height:1.2;text-align:left}
+.appbar .bnav .e-vlist button small{font-size:12px;font-weight:700}
+.appbar .bnav .e-vlist button.on{background:var(--dhis2);color:#fff}
+.appbar .bnav .e-vlist button.on::after{content:"";margin-left:auto;width:6px;height:12px;border:solid #fff;border-width:0 3px 3px 0;transform:rotate(45deg) translate(-2px,-2px)}
+.appbar .bnav .e-vlist button.det:not(.on){outline:2px dashed var(--dhis2);outline-offset:-2px}
+main{padding-top:6px}
 </style>
 </head>
 <body>
@@ -961,7 +1034,9 @@ function applyView(){
   const tabs = document.getElementById('vtabs');
   if (tabs){
     tabs.querySelectorAll('[data-vw]').forEach(b => { b.classList.toggle('on', b.dataset.vw === c); b.classList.toggle('det', b.dataset.vw === detectedView()); b.setAttribute('aria-selected', b.dataset.vw === c); });
-    document.getElementById('vtauto').textContent = { p:'Phone', t:'Tablet', l:'Laptop' }[detectedView()];
+    document.getElementById('vtauto').textContent = { p:'Phone', t:'Tablet', l:'Computer' }[detectedView()];
+    const now = document.getElementById('eViewNow');
+    if (now) now.textContent = c === 'auto' ? 'Auto (' + { p:'Phone', t:'Tablet', l:'Computer' }[detectedView()] + ')' : { p:'Phone', t:'Tablet', l:'Computer' }[c];
   }
 }
 applyView();
@@ -973,6 +1048,8 @@ applyView();
     <a class="homelink" href="index.html" title="Back to EMR home" aria-label="Back to EMR home"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></a>
     <button class="menubtn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="bnav"><span></span><span></span><span></span></button>
     <nav class="bnav" id="bnav" aria-label="Main menu">
+  <button type="button" class="e-subtog" id="eViewTog" aria-expanded="false" aria-controls="vtabs"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/></svg><span class="e-subtxt">Screen view<small id="eViewNow"></small></span><i class="e-chev" aria-hidden="true"></i></button><div class="e-vlist" id="vtabs" role="tablist" aria-label="Screen view" hidden><button data-vw="auto" role="tab"><svg viewBox="0 0 24 24"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg><span>Auto<small id="vtauto"></small></span></button><button data-vw="p" role="tab"><svg viewBox="0 0 24 24"><rect x="7" y="2.5" width="10" height="19" rx="2"/><path d="M11 18.5h2"/></svg><span>Phone</span></button><button data-vw="t" role="tab"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M11 18h2"/></svg><span>Tablet</span></button><button data-vw="l" role="tab"><svg viewBox="0 0 24 24"><rect x="4" y="4.5" width="16" height="11" rx="1.5"/><path d="M2 19h20"/></svg><span>Computer</span></button></div><hr class="bsep">
+
   <button data-v="home"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><span>Home</span></button>
   <button data-v="records"><svg viewBox="0 0 24 24"><path d="M9 6h12M9 12h12M9 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg><span>Records</span></button>
   <button data-v="reports"><svg viewBox="0 0 24 24"><path d="M5 20V11M11 20V5M17 20v-7M3 20h18"/></svg><span>Reports</span></button>
@@ -982,12 +1059,7 @@ applyView();
   <button data-v="more"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg><span>More</span></button>
 </nav>
   </header>
-  <div class="vtabs" id="vtabs" role="tablist" aria-label="Screen view">
-    <button data-vw="auto" role="tab"><svg viewBox="0 0 24 24"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg><span>Auto<small id="vtauto"></small></span></button>
-    <button data-vw="p" role="tab"><svg viewBox="0 0 24 24"><rect x="7" y="2.5" width="10" height="19" rx="2"/><path d="M11 18.5h2"/></svg><span>Phone</span></button>
-    <button data-vw="t" role="tab"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M11 18h2"/></svg><span>Tablet</span></button>
-    <button data-vw="l" role="tab"><svg viewBox="0 0 24 24"><rect x="4" y="4.5" width="16" height="11" rx="1.5"/><path d="M2 19h20"/></svg><span>Laptop</span></button>
-  </div>
+  
   <main id="main"></main>
 </div>
 <footer class="foot" id="foot"><span class="f1">Ministry of Health <span class="sep">|</span> Government of Sierra Leone</span><span class="f2">Designed by Informatics Consultancy Firm – Sierra Leone (ICF-SL)</span></footer>
@@ -2095,7 +2167,7 @@ function render(){
   $('#menuBtn').style.display = VIEW === 'form' ? 'none' : '';
   $('#foot').style.display = VIEW === 'form' ? 'none' : '';
   closeMenu();
-  $$('#bnav button').forEach(b => b.classList.toggle('on', b.dataset.v === navOf(VIEW)));
+  $$('#bnav button[data-v]').forEach(b => b.classList.toggle('on', b.dataset.v === navOf(VIEW)));
   ({ vdata:vData, sync:vSync, fsearch:vFsearch, stage:vStage, compare:vCompare, home:vHome, records:vRecords, reports:vReports, more:vMore, dict:vDict, hf12:vHF12, backup:vBackup, form:vForm })[VIEW]($('#main'));
 }
 function needCtx(m, title){
@@ -3115,7 +3187,7 @@ function vData(m){
   const out = $('#vdout');
   if (!cases && !f.facility){ out.innerHTML = '<div class="empty">Choose a facility name above to see its summary form.</div>'; return; }
   out.innerHTML = '<div class="empty">Reading the ICF-SL Server…</div>';
-  (cases ? vdCases(out) : vdAgg(out)).catch(e => { if (out.isConnected) out.innerHTML = '<div class="empty">' + (e.message === 'Unknown action.' ? 'Update the Apps Script (EMR_Sync.gs) and redeploy it to see summaries for many facilities.' : 'The ICF-SL Server could not be read: ' + esc(e.message)) + '</div>'; });
+  (cases ? vdCases(out) : vdAgg(out)).catch(e => { if (out.isConnected) out.innerHTML = '<div class="empty">' + (e.message === 'Unknown action.' ? 'Update the server to see summaries for many facilities.' : 'The ICF-SL Server could not be read: ' + esc(e.message)) + '</div>'; });
 }
 async function vdCases(out){
   const f = Object.assign({}, VDF), reg = VD.reg;
@@ -4269,9 +4341,12 @@ function download(name, text, type){
 }
 load(); ctxDefaults();
 function openMenu(){ $('#bnav').classList.add('open'); $('#menuBtn').classList.add('open'); $('#menuBtn').setAttribute('aria-expanded', 'true'); $('#menuBtn').setAttribute('aria-label', 'Close menu'); }
-function closeMenu(){ $('#bnav').classList.remove('open'); $('#menuBtn').classList.remove('open'); $('#menuBtn').setAttribute('aria-expanded', 'false'); $('#menuBtn').setAttribute('aria-label', 'Open menu'); }
+function closeMenu(){ const vl = $('#vtabs'), tg = $('#eViewTog'); if (vl){ vl.hidden = true; tg.setAttribute('aria-expanded', 'false'); } $('#bnav').classList.remove('open'); $('#menuBtn').classList.remove('open'); $('#menuBtn').setAttribute('aria-expanded', 'false'); $('#menuBtn').setAttribute('aria-label', 'Open menu'); }
 $('#menuBtn').onclick = e => { e.stopPropagation(); $('#bnav').classList.contains('open') ? closeMenu() : openMenu(); };
-$('#bnav').onclick = e => { const b = e.target.closest('button'); if (b){ closeMenu(); go(b.dataset.v); } };
+$('#bnav').onclick = e => { const b = e.target.closest('button'); if (!b) return;
+  if (b.id === 'eViewTog'){ const vl = $('#vtabs'), o = vl.hidden; vl.hidden = !o; b.setAttribute('aria-expanded', String(o)); return; }
+  if (b.dataset.vw) return;   /* a screen view: handled by #vtabs */
+  closeMenu(); go(b.dataset.v); };
 document.addEventListener('click', e => { if (!e.target.closest('#bnav') && !e.target.closest('#menuBtn')) closeMenu(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
 $('#sheet').onclick = e => { if (e.target.id === 'sheet') closeSheet(VIEW === 'form'); };
@@ -4286,7 +4361,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && $('#sheet'
 })();
 $('#vtabs').onclick = e => { const b = e.target.closest('[data-vw]'); if (!b) return;
   try { localStorage.setItem('phu_emr_view', b.dataset.vw); } catch(x){}
-  applyView(); toast(b.dataset.vw === 'auto' ? 'View: automatic (' + { p:'phone', t:'tablet', l:'laptop' }[detectedView()] + ')' : 'View: ' + { p:'phone', t:'tablet', l:'laptop' }[b.dataset.vw]); };
+  applyView(); closeMenu(); toast(b.dataset.vw === 'auto' ? 'View: automatic (' + { p:'phone', t:'tablet', l:'computer' }[detectedView()] + ')' : 'View: ' + { p:'phone', t:'tablet', l:'computer' }[b.dataset.vw]); };
 window.addEventListener('resize', applyView);
 applyView();
 /* read from the ICF-SL Server by itself when the app opens and when back online (the screen is not refreshed by itself) */
