@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Page not found · EMR</title>
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;display:flex;flex-direction:column;background:#eef2f6;color:#0b2540;font:700 16px/1.5 Roboto,Arial,Helvetica,sans-serif}
+  header{background:#2c6693;color:#fff;padding:18px 16px;border-bottom:6px solid #009E73}
+  header b{display:block;font-size:22px}
+  main{flex:1;max-width:560px;width:100%;margin:0 auto;padding:28px 16px;text-align:center}
+  h1{font-size:24px;color:#2c6693;margin:0 0 8px}
+  a.btn{display:inline-block;margin-top:16px;padding:12px 20px;border-radius:12px;background:#1565c0;color:#fff;text-decoration:none}
+  footer{background:#2c6693;color:#fff;text-align:center;font-size:13px;padding:10px;border-top:6px solid #009E73}
+</style>
+</head>
+<body>
+<header><b>Electronic Medical Record (EMR)</b></header>
+<main>
+  <h1>Page not found</h1>
+  <p>This page is not on the server, or its address has changed.</p>
+  <a class="btn" id="home" href="/">&#8592; Back to the main menu</a>
+</main>
+<footer>Ministry of Health | Government of Sierra Leone<br>Designed by Informatics Consultancy Firm – Sierra Leone (ICF-SL)</footer>
+<script>
+/* on GitHub Pages the site sits in /REPOSITORY/, so the main menu is that folder's index.html */
+(function(){
+  var seg = location.pathname.split('/').filter(Boolean);
+  var base = /github\.io$/.test(location.hostname) && seg.length ? '/' + seg[0] + '/' : '/';
+  document.getElementById('home').href = base + 'index.html';
+})();
+</script>
+</body>
+</html>
