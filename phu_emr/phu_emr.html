@@ -1087,17 +1087,115 @@ html:not(.w-l) .og-col.none{padding:10px}
 .og-info{margin-top:12px}
 .og-info p{margin:6px 0;font-size:15px;line-height:1.5}
 
+
+/* the phone browser must not enlarge text on its own when Tablet or Computer is drawn wider than the screen */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+
+/* ---------- Send HF1 to DHIS2 ---------- */
+.d2-back{position:fixed;inset:0;z-index:30000;background:rgba(11,37,64,.55);display:flex;align-items:center;justify-content:center;padding:14px}
+.d2-box{background:#fff;border-radius:18px;width:min(720px,100%);max-height:calc(100dvh - 28px);display:flex;flex-direction:column;box-shadow:0 18px 50px rgba(0,0,0,.3);outline:3px solid #009E73}
+.d2-h{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--line)}
+.d2-h b{font-size:18px;color:var(--dhis)}
+.d2-x{border:0;background:none;font-size:28px;line-height:1;cursor:pointer;color:var(--ink)}
+.d2-body{padding:14px 18px;overflow-y:auto}
+.d2-sub{margin:0 0 12px;font-size:14px}
+.d2-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.d2-grid label{display:flex;flex-direction:column;gap:4px;font-size:13px;font-weight:700;color:var(--dhis2)}
+.d2-grid input{font:inherit;font-weight:500;color:var(--ink);padding:10px 12px;border:2px solid var(--line);border-radius:10px;min-width:0}
+.d2-row{display:flex;gap:8px}.d2-row input{flex:1}
+@media (max-width:560px){ .d2-grid{grid-template-columns:1fr} }
+.d2-found{margin:10px 0;display:flex;flex-direction:column;gap:6px;font-size:14px}
+.d2-found span{color:#5b6b7c}.d2-found code{font-size:12px;color:#5b6b7c}
+.d2-found label{display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;cursor:pointer;font-weight:600}
+.d2-found input[type=radio]{all:revert;width:18px;height:18px;margin:0;flex:0 0 auto}
+.d2-row .btn{flex:0 0 auto;width:auto;min-width:0;padding:0 16px}
+.d2-sum{margin:12px 0;padding:10px 12px;border-radius:10px;background:#eef6f2;border:1px solid #bfe0d1;font-size:14px}
+.d2-det{margin:8px 0;font-size:14px}.d2-det summary{cursor:pointer;font-weight:700;color:var(--dhis2)}
+.d2-t{width:100%;border-collapse:collapse;margin-top:8px;font-size:13px}.d2-t th,.d2-t td{border-bottom:1px solid var(--line);padding:5px 6px;text-align:left}
+.d2-t td:last-child,.d2-t th:last-child{text-align:right}
+.d2-det ul{margin:8px 0 0;padding-left:18px;columns:2}@media (max-width:560px){ .d2-det ul{columns:1} }
+.d2-msg{margin-top:10px;font-size:14px}.d2-msg.ok{color:#00704f}.d2-msg.bad{color:#b3261e}
+.d2-f{display:flex;justify-content:flex-end;gap:10px;padding:12px 18px;border-top:1px solid var(--line);flex-wrap:wrap}
+
+.d2-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:12px 0;padding:12px 14px;border-radius:14px;background:#eef6f2;border:2px solid #009E73}
+.d2-top b{display:block;font-size:16px;color:#00704f}.d2-top span{font-size:13.5px;color:var(--ink)}
+.d2-top-b{display:flex;gap:8px;flex-wrap:wrap}.d2-top-b .btn{width:auto;min-width:0;padding:0 16px}
+
+.d2-page .d2-lbl{display:flex;flex-direction:column;gap:6px;font-weight:700;color:var(--dhis2);margin:6px 0 8px}
+.d2-page select{font:inherit;padding:10px 12px;border:2px solid var(--line);border-radius:10px;color:var(--ink)}
+.d2-when{font-size:15px;margin:10px 0}
+.d2-pw{width:min(420px,100%)}
+
+/* ---------- DHIS2 match ---------- */
+body[data-view="d2dict"] main{max-width:none !important}
+.d2d-intro{margin:0 0 12px;font-size:14.5px;line-height:1.5}
+.d2d-tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+@media (max-width:640px){ .d2d-tiles{grid-template-columns:repeat(2,minmax(0,1fr))} }
+html.w-p .d2d-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
+.d2d-tile{display:flex;flex-direction:column;gap:2px;text-align:left;padding:12px;border-radius:12px;border:2px solid var(--line);background:#fff;font:inherit;cursor:pointer}
+.d2d-tile b{font-size:26px;line-height:1.1}.d2d-tile span{font-size:13px;font-weight:700}
+.d2d-tile.t-match{border-color:#009E73}.d2d-tile.t-match b{color:#00704f}
+.d2d-tile.t-partial{border-color:#E69F00}.d2d-tile.t-partial b{color:#9a6700}
+.d2d-tile.t-none{border-color:#D55E00}.d2d-tile.t-none b{color:#b3261e}
+.d2d-tile.t-info{cursor:default}.d2d-tile.t-info b{color:var(--dhis)}
+.d2d-tile.on{box-shadow:0 0 0 3px var(--dhis2)}
+.d2d-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:14px}
+.d2d-bar input{flex:1 1 200px;min-width:0;font:inherit;padding:10px 12px;border:2px solid var(--line);border-radius:10px}
+.d2d-bar .btn{width:auto;padding:0 14px}
+.d2d-sec{margin:18px 4px 8px;font-size:15px;color:var(--dhis)}
+.d2d-wrap{overflow-x:auto;background:#fff;border:1px solid var(--line);border-radius:12px}
+.d2d-t{width:100%;border-collapse:collapse;font-size:13.5px;min-width:720px}
+.d2d-t th{background:#eef2f6;text-align:left;padding:8px 10px;font-size:12.5px;position:sticky;top:0}
+.d2d-t td{border-top:1px solid var(--line);padding:8px 10px;vertical-align:top;text-align:left !important}
+.d2d-t th{text-align:left !important}
+.d2d-t td small{display:block;color:#5b6b7c;font-size:11.5px;margin-top:2px}
+.d2p{display:inline-block;padding:3px 9px;border-radius:999px;font-size:12px;font-weight:800;white-space:nowrap}
+.d2p-match{background:#e3f4ec;color:#00704f}.d2p-partial{background:#fdf1d6;color:#8a5d00}.d2p-none{background:#fbe3dc;color:#b3261e}
+
+.d2s-head{padding:12px 14px;border-radius:12px;margin-bottom:12px;display:flex;flex-direction:column;gap:3px}
+.d2s-head.ok{background:#e3f4ec;border:1px solid #9fd5bf}.d2s-head.warn{background:#fff8e6;border:1px solid #f1d58f}.d2s-head.warn b{color:#8a5d00}.d2s-head.bad{background:#fbe3dc;border:1px solid #efb2a0}
+.d2s-head b{font-size:17px}.d2s-head.ok b{color:#00704f}.d2s-head.bad b{color:#b3261e}.d2s-head span{font-size:13px}
+.d2s-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:10px}
+.d2s-grid div{border:1px solid var(--line);border-radius:10px;padding:8px 10px;display:flex;flex-direction:column}
+.d2s-grid b{font-size:22px;color:var(--ink)}.d2s-grid span{font-size:12.5px;font-weight:700;color:#5b6b7c}
+.d2s-grid .g b{color:#00704f}.d2s-grid .a b{color:#9a6700}
+.d2s-note{font-size:13.5px;background:#fff8e6;border:1px solid #f1d58f;border-radius:10px;padding:8px 10px;margin:0 0 10px}
+.d2s-bad{font-size:13.5px;background:#fbe3dc;border:1px solid #efb2a0;border-radius:10px;padding:8px 12px;margin:0 0 10px}
+.d2s-bad ul{margin:6px 0 0;padding-left:18px}
+
+.formbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:12px 0;padding:12px 14px;border-radius:14px;background:#eef6f2;border:2px solid #009E73}
+.formbar-t b{display:block;font-size:16px;color:#00704f}.formbar-t span{font-size:13.5px;color:var(--ink)}
+.formbar-b{display:flex;gap:8px;flex-wrap:wrap}.formbar-b .btn{width:auto;min-width:0;padding:0 16px}
+@media (max-width:600px){ .formbar-b{display:grid;grid-template-columns:1fr 1fr;width:100%} .formbar-b .btn{width:100%} }
+html.w-p .formbar-b{display:grid;grid-template-columns:1fr 1fr;width:100%} html.w-p .formbar-b .btn{width:100%}
 </style>
 </head>
 <body>
 <script>
 /* Screen view: Auto follows the window width (phone below 700 px, tablet 700 to 1099, laptop from 1100);
    Phone, Tablet or Laptop keeps that layout whatever the device. The choice is kept on this device. */
-function detectedView(){ const w = window.innerWidth; return w >= 1100 ? 'l' : w >= 700 ? 't' : 'p'; }
+/* the device's own width, read while the page is at device width, so a forced view does not change what Auto means */
+var DEVICE_W = 0;
+function deviceWidth(){
+  var vp = document.querySelector('meta[name=viewport]');
+  if (!DEVICE_W || (vp && vp.getAttribute('content').indexOf('device-width') > -1)) DEVICE_W = window.innerWidth;
+  return DEVICE_W;
+}
+function detectedView(){ var w = deviceWidth(); return w >= 1100 ? 'l' : w >= 700 ? 't' : 'p'; }
+/* on a phone or tablet, Tablet and Computer draw the page at 820 or 1280 px wide and fit it to the screen */
+var VIEW_PX = { t: 820, l: 1280 };
+function setViewport(v){
+  var vp = document.querySelector('meta[name=viewport]'); if (!vp) return;
+  /* the wider page is scaled down to fit the screen exactly */
+  var want = VIEW_PX[v] && VIEW_PX[v] > deviceWidth() ? 'width=' + VIEW_PX[v] + ', initial-scale=' + (deviceWidth() / VIEW_PX[v]).toFixed(4) + ', viewport-fit=cover'
+                                                     : 'width=device-width, initial-scale=1, viewport-fit=cover';
+  if (vp.getAttribute('content') !== want) vp.setAttribute('content', want);
+}
 function viewChoice(){ try { return localStorage.getItem('phu_emr_view') || 'auto'; } catch(e){ return 'auto'; } }
 function applyView(){
   const c = viewChoice(), v = c === 'auto' ? detectedView() : c, h = document.documentElement;
   h.classList.remove('w-p','w-t','w-l'); h.classList.add('w-' + v);
+  setViewport(c === 'auto' ? 'p' : v);   /* Auto always keeps the device's own width */
   const tabs = document.getElementById('vtabs');
   if (tabs){
     tabs.querySelectorAll('[data-vw]').forEach(b => { b.classList.toggle('on', b.dataset.vw === c); b.classList.toggle('det', b.dataset.vw === detectedView()); b.setAttribute('aria-selected', b.dataset.vw === c); });
@@ -1111,7 +1209,7 @@ applyView();
 <div class="app">
   <header class="appbar">
     <img class="mohlogo" src="data:image/jpeg;base64,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" alt="Ministry of Health, Government of Sierra Leone">
-    <div class="ctxbtn"><b>Electronic Medical Record (EMR)</b><small>Ministry of Health</small></div>
+    <div class="ctxbtn"><b>Electronic Medical Record (EMR)</b></div>
     <a class="homelink" href="../index.html" title="Back to EMR home" aria-label="Back to EMR home"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></a>
     <button class="menubtn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="bnav"><span></span><span></span><span></span></button>
     <nav class="bnav" id="bnav" aria-label="Main menu">
@@ -1121,7 +1219,6 @@ applyView();
   <button data-v="records"><svg viewBox="0 0 24 24"><path d="M9 6h12M9 12h12M9 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg><span>Records</span></button>
   <button data-v="reports"><svg viewBox="0 0 24 24"><path d="M5 20V11M11 20V5M17 20v-7M3 20h18"/></svg><span>Reports</span></button>
   <button data-v="vdata"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M3 14h18M9 9v11M15 9v11"/></svg><span>View data</span></button>
-  <button data-v="dict"><svg viewBox="0 0 24 24"><path d="M5 4h10a4 4 0 0 1 4 4v12H9a4 4 0 0 1-4-4z"/><path d="M5 16a4 4 0 0 1 4-4h10"/></svg><span>Dictionary</span></button>
   <button data-v="compare"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.5"/><circle cx="12" cy="5" r="2.5"/><circle cx="18" cy="6.5" r="2.5"/><path d="M4 21v-8M10 21V11M16 21v-5M2 21h20"/></svg><span>Comparative analysis</span></button>
   <button data-v="moh"><svg viewBox="0 0 24 24"><rect x="9" y="2.5" width="6" height="4.5" rx="1"/><rect x="2.5" y="16" width="6" height="4.5" rx="1"/><rect x="9" y="16" width="6" height="4.5" rx="1"/><rect x="15.5" y="16" width="6" height="4.5" rx="1"/><path d="M12 7v4.5M5.5 16v-4.5h13V16M12 11.5V16"/></svg><span>MoH Analytics</span></button>
   <button data-v="more"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg><span>More</span></button>
@@ -2216,7 +2313,7 @@ const bindFilter = () => { const b = $('#flt'); if (b) b.onclick = openCtx; };
 function paintBar(){}
 /* ===================== NAVIGATION ===================== */
 let VIEW = 'home';
-const navOf = v => ['hf12','backup','sync'].includes(v) ? 'more' : (v === 'form' || v === 'fsearch') ? 'home' : v === 'stage' ? 'compare' : v === 'prog' ? 'moh' : v;
+const navOf = v => ['d2push','d2dict','dict'].includes(v) ? 'reports' : ['hf12','backup','sync'].includes(v) ? 'more' : (v === 'form' || v === 'fsearch') ? 'home' : v === 'stage' ? 'compare' : v === 'prog' ? 'moh' : v;
 function go(v){ VIEW = v; render(); window.scrollTo(0, 0);
   /* only when there is something new on this device to send; the server is read once, on opening */
   if (v !== 'form' && v !== 'sync' && v !== 'vdata' && typeof syncSoon === 'function' && DB.sync && DB.sync.url && pendingCount() > 0) syncSoon(); }
@@ -2230,7 +2327,7 @@ function autoCtx(){
   save();
 }
 function render(){
-  if (['records','reports','compare','stage'].includes(VIEW)) autoCtx();
+  if (['records','reports','compare','stage','d2push'].includes(VIEW)) autoCtx();
   document.body.classList.toggle('vdfull', VIEW === 'vdata');
   paintBar();
   document.body.dataset.view = VIEW;
@@ -2238,7 +2335,7 @@ function render(){
   $('#foot').style.display = VIEW === 'form' ? 'none' : '';
   closeMenu();
   $$('#bnav button[data-v]').forEach(b => b.classList.toggle('on', b.dataset.v === navOf(VIEW)));
-  ({ vdata:vData, sync:vSync, fsearch:vFsearch, stage:vStage, compare:vCompare, moh:vMoh, prog:vProg, home:vHome, records:vRecords, reports:vReports, more:vMore, dict:vDict, hf12:vHF12, backup:vBackup, form:vForm })[VIEW]($('#main'));
+  ({ vdata:vData, sync:vSync, fsearch:vFsearch, stage:vStage, compare:vCompare, moh:vMoh, d2push:vD2Push, d2dict:vD2Dict, prog:vProg, home:vHome, records:vRecords, reports:vReports, more:vMore, dict:vDict, hf12:vHF12, backup:vBackup, form:vForm })[VIEW]($('#main'));
 }
 function needCtx(m, title){
   m.innerHTML = '<div class="ph"><h1>' + title + '</h1></div>' + filterBar() + '<div class="empty">Choose the district, chiefdom and PHU to see this.</div>';
@@ -3148,7 +3245,8 @@ async function syncNow(manual){
         const ofc = S.officer && S.officer.name ? S.officer : offx;   /* every form carries its reporting officer */
         if (values.length && ofc && ofc.name) ['name','desig','contact','sign','done'].forEach(x => values.push(['hdr', x, x, '', '', ofc[x] || '']));
         if (!values.length && !s.aggSent[ak]) continue;
-        const r = await post('aggregate', { form, facility: { district, chiefdom, facility, ftype }, period: year + String(month).padStart(2, '0'), values });
+        const d2 = form === 'HF1' && typeof d2Values === 'function' ? d2Values(S.tables).map(v => { const o = { dataElement: v.dataElement, value: v.value }; if (v.categoryOptionCombo) o.categoryOptionCombo = v.categoryOptionCombo; return o; }) : undefined;
+        const r = await post('aggregate', { form, facility: { district, chiefdom, facility, ftype }, period: year + String(month).padStart(2, '0'), values, d2, d2DataSet: d2 ? D2_HF1.dataSet : undefined });
         s.aggSent[ak] = { at: new Date().toISOString(), n: values.length, dhis2: r.dhis2 }; sums++; save();
       }
     }
@@ -3516,7 +3614,7 @@ function bindXf(){
   document.onkeydown = e => { if (e.key === 'Escape' && box.classList.contains('xfmax')) $('#xffull').click(); };
   xfApply();
   /* bring the whole form box into view, just below the app header (not on View data, where the filters stay in view) */
-  if (!box.dataset.stay) setTimeout(() => { const top = box.getBoundingClientRect().top + window.scrollY - ($('.appbar') ? $('.appbar').offsetHeight : 0) - 8; window.scrollTo(0, Math.max(0, top)); }, 30);
+  if (!box.dataset.stay) setTimeout(() => { const anchor = $('.formbar') || box; /* on HF1 the DHIS2 bar stays in view above the form */ const top = anchor.getBoundingClientRect().top + window.scrollY - ($('.appbar') ? $('.appbar').offsetHeight : 0) - 8; window.scrollTo(0, Math.max(0, top)); }, 30);
 }
 /* the reporting officer of the newest record for this facility and month, from any register */
 function officerOf(c){
@@ -3741,12 +3839,336 @@ function colName(t, cn){
 const totalCols = t => t.id === 'hf1m' ? (c => /^C\d/.test(c)) : /a$/.test(t.id) ? (c => /^\d/.test(c)) : (() => true);
 const deathCol = (t, c) => t.id === 'hf1m' && /^D\d/.test(c);
 function bindPicker(m){ $$('#main .rpb').forEach(b => b.onclick = () => { REPORT = b.dataset.r; vReports(m); }); }
-function vReports(m){ vReportsInner(m); if (REPORT !== 'HF12' && REPORT !== 'HF1' && !FORMX[REPORT] && ctxReady() && syncCfg().url){ const d = document.createElement('div'); d.id = 'gsline'; d.className = 'gsline'; const cards = $$('#main .card'); (cards[cards.length - 1] || $('#main')).appendChild(d); reportSheetLine(); } }
+
+/* ===================== SEND HF1 TO DHIS2 =====================
+   Pushes the HF1 summary into the DHIS2 data set "HF01 Outpatient morbidity". Only the data
+   elements that match the EMR's HF1 exactly are sent; the others are left out. Each value is
+   added up from the HF1 cells: cases by age group, referrals, attendance, special groups, and
+   deaths counted once per person. DHIS2 is called straight from this page, and through the ICF
+   proxy when the server blocks a direct call. */
+const D2_HF1 = {"dataSet": "ij1VNJwxKCh", "name": "HF01 Outpatient morbidity", "elements": [{"de": "FJafyE1kzs4", "code": "FEVER_SUSP_MALARA", "name": "Fever case - suspected Malaria", "kind": "cases", "table": "hf1m", "rows": ["mal_fev"], "cocs": [{"coc": "m5T8uBNB8aN", "label": "0-59m", "ages": [0, 1, 2, 3, 4, 5]}, {"coc": "j7j6iaknOFn", "label": "05-14y", "ages": [6, 7]}, {"coc": "zK1aiw8zFac", "label": "15+y", "ages": [8, 9, 10, 11, 12, 13]}]}, {"de": "p6zQLDFjSfd", "code": "FEVER_TESTED_MALARIA_RDT_POS", "name": "Fever case tested for Malaria (RDT) - Positive", "kind": "cases", "table": "hf1m", "rows": ["mal_rdt_p"], "cocs": [{"coc": "m5T8uBNB8aN", "label": "0-59m", "ages": [0, 1, 2, 3, 4, 5]}, {"coc": "j7j6iaknOFn", "label": "05-14y", "ages": [6, 7]}, {"coc": "zK1aiw8zFac", "label": "15+y", "ages": [8, 9, 10, 11, 12, 13]}]}, {"de": "mXS2g1AiPsS", "code": "FEVER_TESTED_MALARIA_RDT_NEG", "name": "Fever case tested for Malaria (RDT) - Negative", "kind": "cases", "table": "hf1m", "rows": ["mal_rdt_n"], "cocs": [{"coc": "m5T8uBNB8aN", "label": "0-59m", "ages": [0, 1, 2, 3, 4, 5]}, {"coc": "j7j6iaknOFn", "label": "05-14y", "ages": [6, 7]}, {"coc": "zK1aiw8zFac", "label": "15+y", "ages": [8, 9, 10, 11, 12, 13]}]}, {"de": "Sz13vbo2Qwh", "code": "FEVER_TESTED_MALARIA_MICRO_POS", "name": "Fever case tested for Malaria (Microscopy) - Positive", "kind": "cases", "table": "hf1m", "rows": ["mal_mic_p"], "cocs": [{"coc": "m5T8uBNB8aN", "label": "0-59m", "ages": [0, 1, 2, 3, 4, 5]}, {"coc": "j7j6iaknOFn", "label": "05-14y", "ages": [6, 7]}, {"coc": "zK1aiw8zFac", "label": "15+y", "ages": [8, 9, 10, 11, 12, 13]}]}, {"de": "Rijj3Fp9ksg", "code": "FEVER_TESTED_MALARIA_MICRO_NEG", "name": "Fever case tested for Malaria (Microscopy) - Negative", "kind": "cases", "table": "hf1m", "rows": ["mal_mic_n"], "cocs": [{"coc": "m5T8uBNB8aN", "label": "0-59m", "ages": [0, 1, 2, 3, 4, 5]}, {"coc": "j7j6iaknOFn", "label": "05-14y", "ages": [6, 7]}, {"coc": "zK1aiw8zFac", "label": "15+y", "ages": [8, 9, 10, 11, 12, 13]}]}, {"de": "wU8EdHifSLa", "code": "MALARIA_TREATED_ACT_U24H", "name": "Malaria treated with ACT <24 hours", "kind": "cases", "table": "hf1m", "rows": ["mal_act_l"], "cocs": [{"coc": "m5T8uBNB8aN", "label": "0-59m", "ages": [0, 1, 2, 3, 4, 5]}, {"coc": "j7j6iaknOFn", "label": "05-14y", "ages": [6, 7]}, {"coc": "zK1aiw8zFac", "label": "15+y", "ages": [8, 9, 10, 11, 12, 13]}]}, {"de": "XKTCuR0W3YN", "code": "MALARIA_TREATED_ACT_O24H", "name": "Malaria treated with ACT >24 hours", "kind": "cases", "table": "hf1m", "rows": ["mal_act_g"], "cocs": [{"coc": "m5T8uBNB8aN", "label": "0-59m", "ages": [0, 1, 2, 3, 4, 5]}, {"coc": "j7j6iaknOFn", "label": "05-14y", "ages": [6, 7]}, {"coc": "zK1aiw8zFac", "label": "15+y", "ages": [8, 9, 10, 11, 12, 13]}]}, {"de": "PbzdJ49rv47", "code": "MALARIA_TREATED_WO_ACT_U24H", "name": "Malaria treated without ACT <24 hours", "kind": "cases", "table": "hf1m", "rows": ["mal_oth_l"], "cocs": [{"coc": "m5T8uBNB8aN", "label": "0-59m", "ages": [0, 1, 2, 3, 4, 5]}, {"coc": "j7j6iaknOFn", "label": "05-14y", "ages": [6, 7]}, {"coc": "zK1aiw8zFac", "label": "15+y", "ages": [8, 9, 10, 11, 12, 13]}]}, {"de": "pTRTHnnh2Kb", "code": "MALARIA_TREATED_WO_ACT_O24H", "name": "Malaria treated without ACT >24 hours", "kind": "cases", "table": "hf1m", "rows": ["mal_oth_g"], "cocs": [{"coc": "m5T8uBNB8aN", "label": "0-59m", "ages": [0, 1, 2, 3, 4, 5]}, {"coc": "j7j6iaknOFn", "label": "05-14y", "ages": [6, 7]}, {"coc": "zK1aiw8zFac", "label": "15+y", "ages": [8, 9, 10, 11, 12, 13]}]}, {"de": "J8LbpZ4755I", "code": "FEVER_SUSP_MALARA_REF", "name": "Fever case - suspected Malaria referral", "kind": "referral", "table": "hf1m", "rows": ["mal_fev"], "cocs": [{"coc": null, "label": "Total", "ages": null}]}, {"de": "yLUTP2sqr7F", "code": "FEVER_TESTED_MALARIA_RDT_POS_REF", "name": "Fever case tested for Malaria (RDT) - Positive referral", "kind": "referral", "table": "hf1m", "rows": ["mal_rdt_p"], "cocs": [{"coc": null, "label": "Total", "ages": null}]}, {"de": "g8WnI3RwB4K", "code": "FEVER_TESTED_MALARIA_RDT_NEG_REF", "name": "Fever case tested for Malaria (RDT) - Negative referral", "kind": "referral", "table": "hf1m", "rows": ["mal_rdt_n"], "cocs": [{"coc": null, "label": "Total", "ages": null}]}, {"de": "KUdtOTAG6M4", "code": "FEVER_TESTED_MALARIA_MICROSCOPY_POS_REF", "name": "Fever case tested for Malaria (Microscopy) - Positive referral", "kind": "referral", "table": "hf1m", "rows": ["mal_mic_p"], "cocs": [{"coc": null, "label": "Total", "ages": null}]}, {"de": "TzMy8BfeqeU", "code": "FEVER_TESTED_MALARIA_MICROSCOPY_NEG_REF", "name": "Fever case tested for Malaria (Microscopy) - Negative referral", "kind": "referral", "table": "hf1m", "rows": ["mal_mic_n"], "cocs": [{"coc": null, "label": "Total", "ages": null}]}, {"de": "R37yVj7iy5l", "code": "MALARIA_TREATED_ACT_U24H_REF", "name": "Malaria treated with ACT <24 hours referral", "kind": "referral", "table": "hf1m", "rows": ["mal_act_l"], "cocs": [{"coc": null, "label": "Total", "ages": null}]}, {"de": "PUZCRcpCSau", "code": "MALARIA_TREATED_ACT_O24H_REF", "name": "Malaria treated with ACT >24 hours referral", "kind": "referral", "table": "hf1m", "rows": ["mal_act_g"], "cocs": [{"coc": null, "label": "Total", "ages": null}]}, {"de": "r5idsoQvtuF", "code": "MALARIA_TREATED_WO_ACT_U24H_REF", "name": "Malaria treated without ACT <24 hours referral", "kind": "referral", "table": "hf1m", "rows": ["mal_oth_l"], "cocs": [{"coc": null, "label": "Total", "ages": null}]}, {"de": "gA4WuvZwJZD", "code": "MALARIA_TREATED_WO_ACT_O24H_REF", "name": "Malaria treated without ACT >24 hours referral", "kind": "referral", "table": "hf1m", "rows": ["mal_oth_g"], "cocs": [{"coc": null, "label": "Total", "ages": null}]}, {"de": "YiPqczK7SPn", "code": "HEPATITIS_ALL", "name": "Hepatitis (all types)", "kind": "cases", "table": "hf1m", "rows": ["hep_b", "hep_c"], "cocs": [{"coc": null, "label": "Total", "ages": null}]}, {"de": "mOPCyWCAZTK", "code": "ADVERSE_DRUG_REACTION", "name": "Adverse Drug Reaction", "kind": "cases", "table": "hf1m", "rows": ["adr"], "cocs": [{"coc": null, "label": "Total", "ages": null}]}, {"de": "n0lUlnuMZFi", "code": "HEADCOUNT_ALL", "name": "Headcount (all services)", "kind": "attend", "table": "hf1a", "rows": ["hc"], "cocs": [{"coc": "HXqTYVuY7MO", "label": "0-59m", "ages": [0, 1, 2, 3, 4, 5]}, {"coc": "YmxEkqHdy64", "label": "05+y", "ages": [6, 7, 8, 9, 10, 11, 12, 13]}]}, {"de": "jkVioQxQcnk", "code": "HEADCOUNT_CURATIVE", "name": "OPD (New and follow-up curative)", "kind": "attend", "table": "hf1a", "rows": ["opd"], "cocs": [{"coc": "HXqTYVuY7MO", "label": "0-59m", "ages": [0, 1, 2, 3, 4, 5]}, {"coc": "YmxEkqHdy64", "label": "05+y", "ages": [6, 7, 8, 9, 10, 11, 12, 13]}]}, {"de": "CToYtFWqHZj", "code": "HEADCOUNT_REFERRED", "name": "Patient referred", "kind": "attend", "table": "hf1a", "rows": ["ref"], "cocs": [{"coc": "HXqTYVuY7MO", "label": "0-59m", "ages": [0, 1, 2, 3, 4, 5]}, {"coc": "YmxEkqHdy64", "label": "05+y", "ages": [6, 7, 8, 9, 10, 11, 12, 13]}]}, {"de": "ob3wLucT4Re", "code": "FHC_ANC_TREATED_CURATIVE", "name": "FHC Antenatal client treated curative", "kind": "sex", "table": "hf1s", "rows": ["preg"], "cocs": [{"coc": null, "label": "Total", "ages": null}]}, {"de": "R2BPP8lsfzf", "code": "FHC_LACTATING_MOTHER_CURATIVE", "name": "FHC Lactating mother treated curative", "kind": "sex", "table": "hf1s", "rows": ["lact"], "cocs": [{"coc": null, "label": "Total", "ages": null}]}, {"de": "tRZ5Uaj7Tu2", "code": "FHC_EVD_SURVIVOR", "name": "FHC EVD Survivor", "kind": "sex", "table": "hf1s", "rows": ["evd"], "cocs": [{"coc": null, "label": "Total", "ages": null}]}, {"de": "DdkDmLJHYbX", "code": "STI_GENITAL_DISCHARGE", "name": "STI - Genital Discharge", "kind": "cases", "table": "hf1m", "rows": ["sti_d"], "cocs": [{"coc": "agZCDFpaKuZ", "label": "10-14y", "ages": [7]}, {"coc": "PlBDX0AFcDS", "label": "15-19y", "ages": [8]}, {"coc": "BbJN6RMpIEj", "label": "20-24y", "ages": [9]}, {"coc": "REWmlrNjcqF", "label": "25+y", "ages": [10, 11, 12, 13]}]}, {"de": "CH4y3aL2Nsd", "code": "STI_GENITAL_GENITAL_ULCER", "name": "STI - Genital Ulcer", "kind": "cases", "table": "hf1m", "rows": ["sti_u"], "cocs": [{"coc": "agZCDFpaKuZ", "label": "10-14y", "ages": [7]}, {"coc": "PlBDX0AFcDS", "label": "15-19y", "ages": [8]}, {"coc": "BbJN6RMpIEj", "label": "20-24y", "ages": [9]}, {"coc": "REWmlrNjcqF", "label": "25+y", "ages": [10, 11, 12, 13]}]}, {"de": "YZJBRhIjyMN", "code": "SCHISTOSOMIASIS", "name": "Schistosomiasis", "kind": "cases", "table": "hf1m", "rows": ["schisto"], "cocs": [{"coc": "HXqTYVuY7MO", "label": "0-59m", "ages": [0, 1, 2, 3, 4, 5]}, {"coc": "YmxEkqHdy64", "label": "05+y", "ages": [6, 7, 8, 9, 10, 11, 12, 13]}]}, {"de": "gXtiiZH4pHf", "code": "TRACHOMA", "name": "Trachoma", "kind": "cases", "table": "hf1m", "rows": ["trach"], "cocs": [{"coc": "HXqTYVuY7MO", "label": "0-59m", "ages": [0, 1, 2, 3, 4, 5]}, {"coc": "YmxEkqHdy64", "label": "05+y", "ages": [6, 7, 8, 9, 10, 11, 12, 13]}]}, {"de": "pllCN0DF9Li", "code": "WORM_INFESTATION", "name": "Worm Infestation", "kind": "cases", "table": "hf1m", "rows": ["worm"], "cocs": [{"coc": "HXqTYVuY7MO", "label": "0-59m", "ages": [0, 1, 2, 3, 4, 5]}, {"coc": "YmxEkqHdy64", "label": "05+y", "ages": [6, 7, 8, 9, 10, 11, 12, 13]}]}, {"de": "WQAkp28Lid4", "code": "ONCHOCERCIASIS", "name": "Onchocerciasis", "kind": "cases", "table": "hf1m", "rows": ["oncho"], "cocs": [{"coc": "HXqTYVuY7MO", "label": "0-59m", "ages": [0, 1, 2, 3, 4, 5]}, {"coc": "YmxEkqHdy64", "label": "05+y", "ages": [6, 7, 8, 9, 10, 11, 12, 13]}]}, {"de": "UgqdDukL8Y2", "code": "SNAKE_BITE", "name": "Snake bite", "kind": "cases", "table": "hf1m", "rows": ["bite_snake"], "cocs": [{"coc": "HXqTYVuY7MO", "label": "0-59m", "ages": [0, 1, 2, 3, 4, 5]}, {"coc": "YmxEkqHdy64", "label": "05+y", "ages": [6, 7, 8, 9, 10, 11, 12, 13]}]}, {"de": "TKkK2uNaO9C", "code": "TRAUMA_RTA", "name": "Emergency Care Trauma_RTA", "kind": "cases", "table": "hf1m", "rows": ["wound_rta"], "cocs": [{"coc": "HXqTYVuY7MO", "label": "0-59m", "ages": [0, 1, 2, 3, 4, 5]}, {"coc": "YmxEkqHdy64", "label": "05+y", "ages": [6, 7, 8, 9, 10, 11, 12, 13]}]}, {"de": "VYZMOuTUInB", "code": "CHILD_CURATIVE_CARE", "name": "Child seen for curative care", "kind": "attend", "table": "hf1a", "rows": ["opd"], "cocs": [{"coc": "FixiELgKoS8", "label": "01-59m", "ages": [2, 3, 4, 5]}, {"coc": "d1JWZk9UG4F", "label": "05-09y", "ages": [6]}]}, {"de": "HOyFREB0H4r", "code": "CHILD_DIARRHOEA", "name": "Child with diarrhoea", "kind": "cases", "table": "hf1m", "rows": ["dia_bl", "dia_wat", "dia_iv"], "cocs": [{"coc": "FixiELgKoS8", "label": "01-59m", "ages": [2, 3, 4, 5]}, {"coc": "d1JWZk9UG4F", "label": "05-09y", "ages": [6]}]}, {"de": "JpMbqTWgfJk", "code": "CHILD_DIARRHOEA_TREATED_ORS_ZINZ", "name": "Child with diarrhoea treated with ORS and Zinc", "kind": "cases", "table": "hf1m", "rows": ["dia_wat"], "cocs": [{"coc": "FixiELgKoS8", "label": "01-59m", "ages": [2, 3, 4, 5]}, {"coc": "d1JWZk9UG4F", "label": "05-09y", "ages": [6]}]}, {"de": "hJc3yiq8Uca", "code": "CHILD_ARI", "name": "Child with Acute Respiratory Infection", "kind": "cases", "table": "hf1m", "rows": ["ari"], "cocs": [{"coc": "FixiELgKoS8", "label": "01-59m", "ages": [2, 3, 4, 5]}, {"coc": "d1JWZk9UG4F", "label": "05-09y", "ages": [6]}]}, {"de": "O39QssfQQ4g", "code": "CHILD_PNEUMONIA", "name": "Child diagnosed with pneumonia", "kind": "cases", "table": "hf1m", "rows": ["pn_amx", "pn_oth", "pn_sev"], "cocs": [{"coc": "FixiELgKoS8", "label": "01-59m", "ages": [2, 3, 4, 5]}, {"coc": "d1JWZk9UG4F", "label": "05-09y", "ages": [6]}]}, {"de": "MW3c5XpKcYi", "code": "CHILD_PNEUMONIA_TREATED_ANTIBIOTIC", "name": "Child with pneumonia treated with antibiotics", "kind": "cases", "table": "hf1m", "rows": ["pn_amx", "pn_oth"], "cocs": [{"coc": "FixiELgKoS8", "label": "01-59m", "ages": [2, 3, 4, 5]}, {"coc": "d1JWZk9UG4F", "label": "05-09y", "ages": [6]}]}, {"de": "XUoRxBxT6io", "code": "CHILD_DEATH_DIARRHOEA", "name": "Child death - Diarrhoea", "kind": "deaths", "table": "hf1m", "rows": ["dia_bl", "dia_wat", "dia_iv"], "cocs": [{"coc": "A8dMUfhg6UE", "label": "01-59m", "ages": [2, 3, 4, 5]}, {"coc": "cuvi0oNThtK", "label": "05-09y", "ages": [6]}, {"coc": "TkMu3ASPYIt", "label": "10-14y", "ages": [7]}]}, {"de": "S1B1HvII8vt", "code": "CHILD_DEATH_PNEUMONIA", "name": "Child death - Pneumonia", "kind": "deaths", "table": "hf1m", "rows": ["pn_amx", "pn_oth", "pn_sev"], "cocs": [{"coc": "A8dMUfhg6UE", "label": "01-59m", "ages": [2, 3, 4, 5]}, {"coc": "cuvi0oNThtK", "label": "05-09y", "ages": [6]}, {"coc": "TkMu3ASPYIt", "label": "10-14y", "ages": [7]}]}, {"de": "r3HwIQFuQgM", "code": "CHILD_DEATH_MALARIA", "name": "Child death - Malaria", "kind": "deaths", "table": "hf1m", "rows": ["mal_rdt_p", "mal_mic_p", "mal_act_l", "mal_act_g", "mal_oth_l", "mal_oth_g", "mal_sev_l", "mal_sev_g"], "cocs": [{"coc": "A8dMUfhg6UE", "label": "01-59m", "ages": [2, 3, 4, 5]}, {"coc": "cuvi0oNThtK", "label": "05-09y", "ages": [6]}, {"coc": "TkMu3ASPYIt", "label": "10-14y", "ages": [7]}]}, {"de": "KMoztqwsZl8", "code": "DEATH_MALARIA_15PY", "name": "Death malaria 15+ years", "kind": "deaths", "table": "hf1m", "rows": ["mal_rdt_p", "mal_mic_p", "mal_act_l", "mal_act_g", "mal_oth_l", "mal_oth_g", "mal_sev_l", "mal_sev_g"], "cocs": [{"coc": "fJndZMaUVat", "label": "Male", "sex": "M", "ages": [8, 9, 10, 11, 12, 13]}, {"coc": "sGC3uyNcgGJ", "label": "Female", "sex": "F", "ages": [8, 9, 10, 11, 12, 13]}]}, {"de": "RbZcjWJqUw1", "code": "DEATH_OTHER_15PY", "name": "Death other 15+ yrs", "kind": "deaths", "table": "hf1m", "rows": "*", "cocs": [{"coc": "fJndZMaUVat", "label": "Male", "sex": "M", "ages": [8, 9, 10, 11, 12, 13]}, {"coc": "sGC3uyNcgGJ", "label": "Female", "sex": "F", "ages": [8, 9, 10, 11, 12, 13]}], "minus": ["mal_rdt_p", "mal_mic_p", "mal_act_l", "mal_act_g", "mal_oth_l", "mal_oth_g", "mal_sev_l", "mal_sev_g"]}, {"de": "NDWsUugba1O", "code": "DEATH_REGISTERED_U5Y", "name": "Death registered <5 years", "kind": "deaths", "table": "hf1m", "rows": "*", "cocs": [{"coc": "fJndZMaUVat", "label": "Male", "sex": "M", "ages": [0, 1, 2, 3, 4, 5]}, {"coc": "sGC3uyNcgGJ", "label": "Female", "sex": "F", "ages": [0, 1, 2, 3, 4, 5]}]}, {"de": "XUHtNraCcPz", "code": "DEATH_REGISTERED_5PY", "name": "Death registered 5+ years", "kind": "deaths", "table": "hf1m", "rows": "*", "cocs": [{"coc": "fJndZMaUVat", "label": "Male", "sex": "M", "ages": [6, 7, 8, 9, 10, 11, 12, 13]}, {"coc": "sGC3uyNcgGJ", "label": "Female", "sex": "F", "ages": [6, 7, 8, 9, 10, 11, 12, 13]}]}, {"de": "DFUonxMJccp", "code": "GENDER_BASED_VIOLENCE", "name": "Gender based violence", "kind": "cases", "table": "hf1m", "rows": ["gbv_sex", "gbv_phy", "gbv_ipv"], "cocs": [{"coc": "v7S5rNn2kUr", "label": "0-9y", "ages": [0, 1, 2, 3, 4, 5, 6]}, {"coc": "IO5GaijUisQ", "label": "10-14y", "ages": [7]}, {"coc": "beJzDXmJFzj", "label": "15-19y", "ages": [8]}, {"coc": "ENfegQ3aWUN", "label": "20-24y", "ages": [9]}, {"coc": "o0tsBGxVcwl", "label": "25+y", "ages": [10, 11, 12, 13]}]}, {"de": "zfnZKjlSAGx", "code": "SEXUAL_ASSAULT", "name": "Sexual Assault", "kind": "cases", "table": "hf1m", "rows": ["gbv_sex"], "cocs": [{"coc": "v7S5rNn2kUr", "label": "0-9y", "ages": [0, 1, 2, 3, 4, 5, 6]}, {"coc": "IO5GaijUisQ", "label": "10-14y", "ages": [7]}, {"coc": "beJzDXmJFzj", "label": "15-19y", "ages": [8]}, {"coc": "ENfegQ3aWUN", "label": "20-24y", "ages": [9]}, {"coc": "o0tsBGxVcwl", "label": "25+y", "ages": [10, 11, 12, 13]}]}]};
+const D2_NOT_SENT = ["Neonatal - Unspecified cause", "Neonatal - Diarrhoea", "Neonatal - Asphyxia", "Neonatal - Hypothermia", "Child death - Trauma", "Neonatal - Complications intrapartum events", "NND - Unspecified cause", "Neonatal - Congenital defect", "NND - Low birth weight and prematurity", "NND - Birth trauma", "Child with pneumonia treated without antibiotics", "Child death - Cause unspecified", "Neonatal - Other neonatal condition", "Epilepsy follow-up", "Neonatal - Infection", "Neonatal - Disorders related to foetal growth", "Neonatal - Respiratory distress syndrome", "NND - Convulsions/cerebral disorders", "Diabetes follow-up", "NND - Other neonatal condition", "Child with diarrhoea treated with ORS only", "Neonatal - Possible serious bacteria infection", "Neonatal - Low birth weight and prematurity", "NND - Complications intrapartum events", "Neonatal - Birth trauma", "FHC Child 0-59 months", "STI - Other", "Mental Health/Disorder follow-up", "Neonatal - Convulsions/cerebral disorders", "Child death - HIV", "Hypertension follow-up", "NND - Infection", "Eye Infection", "Mental Health/Disorder new", "Hypertension Screening", "Neonatal - Jaundice", "Diabetes screening", "NND - Disorders related to foetal growth", "FHC Disabled patient", "Emergency Care Trauma_Other", "NND - Respiratory/cardiovascular disorders", "Neonatal - Respiratory/cardiovascular disorders", "Child death - Malnutrition", "All other morbidities", "Child death - Other specified causes", "NND - Congenital defect"];
+const D2_KEY = 'icf_hfr_dhis2';            /* the DHIS2 settings shared with the Health Facility Register */
+const D2_PROXIES = [
+  { name: 'Direct', type: 'direct', url: '' },
+  { name: 'ICF proxy', type: 'gas', url: 'https://script.google.com/macros/s/AKfycbwC9lJdYj4askujDNO2GfK-Rqq02VBcr90NXhifgvpawboEK1YCyUfbi2GA2hFL2UghkA/exec' }
+];
+/* the DHIS2 to use when none is saved yet: the Sierra Leone demo (2.40); facilities are org units at level 4 */
+const D2_DEFAULT = { url: 'https://play.im.dhis2.org/dev-2-40', user: 'admin', pass: 'district' };
+const D2_OU_LEVEL = 4;
+function d2Cfg(){ let o = {}; try { o = JSON.parse(localStorage.getItem(D2_KEY) || '{}') || {}; } catch(e){}
+  return { url: o.url || D2_DEFAULT.url, user: o.user || D2_DEFAULT.user, pass: o.pass || (o.url ? '' : D2_DEFAULT.pass) }; }
+/* a pasted login page address is cut back to the server's base address */
+const d2Base = u => String(u || '').trim().replace(/\/(dhis-web-[^?#]*|api\/?.*)$/i, '').replace(/[?#].*$/, '').replace(/\/+$/, '');
+function d2SaveCfg(o){ try { localStorage.setItem(D2_KEY, JSON.stringify(Object.assign(d2Cfg(), o))); } catch(e){} }
+async function d2Request(cfg, endpoint, method, payload){
+  method = method || 'GET';
+  const target = d2Base(cfg.url) + '/api/' + endpoint;
+  const auth = btoa(unescape(encodeURIComponent((cfg.user || '') + ':' + (cfg.pass || ''))));
+  let last = '';
+  for (const p of D2_PROXIES){
+    let url = target, opt;
+    if (p.type === 'gas'){
+      url = p.url + '?url=' + encodeURIComponent(target) + '&auth=' + encodeURIComponent(auth) + (method !== 'GET' ? '&method=' + method : '');
+      opt = { method: method === 'GET' ? 'GET' : 'POST', redirect: 'follow' };
+      if (method !== 'GET'){ opt.headers = { 'Content-Type': 'text/plain' }; opt.body = JSON.stringify(payload || {}); }
+    } else {
+      opt = { method, headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'Authorization': 'Basic ' + auth } };
+      if (method !== 'GET') opt.body = JSON.stringify(payload || {});
+    }
+    try {
+      const res = await fetch(url, opt), text = await res.text();
+      let data; try { data = JSON.parse(text); } catch(e){ data = text; }
+      if (data && data.error){ last = p.name + ': ' + (typeof data.error === 'object' ? (data.error.message || 'error') : data.error); continue; }
+      if (p.type === 'direct' && (data === '' || data == null)){ last = 'Direct: blocked by CORS'; continue; }
+      if (data && (data.httpStatus === 'Unauthorized' || data.httpStatusCode === 401)) return { ok: false, error: 'DHIS2 refused the login. Check the username and password.' };
+      if (data && typeof data === 'object') return { ok: true, data, via: p.name };
+      last = p.name + ': the reply could not be read';
+    } catch(e){ last = p.name + ': ' + e.message; }
+  }
+  return { ok: false, error: last || 'DHIS2 could not be reached' };
+}
+/* one value, added up from the HF1 tables */
+function d2Value(it, cc, tables){
+  const tb = tables.find(t => t.id === it.table); if (!tb) return 0;
+  const len = (r, c) => ((tb.data[r] || {})[c] || []).length;
+  const ages = cc.ages || G_HF1.map((g, i) => i), sexes = cc.sex ? [cc.sex] : ['M', 'F'];
+  let n = 0;
+  if (it.kind === 'cases') it.rows.forEach(r => ages.forEach(i => sexes.forEach(s => n += len(r, 'C' + i + s))));
+  else if (it.kind === 'referral') it.rows.forEach(r => ['RUM', 'RUF', 'ROM', 'ROF'].forEach(c => n += len(r, c)));
+  else if (it.kind === 'attend') it.rows.forEach(r => ages.forEach(i => sexes.forEach(s => n += len(r, i + s))));
+  else if (it.kind === 'sex') it.rows.forEach(r => sexes.forEach(s => n += len(r, s)));
+  else if (it.kind === 'deaths'){
+    /* deaths are people: each counted once, however many conditions they had */
+    const ids = rows => { const u = new Set(); (rows === '*' ? Object.keys(tb.data) : rows).forEach(r => ages.forEach(i => sexes.forEach(s => ((tb.data[r] || {})['D' + i + s] || []).forEach(x => u.add(x))))); return u; };
+    const u = ids(it.rows); if (it.minus) ids(it.minus).forEach(x => u.delete(x));
+    n = u.size;
+  }
+  return n;
+}
+function d2Values(tables){
+  const out = [];
+  D2_HF1.elements.forEach(it => it.cocs.forEach(cc => {
+    const v = { dataElement: it.de, value: String(d2Value(it, cc, tables)) };
+    if (cc.coc) v.categoryOptionCombo = cc.coc;
+    out.push(Object.assign({ _name: it.name, _group: cc.label }, v));
+  }));
+  return out;
+}
+/* the data value set as a file, for DHIS2 Import/Export > Data import (JSON) */
+function d2Payload(vals, period, ou, byName){
+  const p = { dataSet: D2_HF1.dataSet, period, orgUnit: ou,
+    dataValues: vals.map(v => { const o = { dataElement: v.dataElement, value: v.value }; if (v.categoryOptionCombo) o.categoryOptionCombo = v.categoryOptionCombo; return o; }) };
+  return p;
+}
+function d2Download(c, ou){
+  const S = BUILD.HF1(c), vals = d2Values(S.tables), period = c.year + String(c.month).padStart(2, '0');
+  const fkey = [c.district, c.chiefdom, c.facility].join('|'), id = ou || (DB.d2ou || {})[fkey] || '';
+  const byName = !id;
+  const p = d2Payload(vals, period, id || c.facility, byName);
+  const blob = new Blob([JSON.stringify(p, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'HF01_' + String(c.facility).replace(/[^A-Za-z0-9]+/g, '_') + '_' + period + '.json';
+  document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  return byName;
+}
+/* only admins push data: the admin password is asked before the push window or the JSON file */
+const D2_ADMIN_PW = 'admin2345';
+function d2Admin(then){
+  const box = document.createElement('div');
+  box.className = 'd2-back';
+  box.innerHTML = '<div class="d2-box d2-pw" role="dialog" aria-modal="true" aria-label="Admin password">'
+    + '<div class="d2-h"><b>Admins only</b><button type="button" class="d2-x" aria-label="Close">&times;</button></div>'
+    + '<div class="d2-body"><p class="d2-sub">Only admins can push data to DHIS2. Type the admin password.</p>'
+    + '<div class="d2-grid" style="grid-template-columns:1fr"><label>Admin password<input id="d2Adm" type="password" autocomplete="off"></label></div>'
+    + '<div id="d2AdmMsg" class="d2-msg"></div></div>'
+    + '<div class="d2-f"><button type="button" class="btn sec" id="d2AdmNo">Cancel</button><button type="button" class="btn" id="d2AdmOk">Continue</button></div></div>';
+  document.body.appendChild(box);
+  const close = () => box.remove(), inp = $('#d2Adm');
+  const ok = () => { if (inp.value === D2_ADMIN_PW){ close(); then(); } else { $('#d2AdmMsg').className = 'd2-msg bad'; $('#d2AdmMsg').textContent = 'Wrong password.'; inp.value = ''; inp.focus(); } };
+  box.querySelector('.d2-x').onclick = close; $('#d2AdmNo').onclick = close; $('#d2AdmOk').onclick = ok;
+  inp.onkeydown = e => { if (e.key === 'Enter') ok(); };
+  setTimeout(() => inp.focus(), 30);
+}
+/* the Push to DHIS2 page in the menu: choose the facility, month and summary form */
+let D2FORM = 'HF1';
+function vD2Push(m){
+  if (!ctxReady()) return needCtx(m, 'Push to DHIS2');
+  const c = C();
+  m.innerHTML = '<div class="ph"><h1>Push to DHIS2</h1></div>' + filterBar()
+    + '<div class="card d2-page"><div class="h">Summary form</div>'
+    + '<label class="d2-lbl">Form to push<select id="d2Form"><option value="HF1">HF1 &middot; Monthly Summary Out-Patient Morbidity (DHIS2: HF01 Outpatient morbidity)</option></select></label>'
+    + '<p class="muted sm">HF1 is the summary form matched to DHIS2. ' + D2_HF1.elements.length + ' data elements go; ' + D2_NOT_SENT.length + ' have no match in the EMR and are left out.</p>'
+    + '<p class="d2-when"><b>' + esc(c.facility) + '</b> &middot; ' + esc(MONTHS[c.month - 1]) + ' ' + c.year + '</p>'
+    + '<div class="d2-top-b"><button class="btn sec" id="d2PgJson">DHIS2 JSON</button><button class="btn" id="d2PgPush">Push to DHIS2</button><button class="btn sec" id="d2PgSee">See the HF1 form</button><button class="btn sec" id="d2PgDict">See the DHIS2 match</button></div>'
+    + '<p class="muted sm" style="margin-top:12px">Only admins can push: the admin password is asked first. The server also pushes every HF1 summary it holds to DHIS2 by itself each night at 11 pm, and emails the people on its list.</p></div>';
+  bindFilter();
+  $('#d2Form').onchange = e => { D2FORM = e.target.value; };
+  $('#d2PgPush').onclick = () => d2Admin(() => d2Open(C()));
+  $('#d2PgJson').onclick = () => d2Admin(() => { const byName = d2Download(C()); toast(byName ? 'JSON downloaded. Facility named, not by ID: set Org unit ID scheme to Name when importing.' : 'JSON downloaded for DHIS2 Import/Export'); });
+  $('#d2PgSee').onclick = () => { REPORT = 'HF1'; go('reports'); };
+  $('#d2PgDict').onclick = () => go('d2dict');
+}
+function d2Open(c){
+  const S = BUILD.HF1(c), vals = d2Values(S.tables), cfg = d2Cfg();
+  const fkey = [c.district, c.chiefdom, c.facility].join('|');
+  DB.d2ou = DB.d2ou || {};
+  const period = c.year + String(c.month).padStart(2, '0');
+  const sent = vals.filter(v => +v.value > 0).length;
+  const box = document.createElement('div');
+  box.className = 'd2-back';
+  box.innerHTML = '<div class="d2-box" role="dialog" aria-modal="true" aria-label="Send HF1 to DHIS2">'
+    + '<div class="d2-h"><b>Push HF1 to DHIS2</b><button type="button" class="d2-x" aria-label="Close">&times;</button></div>'
+    + '<div class="d2-body">'
+    + '<p class="d2-sub"><b>' + esc(D2_HF1.name) + '</b> &middot; ' + esc(MONTHS[c.month - 1]) + ' ' + c.year + ' &middot; ' + esc(c.facility) + '</p>'
+    + '<div class="d2-grid">'
+    + '<label>DHIS2 address<input id="d2Url" placeholder="https://..." value="' + esc(cfg.url || '') + '"></label>'
+    + '<label>Username<input id="d2User" autocomplete="username" value="' + esc(cfg.user || '') + '"></label>'
+    + '<label>Password<input id="d2Pass" type="password" autocomplete="current-password" value="' + esc(cfg.pass || '') + '"></label>'
+    + '<label>Facility in DHIS2 (org unit ID)<span class="d2-row"><input id="d2Ou" value="' + esc(DB.d2ou[fkey] || '') + '" placeholder="e.g. a1B2c3D4e5F"><button type="button" class="btn sec" id="d2Find">Find</button></span></label>'
+    + '</div><div id="d2Found"></div>'
+    + '<div class="d2-sum"><b>' + D2_HF1.elements.length + ' data elements match</b> and will be sent (' + vals.length + ' values, ' + sent + ' above zero). '
+    + '<b>' + D2_NOT_SENT.length + ' do not match</b> and are left out.</div>'
+    + '<details class="d2-det"><summary>What will be sent</summary><table class="d2-t"><tr><th>Data element</th><th>Group</th><th>Value</th></tr>'
+    + vals.map(v => '<tr><td>' + esc(v._name) + '</td><td>' + esc(v._group) + '</td><td>' + v.value + '</td></tr>').join('') + '</table></details>'
+    + '<details class="d2-det"><summary>Left out (no match in the EMR)</summary><ul>' + D2_NOT_SENT.map(n => '<li>' + esc(n) + '</li>').join('') + '</ul></details>'
+    + '<div id="d2Msg" class="d2-msg"></div>'
+    + '</div><div class="d2-f"><button type="button" class="btn sec" id="d2Cancel">Close</button><button type="button" class="btn sec" id="d2Json">Download JSON</button><button type="button" class="btn" id="d2Send">Push to DHIS2</button></div></div>';
+  document.body.appendChild(box);
+  const close = () => box.remove();
+  box.querySelector('.d2-x').onclick = close; $('#d2Cancel').onclick = close;
+  box.onclick = e => { if (e.target === box) close(); };
+  const msg = (t, k) => { const m = $('#d2Msg'); m.className = 'd2-msg ' + (k || ''); m.innerHTML = t; };
+  const form = () => ({ url: d2Base($('#d2Url').value), user: $('#d2User').value.trim(), pass: $('#d2Pass').value });
+  /* find the facility in DHIS2 by its name */
+  $('#d2Find').onclick = async () => {
+    const f = form(); if (!f.url || !f.user){ msg('Enter the DHIS2 address and username first.', 'bad'); return; }
+    msg('Looking for ' + esc(c.facility) + ' in DHIS2…');
+    const q = encodeURIComponent(c.facility.replace(/\s+/g, ' ').trim());
+    const r = await d2Request(f, 'organisationUnits.json?filter=name:ilike:' + q + '&filter=level:eq:' + D2_OU_LEVEL + '&fields=id,name,level,parent[name]&paging=false');
+    if (!r.ok){ msg(esc(r.error), 'bad'); return; }
+    const list = (r.data.organisationUnits || []);
+    if (!list.length){ msg('No facility called ' + esc(c.facility) + ' was found at level ' + D2_OU_LEVEL + '. Type its org unit ID instead.', 'bad'); return; }
+    msg('');
+    $('#d2Found').innerHTML = '<div class="d2-found">' + list.map(o => '<label><input type="radio" name="d2ou" value="' + esc(o.id) + '"> ' + esc(o.name) + (o.parent ? ' <span>(' + esc(o.parent.name) + ')</span>' : '') + ' <code>' + esc(o.id) + '</code></label>').join('') + '</div>';
+    const pick = list.find(o => o.parent && snapNorm(o.parent.name).includes(snapNorm(c.chiefdom))) || (list.length === 1 ? list[0] : null);
+    if (pick){ $('#d2Ou').value = pick.id; const rb = box.querySelector('input[name=d2ou][value="' + pick.id + '"]'); if (rb) rb.checked = true; }
+    box.querySelectorAll('input[name=d2ou]').forEach(rb => rb.onchange = () => { $('#d2Ou').value = rb.value; });
+  };
+  $('#d2Json').onclick = () => {
+    const ou = $('#d2Ou').value.trim();
+    if (ou){ DB.d2ou[fkey] = ou; save(); }
+    const byName = d2Download(c, ou);
+    msg(byName ? 'JSON downloaded with the facility <b>name</b> instead of its ID. In DHIS2 Import/Export, set <b>Org unit ID scheme</b> to <b>Name</b> when you import it, or press Find first to put the ID in.'
+               : 'JSON downloaded. In DHIS2 open <b>Import/Export &rsaquo; Data import</b>, choose the file (format JSON) and import.', 'ok');
+  };
+  $('#d2Send').onclick = async () => {
+    const f = form(), ou = $('#d2Ou').value.trim();
+    if (!f.url || !f.user || !f.pass){ msg('Enter the DHIS2 address, username and password.', 'bad'); return; }
+    if (!/^[A-Za-z][A-Za-z0-9]{10}$/.test(ou)){ msg('Enter the facility\'s DHIS2 org unit ID (11 characters), or press Find.', 'bad'); return; }
+    d2SaveCfg(f); DB.d2ou[fkey] = ou; save();
+    const btn = $('#d2Send'); btn.disabled = true; msg('Sending ' + vals.length + ' values to DHIS2…');
+    const payload = { dataSet: D2_HF1.dataSet, period, orgUnit: ou,
+      dataValues: vals.map(v => { const o = { dataElement: v.dataElement, value: v.value }; if (v.categoryOptionCombo) o.categoryOptionCombo = v.categoryOptionCombo; return o; }) };
+    const r = await d2Request(f, 'dataValueSets', 'POST', payload);
+    btn.disabled = false;
+    if (!r.ok){ msg(esc(r.error), 'bad'); return; }
+    const d = r.data.response || r.data, ic = d.importCount || d.stats || {};
+    const ok = String(d.status || r.data.status || '').toUpperCase() !== 'ERROR';
+    d2Summary(box, { ok, ic, conflicts: d.conflicts || [], vals, via: r.via, c, ou });
+  };
+}
+/* the push summary: what was sent, what DHIS2 did with it, what it ignored and why, and what was left out */
+function d2Summary(box, R){
+  const { ok, ic, conflicts, vals, via, c, ou } = R;
+  const nameOf = {}; D2_HF1.elements.forEach(it => { nameOf[it.de] = it.name; it.cocs.forEach(cc => { if (cc.coc) nameOf[cc.coc] = cc.label; }); });
+  const label = id => nameOf[id] || id;
+  const above = vals.filter(v => +v.value > 0), zeros = vals.filter(v => +v.value === 0);
+  const imp = +ic.imported || 0, upd = +ic.updated || 0, ign = +ic.ignored || 0, del = +ic.deleted || 0;
+  /* each conflict in words, with the data element names instead of IDs */
+  const confText = x => {
+    let t = String(x.value || x.message || '');
+    Object.keys(nameOf).forEach(id => { if (t.includes(id)) t = t.split(id).join(nameOf[id]); });
+    const objs = x.objects ? Object.values(x.objects).map(label).join(', ') : (x.object ? label(x.object) : '');
+    return (objs ? '<b>' + esc(objs) + '</b>: ' : '') + esc(t || 'not accepted') + (x.errorCode ? ' <span class="muted">(' + esc(x.errorCode) + ')</span>' : '');
+  };
+  /* ignored values: the conflicts are explained below; the rest are zeros, which DHIS2 does not store */
+  const zIgn = Math.max(0, Math.min(ign - conflicts.length, zeros.length)), other = Math.max(0, ign - conflicts.length - zIgn);
+  const zeroNote = zIgn ? '<p class="d2s-note">' + zIgn + ' of the ignored value' + (ign === 1 ? ' is a zero' : 's are zeros') + '. DHIS2 does not store zeros for these data elements (zero is not significant), so this is normal: nothing is missing.'
+      + (other ? ' ' + other + ' other value(s) were ignored without a reason from DHIS2.' : '') + '</p>'
+    : other ? '<p class="d2s-note">' + other + ' value(s) were ignored without a reason from DHIS2.</p>' : '';
+  const row = v => '<tr><td>' + esc(v._name) + '</td><td>' + esc(v._group) + '</td><td>' + esc(v.value) + '</td></tr>';
+  const body = box.querySelector('.d2-body');
+  const head = !ok ? ['bad', 'DHIS2 did not accept the push'] : conflicts.length ? ['warn', 'Pushed to DHIS2, but ' + conflicts.length + ' value' + (conflicts.length === 1 ? ' was' : 's were') + ' not accepted'] : ['ok', 'Pushed to DHIS2'];
+  body.innerHTML = '<div class="d2s-head ' + head[0] + '"><b>' + head[1] + '</b>'
+      + '<span>' + esc(D2_HF1.name) + ' &middot; ' + esc(MONTHS[c.month - 1]) + ' ' + c.year + ' &middot; ' + esc(c.facility) + ' (' + esc(ou) + ')' + (via === 'ICF proxy' ? ' &middot; through the ICF proxy' : '') + '</span></div>'
+    + '<div class="d2s-grid">'
+    + '<div><b>' + vals.length + '</b><span>values sent</span></div>'
+    + '<div><b>' + above.length + '</b><span>above zero</span></div>'
+    + '<div><b>' + zeros.length + '</b><span>zeros</span></div>'
+    + '<div class="g"><b>' + imp + '</b><span>imported (new)</span></div>'
+    + '<div class="g"><b>' + upd + '</b><span>updated</span></div>'
+    + '<div class="' + (ign ? 'a' : '') + '"><b>' + ign + '</b><span>ignored</span></div>'
+    + (del ? '<div><b>' + del + '</b><span>deleted</span></div>' : '')
+    + '</div>'
+    + zeroNote
+    + (conflicts.length ? '<div class="d2s-bad"><b>Not accepted by DHIS2 (' + conflicts.length + ')</b><ul>' + conflicts.map(x => '<li>' + confText(x) + '</li>').join('') + '</ul></div>' : '')
+    + '<details class="d2-det" open><summary>What was sent, above zero (' + above.length + ')</summary>'
+    + (above.length ? '<table class="d2-t"><tr><th>Data element</th><th>Group</th><th>Value</th></tr>' + above.map(row).join('') + '</table>' : '<p class="muted sm">No value above zero this month.</p>') + '</details>'
+    + '<details class="d2-det"><summary>Sent as zero (' + zeros.length + ')</summary><table class="d2-t"><tr><th>Data element</th><th>Group</th><th>Value</th></tr>' + zeros.map(row).join('') + '</table></details>'
+    + '<details class="d2-det"><summary>Not sent: no match in the EMR (' + D2_NOT_SENT.length + ')</summary><ul>' + D2_NOT_SENT.map(n => '<li>' + esc(n) + '</li>').join('') + '</ul></details>';
+  body.scrollTop = 0;
+  const send = box.querySelector('#d2Send'); if (send) send.remove();
+  const json = box.querySelector('#d2Json'); if (json) json.remove();
+}
+
+
+/* ===================== DHIS2 MATCH: the data dictionary between the HF1 summary and DHIS2 =====================
+   Every data element of the DHIS2 data set "HF01 Outpatient morbidity" with its status against the EMR's HF1:
+   match (pushed), partial (close, not pushed) or no match (not pushed); and every HF1 row with where it goes. */
+const D2_DICT = [{"code": "MALARIA_TREATED_ACT_O24H_REF", "name": "Malaria treated with ACT >24 hours referral", "section": "Malaria", "so": 1, "combo": "None (one total)", "status": "match", "rows": ["mal_act_g"], "note": "From the referral columns (under 5 and over 5, both sexes). DHIS2 groups: Total."}, {"code": "MALARIA_TREATED_WO_ACT_U24H", "name": "Malaria treated without ACT <24 hours", "section": "Malaria", "so": 1, "combo": "Ages_0-59m_5-14y_15+y", "status": "match", "rows": ["mal_oth_l"], "note": "From cases by age group, males and females added. DHIS2 groups: 0-59m, 05-14y, 15+y."}, {"code": "MALARIA_TREATED_ACT_U24H", "name": "Malaria treated with ACT <24 hours", "section": "Malaria", "so": 1, "combo": "Ages_0-59m_5-14y_15+y", "status": "match", "rows": ["mal_act_l"], "note": "From cases by age group, males and females added. DHIS2 groups: 0-59m, 05-14y, 15+y."}, {"code": "FEVER_TESTED_MALARIA_MICROSCOPY_NEG_REF", "name": "Fever case tested for Malaria (Microscopy) - Negative referral", "section": "Malaria", "so": 1, "combo": "None (one total)", "status": "match", "rows": ["mal_mic_n"], "note": "From the referral columns (under 5 and over 5, both sexes). DHIS2 groups: Total."}, {"code": "FEVER_TESTED_MALARIA_RDT_POS_REF", "name": "Fever case tested for Malaria (RDT) - Positive referral", "section": "Malaria", "so": 1, "combo": "None (one total)", "status": "match", "rows": ["mal_rdt_p"], "note": "From the referral columns (under 5 and over 5, both sexes). DHIS2 groups: Total."}, {"code": "FEVER_SUSP_MALARA_REF", "name": "Fever case - suspected Malaria referral", "section": "Malaria", "so": 1, "combo": "None (one total)", "status": "match", "rows": ["mal_fev"], "note": "From the referral columns (under 5 and over 5, both sexes). DHIS2 groups: Total."}, {"code": "MALARIA_TREATED_WO_ACT_U24H_REF", "name": "Malaria treated without ACT <24 hours referral", "section": "Malaria", "so": 1, "combo": "None (one total)", "status": "match", "rows": ["mal_oth_l"], "note": "From the referral columns (under 5 and over 5, both sexes). DHIS2 groups: Total."}, {"code": "FEVER_TESTED_MALARIA_MICRO_POS", "name": "Fever case tested for Malaria (Microscopy) - Positive", "section": "Malaria", "so": 1, "combo": "Ages_0-59m_5-14y_15+y", "status": "match", "rows": ["mal_mic_p"], "note": "From cases by age group, males and females added. DHIS2 groups: 0-59m, 05-14y, 15+y."}, {"code": "FEVER_SUSP_MALARA", "name": "Fever case - suspected Malaria", "section": "Malaria", "so": 1, "combo": "Ages_0-59m_5-14y_15+y", "status": "match", "rows": ["mal_fev"], "note": "From cases by age group, males and females added. DHIS2 groups: 0-59m, 05-14y, 15+y."}, {"code": "MALARIA_TREATED_WO_ACT_O24H_REF", "name": "Malaria treated without ACT >24 hours referral", "section": "Malaria", "so": 1, "combo": "None (one total)", "status": "match", "rows": ["mal_oth_g"], "note": "From the referral columns (under 5 and over 5, both sexes). DHIS2 groups: Total."}, {"code": "FEVER_TESTED_MALARIA_RDT_NEG_REF", "name": "Fever case tested for Malaria (RDT) - Negative referral", "section": "Malaria", "so": 1, "combo": "None (one total)", "status": "match", "rows": ["mal_rdt_n"], "note": "From the referral columns (under 5 and over 5, both sexes). DHIS2 groups: Total."}, {"code": "MALARIA_TREATED_ACT_O24H", "name": "Malaria treated with ACT >24 hours", "section": "Malaria", "so": 1, "combo": "Ages_0-59m_5-14y_15+y", "status": "match", "rows": ["mal_act_g"], "note": "From cases by age group, males and females added. DHIS2 groups: 0-59m, 05-14y, 15+y."}, {"code": "FEVER_TESTED_MALARIA_RDT_NEG", "name": "Fever case tested for Malaria (RDT) - Negative", "section": "Malaria", "so": 1, "combo": "Ages_0-59m_5-14y_15+y", "status": "match", "rows": ["mal_rdt_n"], "note": "From cases by age group, males and females added. DHIS2 groups: 0-59m, 05-14y, 15+y."}, {"code": "FEVER_TESTED_MALARIA_MICRO_NEG", "name": "Fever case tested for Malaria (Microscopy) - Negative", "section": "Malaria", "so": 1, "combo": "Ages_0-59m_5-14y_15+y", "status": "match", "rows": ["mal_mic_n"], "note": "From cases by age group, males and females added. DHIS2 groups: 0-59m, 05-14y, 15+y."}, {"code": "FEVER_TESTED_MALARIA_MICROSCOPY_POS_REF", "name": "Fever case tested for Malaria (Microscopy) - Positive referral", "section": "Malaria", "so": 1, "combo": "None (one total)", "status": "match", "rows": ["mal_mic_p"], "note": "From the referral columns (under 5 and over 5, both sexes). DHIS2 groups: Total."}, {"code": "FEVER_TESTED_MALARIA_RDT_POS", "name": "Fever case tested for Malaria (RDT) - Positive", "section": "Malaria", "so": 1, "combo": "Ages_0-59m_5-14y_15+y", "status": "match", "rows": ["mal_rdt_p"], "note": "From cases by age group, males and females added. DHIS2 groups: 0-59m, 05-14y, 15+y."}, {"code": "MALARIA_TREATED_WO_ACT_O24H", "name": "Malaria treated without ACT >24 hours", "section": "Malaria", "so": 1, "combo": "Ages_0-59m_5-14y_15+y", "status": "match", "rows": ["mal_oth_g"], "note": "From cases by age group, males and females added. DHIS2 groups: 0-59m, 05-14y, 15+y."}, {"code": "MALARIA_TREATED_ACT_U24H_REF", "name": "Malaria treated with ACT <24 hours referral", "section": "Malaria", "so": 1, "combo": "None (one total)", "status": "match", "rows": ["mal_act_l"], "note": "From the referral columns (under 5 and over 5, both sexes). DHIS2 groups: Total."}, {"code": "HEADCOUNT_CURATIVE", "name": "OPD (New and follow-up curative)", "section": "Chronics/Attendance/Free Health Care", "so": 2, "combo": "Ages_0-59m_5+y", "status": "match", "rows": ["opd"], "note": "From the attendance table, by age group. DHIS2 groups: 0-59m, 05+y."}, {"code": "DIABETES_FUP", "name": "Diabetes follow-up", "section": "Chronics/Attendance/Free Health Care", "so": 2, "combo": "None (one total)", "status": "none", "rows": [], "note": "The EMR records diabetes cases, not follow-up visits."}, {"code": "ADVERSE_DRUG_REACTION", "name": "Adverse Drug Reaction", "section": "Chronics/Attendance/Free Health Care", "so": 2, "combo": "None (one total)", "status": "match", "rows": ["adr"], "note": "From cases by age group, males and females added. DHIS2 groups: Total."}, {"code": "HEADCOUNT_ALL", "name": "Headcount (all services)", "section": "Chronics/Attendance/Free Health Care", "so": 2, "combo": "Ages_0-59m_5+y", "status": "match", "rows": ["hc"], "note": "From the attendance table, by age group. DHIS2 groups: 0-59m, 05+y."}, {"code": "FHC_CHILD_0_59M", "name": "FHC Child 0-59 months", "section": "Chronics/Attendance/Free Health Care", "so": 2, "combo": "None (one total)", "status": "partial", "rows": ["u5"], "note": "The EMR counts every child under 5 treated, not only those under Free Health Care."}, {"code": "HYPERTENSION_FUP", "name": "Hypertension follow-up", "section": "Chronics/Attendance/Free Health Care", "so": 2, "combo": "None (one total)", "status": "none", "rows": [], "note": "The EMR records hypertension cases, not follow-up visits."}, {"code": "FHC_LACTATING_MOTHER_CURATIVE", "name": "FHC Lactating mother treated curative", "section": "Chronics/Attendance/Free Health Care", "so": 2, "combo": "None (one total)", "status": "match", "rows": ["lact"], "note": "From the special groups table, males and females added. DHIS2 groups: Total."}, {"code": "HEADCOUNT_REFERRED", "name": "Patient referred", "section": "Chronics/Attendance/Free Health Care", "so": 2, "combo": "Ages_0-59m_5+y", "status": "match", "rows": ["ref"], "note": "From the attendance table, by age group. DHIS2 groups: 0-59m, 05+y."}, {"code": "HYPERTENSION_SCREENING", "name": "Hypertension Screening", "section": "Chronics/Attendance/Free Health Care", "so": 2, "combo": "None (one total)", "status": "none", "rows": [], "note": "The EMR records hypertension cases, not screening."}, {"code": "DIABETES_SCREENING", "name": "Diabetes screening", "section": "Chronics/Attendance/Free Health Care", "so": 2, "combo": "None (one total)", "status": "none", "rows": [], "note": "The EMR records diabetes cases, not screening."}, {"code": "FHC_DISABLED_PATIENT", "name": "FHC Disabled patient", "section": "Chronics/Attendance/Free Health Care", "so": 2, "combo": "None (one total)", "status": "partial", "rows": ["dis"], "note": "The EMR counts patients with a disability, not only those under Free Health Care."}, {"code": "FHC_EVD_SURVIVOR", "name": "FHC EVD Survivor", "section": "Chronics/Attendance/Free Health Care", "so": 2, "combo": "None (one total)", "status": "match", "rows": ["evd"], "note": "From the special groups table, males and females added. DHIS2 groups: Total."}, {"code": "FHC_ANC_TREATED_CURATIVE", "name": "FHC Antenatal client treated curative", "section": "Chronics/Attendance/Free Health Care", "so": 2, "combo": "None (one total)", "status": "match", "rows": ["preg"], "note": "From the special groups table, males and females added. DHIS2 groups: Total."}, {"code": "HEPATITIS_ALL", "name": "Hepatitis (all types)", "section": "Chronics/Attendance/Free Health Care", "so": 2, "combo": "None (one total)", "status": "match", "rows": ["hep_b", "hep_c"], "note": "From cases by age group, males and females added. DHIS2 groups: Total."}, {"code": "TRACHOMA", "name": "Trachoma", "section": "STI/Mental/NTD/Other", "so": 2, "combo": "Ages_0-59m_5+y", "status": "match", "rows": ["trach"], "note": "From cases by age group, males and females added. DHIS2 groups: 0-59m, 05+y."}, {"code": "EPILEPSY_FUP", "name": "Epilepsy follow-up", "section": "STI/Mental/NTD/Other", "so": 2, "combo": "Ages_0-59m_5+y", "status": "partial", "rows": ["epilep"], "note": "The EMR counts epilepsy cases, not follow-up visits only."}, {"code": "SCHISTOSOMIASIS", "name": "Schistosomiasis", "section": "STI/Mental/NTD/Other", "so": 2, "combo": "Ages_0-59m_5+y", "status": "match", "rows": ["schisto"], "note": "From cases by age group, males and females added. DHIS2 groups: 0-59m, 05+y."}, {"code": "STI_GENITAL_GENITAL_ULCER", "name": "STI - Genital Ulcer", "section": "STI/Mental/NTD/Other", "so": 2, "combo": "Ages_10-14y_15-19y_20-24y_25+y", "status": "match", "rows": ["sti_u"], "note": "From cases by age group, males and females added. DHIS2 groups: 10-14y, 15-19y, 20-24y, 25+y."}, {"code": "ONCHOCERCIASIS", "name": "Onchocerciasis", "section": "STI/Mental/NTD/Other", "so": 2, "combo": "Ages_0-59m_5+y", "status": "match", "rows": ["oncho"], "note": "From cases by age group, males and females added. DHIS2 groups: 0-59m, 05+y."}, {"code": "WORM_INFESTATION", "name": "Worm Infestation", "section": "STI/Mental/NTD/Other", "so": 2, "combo": "Ages_0-59m_5+y", "status": "match", "rows": ["worm"], "note": "From cases by age group, males and females added. DHIS2 groups: 0-59m, 05+y."}, {"code": "STI_OTHER", "name": "STI - Other", "section": "STI/Mental/NTD/Other", "so": 2, "combo": "Ages_10-14y_15-19y_20-24y_25+y", "status": "none", "rows": [], "note": "The EMR has genital discharge and genital ulcer only."}, {"code": "MENTAL_HEALTH_FUP", "name": "Mental Health/Disorder follow-up", "section": "STI/Mental/NTD/Other", "so": 2, "combo": "Ages_0-59m_5+y", "status": "partial", "rows": ["mh_dep", "mh_sub", "mh_anx", "mh_oth", "mh_psy"], "note": "The EMR has the mental disorder rows, but not split into new and follow-up."}, {"code": "SNAKE_BITE", "name": "Snake bite", "section": "STI/Mental/NTD/Other", "so": 2, "combo": "Ages_0-59m_5+y", "status": "match", "rows": ["bite_snake"], "note": "From cases by age group, males and females added. DHIS2 groups: 0-59m, 05+y."}, {"code": "EYE_INFECTION", "name": "Eye Infection", "section": "STI/Mental/NTD/Other", "so": 2, "combo": "Ages_0-59m_5+y", "status": "none", "rows": [], "note": "No eye infection row in the EMR's HF1."}, {"code": "MENTAL_HEALTH_NEW", "name": "Mental Health/Disorder new", "section": "STI/Mental/NTD/Other", "so": 2, "combo": "Ages_0-59m_5+y", "status": "partial", "rows": ["mh_dep", "mh_sub", "mh_anx", "mh_oth", "mh_psy"], "note": "The EMR has the mental disorder rows, but not split into new and follow-up."}, {"code": "STI_GENITAL_DISCHARGE", "name": "STI - Genital Discharge", "section": "STI/Mental/NTD/Other", "so": 2, "combo": "Ages_10-14y_15-19y_20-24y_25+y", "status": "match", "rows": ["sti_d"], "note": "From cases by age group, males and females added. DHIS2 groups: 10-14y, 15-19y, 20-24y, 25+y."}, {"code": "TRAUMA_RTA", "name": "Emergency Care Trauma_RTA", "section": "STI/Mental/NTD/Other", "so": 2, "combo": "Ages_0-59m_5+y", "status": "match", "rows": ["wound_rta"], "note": "From cases by age group, males and females added. DHIS2 groups: 0-59m, 05+y."}, {"code": "TRAUMA_OTHER", "name": "Emergency Care Trauma_Other", "section": "STI/Mental/NTD/Other", "so": 2, "combo": "Ages_0-59m_5+y", "status": "partial", "rows": ["wound_non", "burns"], "note": "Close to Wounds (non-RTA) plus Burns, but the definitions are not the same."}, {"code": "MORBIDITIES_OTHER", "name": "All other morbidities", "section": "STI/Mental/NTD/Other", "so": 2, "combo": "Ages_0-59m_5+y", "status": "partial", "rows": ["all_oth"], "note": "The EMR's \"All other morbidities\" is narrower: many EMR rows have no DHIS2 element of their own."}, {"code": "CHILD_DEATH_TRAUMA", "name": "Child death - Trauma", "section": "Child Health/Mortality", "so": 3, "combo": "Ages_1-59m_5-9y_10-14y", "status": "partial", "rows": ["wound_rta", "wound_non", "burns"], "note": "Close to deaths from wounds and burns, but not the same definition."}, {"code": "CHILD_PNEUMONIA_TREATED_WO_ANTIBIOTIC", "name": "Child with pneumonia treated without antibiotics", "section": "Child Health/Mortality", "so": 3, "combo": "Ages_1-59m_5-9y", "status": "none", "rows": [], "note": "The EMR records pneumonia treated with antibiotics or oxygen only."}, {"code": "CHILD_DEATH_CAUSE_UNSPECIFIED", "name": "Child death - Cause unspecified", "section": "Child Health/Mortality", "so": 3, "combo": "Ages_1-59m_5-9y_10-14y", "status": "none", "rows": [], "note": "The EMR does not record an unspecified cause of death."}, {"code": "CHILD_PNEUMONIA_TREATED_ANTIBIOTIC", "name": "Child with pneumonia treated with antibiotics", "section": "Child Health/Mortality", "so": 3, "combo": "Ages_1-59m_5-9y", "status": "match", "rows": ["pn_amx", "pn_oth"], "note": "From cases by age group, males and females added. DHIS2 groups: 01-59m, 05-09y."}, {"code": "CHILD_DIARRHOEA_TREATED_ORS_ONLY", "name": "Child with diarrhoea treated with ORS only", "section": "Child Health/Mortality", "so": 3, "combo": "Ages_1-59m_5-9y", "status": "none", "rows": [], "note": "The EMR records ORS & Zinc, not ORS alone."}, {"code": "CHILD_DIARRHOEA_TREATED_ORS_ZINZ", "name": "Child with diarrhoea treated with ORS and Zinc", "section": "Child Health/Mortality", "so": 3, "combo": "Ages_1-59m_5-9y", "status": "match", "rows": ["dia_wat"], "note": "From cases by age group, males and females added. DHIS2 groups: 01-59m, 05-09y."}, {"code": "CHILD_PNEUMONIA", "name": "Child diagnosed with pneumonia", "section": "Child Health/Mortality", "so": 3, "combo": "Ages_1-59m_5-9y", "status": "match", "rows": ["pn_amx", "pn_oth", "pn_sev"], "note": "From cases by age group, males and females added. DHIS2 groups: 01-59m, 05-09y."}, {"code": "CHILD_ARI", "name": "Child with Acute Respiratory Infection", "section": "Child Health/Mortality", "so": 3, "combo": "Ages_1-59m_5-9y", "status": "match", "rows": ["ari"], "note": "From cases by age group, males and females added. DHIS2 groups: 01-59m, 05-09y."}, {"code": "CHILD_DEATH_HIV", "name": "Child death - HIV", "section": "Child Health/Mortality", "so": 3, "combo": "Ages_1-59m_5-9y_10-14y", "status": "none", "rows": [], "note": "No HIV row in the EMR's HF1."}, {"code": "CHILD_CURATIVE_CARE", "name": "Child seen for curative care", "section": "Child Health/Mortality", "so": 3, "combo": "Ages_1-59m_5-9y", "status": "match", "rows": ["opd"], "note": "From the attendance table, by age group. DHIS2 groups: 01-59m, 05-09y."}, {"code": "CHILD_DEATH_DIARRHOEA", "name": "Child death - Diarrhoea", "section": "Child Health/Mortality", "so": 3, "combo": "Ages_1-59m_5-9y_10-14y", "status": "match", "rows": ["dia_bl", "dia_wat", "dia_iv"], "note": "From deaths by age or sex, each person counted once. DHIS2 groups: 01-59m, 05-09y, 10-14y."}, {"code": "CHILD_DEATH_PNEUMONIA", "name": "Child death - Pneumonia", "section": "Child Health/Mortality", "so": 3, "combo": "Ages_1-59m_5-9y_10-14y", "status": "match", "rows": ["pn_amx", "pn_oth", "pn_sev"], "note": "From deaths by age or sex, each person counted once. DHIS2 groups: 01-59m, 05-09y, 10-14y."}, {"code": "CHILD_DEATH_MALNUTRITION", "name": "Child death - Malnutrition", "section": "Child Health/Mortality", "so": 3, "combo": "Ages_1-59m_5-9y_10-14y", "status": "none", "rows": [], "note": "No malnutrition row in the EMR's HF1."}, {"code": "CHILD_DEATH_MALARIA", "name": "Child death - Malaria", "section": "Child Health/Mortality", "so": 3, "combo": "Ages_1-59m_5-9y_10-14y", "status": "match", "rows": ["mal_rdt_p", "mal_mic_p", "mal_act_l", "mal_act_g", "mal_oth_l", "mal_oth_g", "mal_sev_l", "mal_sev_g"], "note": "From deaths by age or sex, each person counted once. DHIS2 groups: 01-59m, 05-09y, 10-14y."}, {"code": "CHILD_DEATH_OTHER_SPECIFIED_CAUSES", "name": "Child death - Other specified causes", "section": "Child Health/Mortality", "so": 3, "combo": "Ages_1-59m_5-9y_10-14y", "status": "partial", "rows": ["*"], "note": "Would need every other cause of death mapped; not exact."}, {"code": "CHILD_DIARRHOEA", "name": "Child with diarrhoea", "section": "Child Health/Mortality", "so": 3, "combo": "Ages_1-59m_5-9y", "status": "match", "rows": ["dia_bl", "dia_wat", "dia_iv"], "note": "From cases by age group, males and females added. DHIS2 groups: 01-59m, 05-09y."}, {"code": "DEATH_OTHER_15PY", "name": "Death other 15+ yrs", "section": "Adolescent/Adult Mortality", "so": 5, "combo": "Gender", "status": "match", "rows": ["*"], "note": "From deaths by age or sex, each person counted once. DHIS2 groups: Male, Female. Malaria deaths taken off."}, {"code": "DEATH_REGISTERED_U5Y", "name": "Death registered <5 years", "section": "Adolescent/Adult Mortality", "so": 5, "combo": "Gender", "status": "match", "rows": ["*"], "note": "From deaths by age or sex, each person counted once. DHIS2 groups: Male, Female."}, {"code": "DEATH_REGISTERED_5PY", "name": "Death registered 5+ years", "section": "Adolescent/Adult Mortality", "so": 5, "combo": "Gender", "status": "match", "rows": ["*"], "note": "From deaths by age or sex, each person counted once. DHIS2 groups: Male, Female."}, {"code": "DEATH_MALARIA_15PY", "name": "Death malaria 15+ years", "section": "Adolescent/Adult Mortality", "so": 5, "combo": "Gender", "status": "match", "rows": ["mal_rdt_p", "mal_mic_p", "mal_act_l", "mal_act_g", "mal_oth_l", "mal_oth_g", "mal_sev_l", "mal_sev_g"], "note": "From deaths by age or sex, each person counted once. DHIS2 groups: Male, Female."}, {"code": "NEONATAL_UNSPECIFIED_CAUSE", "name": "Neonatal - Unspecified cause", "section": "Neonatal Cases", "so": 6, "combo": "Ages_0-28d_29-60d", "status": "none", "rows": [], "note": "No row for this neonatal condition in the EMR's HF1."}, {"code": "NEONATAL_DIARRHOEA", "name": "Neonatal - Diarrhoea", "section": "Neonatal Cases", "so": 6, "combo": "Ages_0-28d_29-60d", "status": "partial", "rows": ["dia_bl", "dia_wat", "dia_iv"], "note": "The EMR has 0-7 and 8-28 days (so 0-28 days is fine), but 29-60 days falls inside its 1-5 months group and cannot be split out."}, {"code": "NEONATAL_ASPHYXIA", "name": "Neonatal - Asphyxia", "section": "Neonatal Cases", "so": 6, "combo": "Ages_0-28d_29-60d", "status": "partial", "rows": ["asph_o", "asph_n"], "note": "The EMR has 0-7 and 8-28 days (so 0-28 days is fine), but 29-60 days falls inside its 1-5 months group and cannot be split out."}, {"code": "NEONATAL_HYPOTHERMIA", "name": "Neonatal - Hypothermia", "section": "Neonatal Cases", "so": 6, "combo": "Ages_0-28d_29-60d", "status": "partial", "rows": ["hypo"], "note": "The EMR has 0-7 and 8-28 days (so 0-28 days is fine), but 29-60 days falls inside its 1-5 months group and cannot be split out."}, {"code": "NEONATAL_COMP_INTRAPARTUM", "name": "Neonatal - Complications intrapartum events", "section": "Neonatal Cases", "so": 6, "combo": "Ages_0-28d_29-60d", "status": "none", "rows": [], "note": "No row for this neonatal condition in the EMR's HF1."}, {"code": "NEONATAL_CONG_DEFECT", "name": "Neonatal - Congenital defect", "section": "Neonatal Cases", "so": 6, "combo": "Ages_0-28d_29-60d", "status": "none", "rows": [], "note": "No row for this neonatal condition in the EMR's HF1."}, {"code": "NEONATAL_OTHER_CONDITION", "name": "Neonatal - Other neonatal condition", "section": "Neonatal Cases", "so": 6, "combo": "Ages_0-28d_29-60d", "status": "none", "rows": [], "note": "No row for this neonatal condition in the EMR's HF1."}, {"code": "NEONATAL_INFECTION", "name": "Neonatal - Infection", "section": "Neonatal Cases", "so": 6, "combo": "Ages_0-28d_29-60d", "status": "partial", "rows": ["sepsis"], "note": "The EMR has 0-7 and 8-28 days (so 0-28 days is fine), but 29-60 days falls inside its 1-5 months group and cannot be split out. Sepsis is the closest EMR row."}, {"code": "NEONATAL_DISORDER_FOETAL_GROWTH", "name": "Neonatal - Disorders related to foetal growth", "section": "Neonatal Cases", "so": 6, "combo": "Ages_0-28d_29-60d", "status": "none", "rows": [], "note": "No row for this neonatal condition in the EMR's HF1."}, {"code": "NEONATAL_RESP_DISTRESS", "name": "Neonatal - Respiratory distress syndrome", "section": "Neonatal Cases", "so": 6, "combo": "Ages_0-28d_29-60d", "status": "partial", "rows": ["resp_o", "resp_n"], "note": "The EMR has 0-7 and 8-28 days (so 0-28 days is fine), but 29-60 days falls inside its 1-5 months group and cannot be split out."}, {"code": "NEONATAL_SERIOUS_BACT_INFECTON", "name": "Neonatal - Possible serious bacteria infection", "section": "Neonatal Cases", "so": 6, "combo": "Ages_0-28d_29-60d", "status": "none", "rows": [], "note": "No row for this neonatal condition in the EMR's HF1."}, {"code": "NEONATAL_LBW_PREMATURITY", "name": "Neonatal - Low birth weight and prematurity", "section": "Neonatal Cases", "so": 6, "combo": "Ages_0-28d_29-60d", "status": "partial", "rows": ["prem"], "note": "The EMR has 0-7 and 8-28 days (so 0-28 days is fine), but 29-60 days falls inside its 1-5 months group and cannot be split out."}, {"code": "NEONATAL_BIRTH_TRAUMA", "name": "Neonatal - Birth trauma", "section": "Neonatal Cases", "so": 6, "combo": "Ages_0-28d_29-60d", "status": "none", "rows": [], "note": "No row for this neonatal condition in the EMR's HF1."}, {"code": "NEONATAL_CONVULSION_CEREBRAL", "name": "Neonatal - Convulsions/cerebral disorders", "section": "Neonatal Cases", "so": 6, "combo": "Ages_0-28d_29-60d", "status": "none", "rows": [], "note": "No row for this neonatal condition in the EMR's HF1."}, {"code": "NEONATAL_JAUNDICE", "name": "Neonatal - Jaundice", "section": "Neonatal Cases", "so": 6, "combo": "Ages_0-28d_29-60d", "status": "partial", "rows": ["jaund"], "note": "The EMR has 0-7 and 8-28 days (so 0-28 days is fine), but 29-60 days falls inside its 1-5 months group and cannot be split out."}, {"code": "NEONATAL_RESP_CARDIO_DISORDER", "name": "Neonatal - Respiratory/cardiovascular disorders", "section": "Neonatal Cases", "so": 6, "combo": "Ages_0-28d_29-60d", "status": "none", "rows": [], "note": "No row for this neonatal condition in the EMR's HF1."}, {"code": "NND_UNSPECIFIED_CAUSE", "name": "NND - Unspecified cause", "section": "Neonatal Deaths", "so": 7, "combo": "Ages_0-7d_8-28d_1-59m", "status": "none", "rows": [], "note": "No row for this cause of neonatal death in the EMR's HF1."}, {"code": "NND_LBW_PREMATURITY", "name": "NND - Low birth weight and prematurity", "section": "Neonatal Deaths", "so": 7, "combo": "Ages_0-7d_8-28d_1-59m", "status": "partial", "rows": ["prem"], "note": "Deaths in the prematurity row are the closest; the cause list is not the same."}, {"code": "NND_BIRTH_TRAUMA", "name": "NND - Birth trauma", "section": "Neonatal Deaths", "so": 7, "combo": "Ages_0-7d_8-28d_1-59m", "status": "none", "rows": [], "note": "No row for this cause of neonatal death in the EMR's HF1."}, {"code": "NND_CONVULSION_CEREBRAL", "name": "NND - Convulsions/cerebral disorders", "section": "Neonatal Deaths", "so": 7, "combo": "Ages_0-7d_8-28d_1-59m", "status": "none", "rows": [], "note": "No row for this cause of neonatal death in the EMR's HF1."}, {"code": "NND_OTHER_CONDITION", "name": "NND - Other neonatal condition", "section": "Neonatal Deaths", "so": 7, "combo": "Ages_0-7d_8-28d_1-59m", "status": "none", "rows": [], "note": "No row for this cause of neonatal death in the EMR's HF1."}, {"code": "NND_COMP_INTRAPARTUM", "name": "NND - Complications intrapartum events", "section": "Neonatal Deaths", "so": 7, "combo": "Ages_0-7d_8-28d_1-59m", "status": "none", "rows": [], "note": "No row for this cause of neonatal death in the EMR's HF1."}, {"code": "NND_INFECTION", "name": "NND - Infection", "section": "Neonatal Deaths", "so": 7, "combo": "Ages_0-7d_8-28d_1-59m", "status": "partial", "rows": ["sepsis"], "note": "Deaths in the sepsis row are the closest; the cause list is not the same."}, {"code": "NND_DISORDER_FOETAL_GROWTH", "name": "NND - Disorders related to foetal growth", "section": "Neonatal Deaths", "so": 7, "combo": "Ages_0-7d_8-28d_1-59m", "status": "none", "rows": [], "note": "No row for this cause of neonatal death in the EMR's HF1."}, {"code": "NND_RESP_CARDIO_DISORDER", "name": "NND - Respiratory/cardiovascular disorders", "section": "Neonatal Deaths", "so": 7, "combo": "Ages_0-7d_8-28d_1-59m", "status": "partial", "rows": ["resp_o", "resp_n"], "note": "Deaths in the respiratory distress rows are the closest; the cause list is not the same."}, {"code": "NND_CONG_DEFECT", "name": "NND - Congenital defect", "section": "Neonatal Deaths", "so": 7, "combo": "Ages_0-7d_8-28d_1-59m", "status": "none", "rows": [], "note": "No row for this cause of neonatal death in the EMR's HF1."}, {"code": "SEXUAL_ASSAULT", "name": "Sexual Assault", "section": "GBV", "so": 8, "combo": "Ages_0-9y_10-14y_15-19y_20-24y_25+y", "status": "match", "rows": ["gbv_sex"], "note": "From cases by age group, males and females added. DHIS2 groups: 0-9y, 10-14y, 15-19y, 20-24y, 25+y."}, {"code": "GENDER_BASED_VIOLENCE", "name": "Gender based violence", "section": "GBV", "so": 8, "combo": "Ages_0-9y_10-14y_15-19y_20-24y_25+y", "status": "match", "rows": ["gbv_sex", "gbv_phy", "gbv_ipv"], "note": "From cases by age group, males and females added. DHIS2 groups: 0-9y, 10-14y, 15-19y, 20-24y, 25+y."}];
+const D2_EXTRA_ROWS = { hc:'Total head count (all services)', opd:'Total OPD (new and follow-up)', ref:'Total number referred', dis:'Total number disabled', fhc:'Free Health Care',
+  preg:'Pregnant women treated', lact:'Lactating mothers treated', evd:'EVD survivors treated', u5:'Children under 5 treated', '*':'Any death (all rows)' };
+function hf1RowLabel(k){
+  const r = HF1.find(x => x[0] === k);
+  return r ? r[2] + (r[3] ? ' · ' + r[3] : '') : (D2_EXTRA_ROWS[k] || k);
+}
+let D2D = { tab: 'dhis2', st: '', q: '' };
+function vD2Dict(m){
+  const n = st => D2_DICT.filter(x => x.status === st).length;
+  /* HF1 rows: where each one goes */
+  const pushedRows = {}, partRows = {};
+  D2_DICT.forEach(x => x.rows.forEach(r => { if (r === '*') return; (x.status === 'match' ? pushedRows : x.status === 'partial' ? partRows : {})[r] = ((x.status === 'match' ? pushedRows : partRows)[r] || []).concat(x.name); }));
+  const hfRows = HF1.map(r => r[0]).concat(['hc','opd','ref','dis','fhc','preg','lact','evd','u5']);
+  const rowSt = k => pushedRows[k] ? 'match' : partRows[k] ? 'partial' : 'none';
+  const notIn = hfRows.filter(k => rowSt(k) === 'none').length;
+  const pill = st => '<span class="d2p d2p-' + st + '">' + ({ match: 'Match · pushed', partial: 'Partial · not pushed', none: 'No match · not pushed' })[st] + '</span>';
+  const pillRow = st => '<span class="d2p d2p-' + st + '">' + ({ match: 'Pushed to DHIS2', partial: 'Partly in DHIS2', none: 'Not in DHIS2' })[st] + '</span>';
+  const q = D2D.q.toLowerCase();
+  let body = '';
+  if (D2D.tab === 'dhis2'){
+    const list = D2_DICT.filter(x => (!D2D.st || x.status === D2D.st) && (!q || (x.name + ' ' + x.code + ' ' + x.section).toLowerCase().includes(q)));
+    let sec = null;
+    list.forEach(x => {
+      if (x.section !== sec){ if (sec !== null) body += '</tbody></table></div>'; sec = x.section;
+        body += '<h3 class="d2d-sec">' + esc(sec) + '</h3><div class="d2d-wrap"><table class="d2d-t"><thead><tr><th>DHIS2 data element</th><th>Disaggregation</th><th>Status</th><th>From the HF1</th><th>Note</th></tr></thead><tbody>'; }
+      body += '<tr><td><b>' + esc(x.name) + '</b><small>' + esc(x.code) + '</small></td><td>' + esc(x.combo) + '</td><td>' + pill(x.status) + '</td>'
+        + '<td>' + (x.rows.length ? x.rows.map(r => esc(hf1RowLabel(r))).join('<br>') : '<span class="muted">·</span>') + '</td><td>' + esc(x.note) + '</td></tr>';
+    });
+    body += sec !== null ? '</tbody></table></div>' : '<div class="empty">Nothing matches the search.</div>';
+  } else {
+    const list = hfRows.filter(k => (!D2D.st || rowSt(k) === D2D.st) && (!q || hf1RowLabel(k).toLowerCase().includes(q)));
+    body = list.length ? '<div class="d2d-wrap"><table class="d2d-t"><thead><tr><th>HF1 row</th><th>Status</th><th>DHIS2 data element(s)</th></tr></thead><tbody>'
+      + list.map(k => '<tr><td><b>' + esc(hf1RowLabel(k)) + '</b></td><td>' + pillRow(rowSt(k)) + '</td><td>'
+        + ((pushedRows[k] || []).concat((partRows[k] || []).map(x => x + ' (partial)')).map(esc).join('<br>') || '<span class="muted">No DHIS2 data element</span>') + '</td></tr>').join('')
+      + '</tbody></table></div>' : '<div class="empty">Nothing matches the search.</div>';
+  }
+  m.innerHTML = backToForm(D2BACK) + '<div class="ph"><h1>DHIS2 match &middot; HF1</h1></div>'
+    + '<div class="card"><p class="d2d-intro">The data dictionary between the EMR\'s <b>HF1 summary</b> and the DHIS2 data set <b>HF01 Outpatient morbidity</b> (<code>' + esc(D2_HF1.dataSet) + '</code>). Only the elements marked <b>Match</b> are pushed to DHIS2.</p>'
+    + '<div class="d2d-tiles">'
+    + '<button class="d2d-tile t-match' + (D2D.st === 'match' ? ' on' : '') + '" data-st="match"><b>' + n('match') + '</b><span>Match · pushed</span></button>'
+    + '<button class="d2d-tile t-partial' + (D2D.st === 'partial' ? ' on' : '') + '" data-st="partial"><b>' + n('partial') + '</b><span>Partial · not pushed</span></button>'
+    + '<button class="d2d-tile t-none' + (D2D.st === 'none' ? ' on' : '') + '" data-st="none"><b>' + n('none') + '</b><span>No match · not pushed</span></button>'
+    + '<div class="d2d-tile t-info"><b>' + notIn + '</b><span>HF1 rows not in DHIS2</span></div></div>'
+    + '<div class="d2d-bar"><div class="seg" id="d2dTab"><button data-t="dhis2" class="' + (D2D.tab === 'dhis2' ? 'on' : '') + '">DHIS2 data elements (' + D2_DICT.length + ')</button><button data-t="hf1" class="' + (D2D.tab === 'hf1' ? 'on' : '') + '">HF1 rows (' + hfRows.length + ')</button></div>'
+    + '<input id="d2dQ" type="search" placeholder="Search" value="' + esc(D2D.q) + '">' + (D2D.st ? '<button class="btn sec" id="d2dAll">Show all</button>' : '') + '</div></div>'
+    + body;
+  m.querySelectorAll('[data-st]').forEach(b => b.onclick = () => { D2D.st = D2D.st === b.dataset.st ? '' : b.dataset.st; vD2Dict(m); });
+  $('#d2dTab').onclick = e => { const b = e.target.closest('[data-t]'); if (b){ D2D.tab = b.dataset.t; vD2Dict(m); } };
+  const qi = $('#d2dQ'); qi.oninput = () => { D2D.q = qi.value; const at = qi.selectionStart; vD2Dict(m); const q2 = $('#d2dQ'); q2.focus(); q2.setSelectionRange(at, at); };
+  if ($('#d2dAll')) $('#d2dAll').onclick = () => { D2D.st = ''; vD2Dict(m); };
+  bindBackToForm(D2BACK);
+}
+
+/* the buttons of the summary form on screen: its Dictionary, and, for a form matched to DHIS2,
+   its DHIS2 match, the DHIS2 JSON file and Push to DHIS2 (admins only) */
+const D2_FORMS = { HF1: true };                 /* the summary forms that have a DHIS2 data set matched */
+const DICT_FORMS = ['HF1','HF2','HF3','HF5','HF6'];
+function formBar(form){
+  const dict = DICT_FORMS.includes(form), d2 = D2_FORMS[form];
+  if (!dict && !d2) return '';
+  return '<div class="formbar noprint"><div class="formbar-t"><b>' + esc(form) + '</b><span>' + (d2 ? 'DHIS2: ' + esc(D2_HF1.name) : 'Not matched to a DHIS2 data set yet') + '</span></div><div class="formbar-b">'
+    + (dict ? '<button class="btn sec" id="fbDict">Dictionary</button>' : '')
+    + (d2 ? '<button class="btn sec" id="fbMatch">DHIS2 match</button><button class="btn sec" id="fbJson">DHIS2 JSON</button><button class="btn" id="fbPush">Push to DHIS2</button>' : '')
+    + '</div></div>';
+}
+function bindFormBar(){
+  const form = REPORT, c = C();
+  if ($('#fbDict')) $('#fbDict').onclick = () => { DFORM = form; DMODE = 'forms'; DMAP_FORM = form; go('dict'); };
+  if ($('#fbMatch')) $('#fbMatch').onclick = () => { D2BACK = form; go('d2dict'); };
+  if ($('#fbPush')) $('#fbPush').onclick = () => d2Admin(() => d2Open(c));
+  if ($('#fbJson')) $('#fbJson').onclick = () => d2Admin(() => { const byName = d2Download(c); toast(byName ? 'JSON downloaded. Facility named, not by ID: set Org unit ID scheme to Name when importing.' : 'JSON downloaded for DHIS2 Import/Export'); });
+}
+let DFORM = '', D2BACK = 'HF1';
+const backToForm = form => '<button class="back" id="bkForm">&lsaquo; Back to ' + esc(form) + '</button>';
+const bindBackToForm = form => { const b = $('#bkForm'); if (b) b.onclick = () => { REPORT = form; DFORM = ''; go('reports'); }; };
+function vReports(m){ vReportsInner(m); bindFormBar(); if (REPORT !== 'HF12' && REPORT !== 'HF1' && !FORMX[REPORT] && ctxReady() && syncCfg().url){ const d = document.createElement('div'); d.id = 'gsline'; d.className = 'gsline'; const cards = $$('#main .card'); (cards[cards.length - 1] || $('#main')).appendChild(d); reportSheetLine(); } }
 function vReportsInner(m){
   if (!ctxReady()) return needCtx(m, 'Reports');
   if (REPORT === 'HF12'){
     const c = C(), key = h12Key(), v = DB.hf12[key] || {};
-    m.innerHTML = '<div class="ph"><h1>Reports</h1></div>' + filterBar() + reportPicker() +
+    m.innerHTML = '<div class="ph"><h1>Reports</h1></div>' + filterBar() + reportPicker() + formBar(REPORT) +
       xfBox(formSheet('HF12', (t, k) => v[k], formHeadValues(c, MONTHS[c.month - 1], c.year, officerOf(c)), { edit: true })) +
       '<div class="row noprint" style="margin:18px 0 10px"><button class="btn sec" id="prt">Print</button></div>';
     bindFilter(); bindPicker(m); bindXf();
@@ -3762,7 +4184,7 @@ function vReportsInner(m){
   TABLES = S.tables;
   if (FORMX[REPORT]){
     const n = (t, r, cn) => { const tb = S.tables.find(x => x.id === t), v = tb && tb.data[r] && tb.data[r][cn]; return v && v.length ? String(v.length) : ''; };
-    m.innerHTML = '<div class="ph"><h1>Reports</h1></div>' + filterBar() + reportPicker() +
+    m.innerHTML = '<div class="ph"><h1>Reports</h1></div>' + filterBar() + reportPicker() + formBar(REPORT) +
       xfBox(formSheet(REPORT, n, formHeadValues(c, MONTHS[c.month - 1], c.year, off), { link: true })) +
       '<div class="row noprint" style="margin:18px 0 10px"><button class="btn sec" id="csv">Download CSV</button><button class="btn sec" id="prt">Print</button></div>';
     bindFilter(); bindPicker(m); bindXf();
@@ -3773,7 +4195,7 @@ function vReportsInner(m){
   }
   if (REPORT === 'HF1'){
     const n = (t, r, cn) => { const tb = S.tables.find(x => x.id === t), v = tb && tb.data[r] && tb.data[r][cn]; return v && v.length ? String(v.length) : ''; };
-    m.innerHTML = '<div class="ph"><h1>Reports</h1></div>' + filterBar() + reportPicker() +
+    m.innerHTML = '<div class="ph"><h1>Reports</h1></div>' + filterBar() + reportPicker() + formBar(REPORT) +
       xfBox(hf1Sheet(n, hf1Head(c, MONTHS[c.month - 1], c.year, S.officer, false), true)) +
       '<div class="row noprint" style="margin:18px 0 10px"><button class="btn sec" id="csv">Download CSV</button><button class="btn sec" id="prt">Print</button></div>';
     bindFilter(); bindPicker(m); bindXf();
@@ -3782,7 +4204,7 @@ function vReportsInner(m){
     $('#prt').onclick = () => window.print();
     return;
   }
-  m.innerHTML = '<div class="ph"><h1>Reports</h1></div>' + filterBar() + reportPicker() +
+  m.innerHTML = '<div class="ph"><h1>Reports</h1></div>' + filterBar() + reportPicker() + formBar(REPORT) +
     '<div class="card"><div class="h">' + REPORT + ' · monthly summary</div><div class="rtitle">' + esc(S.title) + '</div>' +
       '<div class="kv"><div><span>District</span>' + esc(c.district) + '</div><div><span>Chiefdom / Zone</span>' + esc(c.chiefdom) + '</div><div><span>Facility</span>' + esc(c.facility) + '</div><div><span>Facility type</span>' + esc(c.ftype) + '</div><div><span>Month</span>' + MONTHS[c.month - 1] + '</div><div><span>Year</span>' + c.year + '</div></div>' +
       '<div class="muted sm">Counted from: ' + esc(S.from) + '</div>' +
@@ -4060,10 +4482,11 @@ function dictCSV3(){
 function vDict(m){
   dictData();
   document.body.classList.toggle('dwide', DMODE === 'map');   /* the comparison table uses the whole window */
-  m.innerHTML = '<div class="ph"><h1>Dictionary</h1></div><p class="muted sm" style="margin:-6px 4px 12px">How every register variable links to the summary form rows.</p>' +
+  m.innerHTML = (DFORM ? backToForm(DFORM) : '') + '<div class="ph"><h1>Dictionary' + (DFORM ? ' &middot; ' + esc(DFORM) : '') + '</h1></div><p class="muted sm" style="margin:-6px 4px 12px">How every register variable links to the ' + (DFORM ? esc(DFORM) + ' rows.' : 'summary form rows.') + '</p>' +
     '<div class="seg" id="dm"><button data-m="forms" class="' + (DMODE === 'forms' ? 'on' : '') + '">By summary form</button><button data-m="regs" class="' + (DMODE === 'regs' ? 'on' : '') + '">By register</button><button data-m="map" class="' + (DMODE === 'map' ? 'on' : '') + '">Register vs summary form</button></div>' +
     '<input class="search" id="dq" type="search" placeholder="' + (DMODE === 'forms' ? 'Search indicator, variable or rule' : 'Search variable or label') + '" value="' + esc(DQ) + '">' +
     '<div id="dl"></div><div class="row" style="margin:16px 0 10px"><button class="btn sec" id="dc1">Download summary links (CSV)</button></div><div class="row" style="margin:0 0 10px"><button class="btn sec" id="dc2">Download register variables (CSV)</button></div>';
+  bindBackToForm(DFORM);
   $('#dm').onclick = e => { const b = e.target.closest('button'); if (b){ DMODE = b.dataset.m; vDict(m); } };
   $('#dq').oninput = e => { DQ = e.target.value; dictList(); };
   $('#dc1').onclick = dictCSV1; $('#dc2').onclick = dictCSV2;
@@ -4075,7 +4498,7 @@ function dictList(){
   if (DMODE === 'map') return dictMap(el, q);
   if (DMODE === 'forms'){
     let h = '';
-    ['HF1','HF2','HF3','HF5','HF6'].forEach(form => {
+    (DFORM ? [DFORM] : ['HF1','HF2','HF3','HF5','HF6']).forEach(form => {
       Object.entries(TBLINFO).filter(([, t]) => t.form === form).forEach(([tid, t]) => {
         const dim = DIMS.find(d => d.tbl === tid);
         const rows = t.rows.map(row => ({ row, rule: RULES.find(r => r.tbl === tid && r.key === row[0]) }))
@@ -4277,8 +4700,7 @@ function vMoh(m){
         (progs.length ? '<div class="og-progs">' + progs.map(prog).join('') + '</div>' : '') +
       '</section>').join('') + '</div>' +
     '<svg class="og-lines" aria-hidden="true"></svg>' +
-    '<p class="og-note">Six directorates. <b>NMCP</b>, under <b>DPC</b>, is fully configured and connected to DHIS2. The other programmes open their pipeline layout so the intended structure is visible.</p>' +
-    '<p class="og-dev">Developed by ICF-SL</p></div>';
+    '</div>';
   ogLines();
   if (window.ResizeObserver){ const og = m.querySelector('.og'); new ResizeObserver(() => ogLines()).observe(og); }
   m.querySelectorAll('[data-prog]').forEach(b => b.onclick = async () => {
@@ -4603,6 +5025,7 @@ $('#menuBtn').onclick = e => { e.stopPropagation(); $('#bnav').classList.contain
 $('#bnav').onclick = e => { const b = e.target.closest('button'); if (!b) return;
   if (b.id === 'eViewTog'){ const vl = $('#vtabs'), o = vl.hidden; vl.hidden = !o; b.setAttribute('aria-expanded', String(o)); return; }
   if (b.dataset.vw) return;   /* a screen view: handled by #vtabs */
+  if (b.dataset.v === 'moh'){ closeMenu(); location.href = '../index.html#moh'; return; }   /* MoH Analytics lives on the main page */
   closeMenu(); go(b.dataset.v); };
 document.addEventListener('click', e => { if (!e.target.closest('#bnav') && !e.target.closest('#menuBtn')) closeMenu(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
