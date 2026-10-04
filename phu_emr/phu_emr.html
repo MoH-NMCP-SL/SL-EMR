@@ -3430,7 +3430,8 @@ function vData(m){
       vdSel('vd_month', 'Month', MONTHS.map((x, i) => [i + 1, x]), f.month, 'All months') +
       vdSel('vd_ftype', 'Facility type', types, f.ftype, 'All facility types') +
       vdSel('vd_fac', 'Facility name', names, f.facility, 'All facilities') +
-    '</div><div id="vdout"></div>';
+    '</div>' + (cases ? '' : formBar(VD.form)) + '<div id="vdout"></div>';
+  if (!cases) bindFormBar(VD.form, 'vdata');
   const fit = () => {   // drop choices below that no longer fit the ones above
     const inD2 = rows.filter(r => !f.district || r.d === f.district);
     if (f.chiefdom && !inD2.some(r => r.c === f.chiefdom)) f.chiefdom = '';
@@ -4153,19 +4154,32 @@ function formBar(form){
     + (d2 ? '<button class="btn sec" id="fbMatch">DHIS2 match</button><button class="btn sec" id="fbJson">DHIS2 JSON</button><button class="btn" id="fbPush">Push to DHIS2</button>' : '')
     + '</div></div>';
 }
-function bindFormBar(){
-  const form = REPORT, c = C();
-  if ($('#fbDict')) $('#fbDict').onclick = () => { DFORM = form; DMODE = 'forms'; DMAP_FORM = form; go('dict'); };
-  if ($('#fbMatch')) $('#fbMatch').onclick = () => { D2BACK = form; go('d2dict'); };
-  if ($('#fbPush')) $('#fbPush').onclick = () => d2Admin(() => d2Open(c));
-  if ($('#fbJson')) $('#fbJson').onclick = () => d2Admin(() => { const byName = d2Download(c); toast(byName ? 'JSON downloaded. Facility named, not by ID: set Org unit ID scheme to Name when importing.' : 'JSON downloaded for DHIS2 Import/Export'); });
+function bindFormBar(form, from){
+  form = form || REPORT; from = from || 'reports';
+  /* from View data the facility and month are the ones chosen there; one of each is needed to push */
+  const ctx = () => {
+    if (from !== 'vdata'){ if (!ctxReady()){ toast('Choose the facility and month first'); openCtx(); return null; } return C(); }
+    const f = VDF, r = facRows().find(x => x.n === f.facility && (!f.district || x.d === f.district));
+    if (!f.facility || !f.year || !f.month || !r){ toast('Choose one facility, a year and a month to push'); return null; }
+    Object.assign(DB.ctx, { district: r.d, chiefdom: r.c, facility: r.n, ftype: r.t, year: +f.year, month: +f.month }); save();
+    return C();
+  };
+  if ($('#fbDict')) $('#fbDict').onclick = () => { DFORM = form; DBACKVIEW = from; DMODE = 'forms'; DMAP_FORM = form; go('dict'); };
+  if ($('#fbMatch')) $('#fbMatch').onclick = () => { D2BACK = form; DBACKVIEW = from; go('d2dict'); };
+  if ($('#fbPush')) $('#fbPush').onclick = () => { const c = ctx(); if (c) d2Admin(() => d2Open(c)); };
+  if ($('#fbJson')) $('#fbJson').onclick = () => { const c = ctx(); if (c) d2Admin(() => { const byName = d2Download(c); toast(byName ? 'JSON downloaded. Facility named, not by ID: set Org unit ID scheme to Name when importing.' : 'JSON downloaded for DHIS2 Import/Export'); }); };
 }
-let DFORM = '', D2BACK = 'HF1';
-const backToForm = form => '<button class="back" id="bkForm">&lsaquo; Back to ' + esc(form) + '</button>';
-const bindBackToForm = form => { const b = $('#bkForm'); if (b) b.onclick = () => { REPORT = form; DFORM = ''; go('reports'); }; };
+let DFORM = '', D2BACK = 'HF1', DBACKVIEW = 'reports';
+const backToForm = form => '<button class="back" id="bkForm">&lsaquo; Back to ' + esc(form) + (DBACKVIEW === 'vdata' ? ' (View data)' : '') + '</button>';
+const bindBackToForm = form => { const b = $('#bkForm'); if (b) b.onclick = () => { DFORM = ''; if (DBACKVIEW === 'vdata'){ VD.mode = 'agg'; VD.form = form; go('vdata'); } else { REPORT = form; go('reports'); } }; };
 function vReports(m){ vReportsInner(m); bindFormBar(); if (REPORT !== 'HF12' && REPORT !== 'HF1' && !FORMX[REPORT] && ctxReady() && syncCfg().url){ const d = document.createElement('div'); d.id = 'gsline'; d.className = 'gsline'; const cards = $$('#main .card'); (cards[cards.length - 1] || $('#main')).appendChild(d); reportSheetLine(); } }
 function vReportsInner(m){
-  if (!ctxReady()) return needCtx(m, 'Reports');
+  if (!ctxReady()){
+    m.innerHTML = '<div class="ph"><h1>Reports</h1></div>' + filterBar() + reportPicker() + formBar(REPORT)
+      + '<div class="empty">Choose the district, chiefdom and PHU to see the ' + esc(REPORT) + ' figures.</div>';
+    bindFilter(); bindPicker(m);
+    return;
+  }
   if (REPORT === 'HF12'){
     const c = C(), key = h12Key(), v = DB.hf12[key] || {};
     m.innerHTML = '<div class="ph"><h1>Reports</h1></div>' + filterBar() + reportPicker() + formBar(REPORT) +
