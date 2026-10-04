@@ -891,6 +891,8 @@ body{display:flex !important;flex-direction:column !important;overflow:hidden !i
 #emrStage{flex:1 1 auto;min-height:0;width:100%;max-width:var(--e-appw);margin:0 auto;position:relative;display:flex;overflow-y:auto;overflow-x:hidden;
   transform:translateZ(0);border-left:6px solid var(--e-frame);border-right:6px solid var(--e-frame);background:var(--bg,#f0f5f9)}
 #emrStage > .sidebar{height:100%;top:0}
+/* the portal page fills the space between the header and the footer and scrolls inside it, to the very end */
+#emrStage > .main{height:100% !important;min-height:0 !important;max-height:100% !important;overflow-y:auto;-webkit-overflow-scrolling:touch}
 .e-foot{position:relative;left:auto;transform:none;bottom:auto;width:100%;max-width:var(--e-appw);margin:0 auto;flex:0 0 auto;z-index:20000}
 .e-frame{display:none}
 @media (max-width:480px){ #emrStage{border-left-width:4px;border-right-width:4px} }
@@ -1038,22 +1040,20 @@ html.w-t #hmisCardGrid{ grid-template-columns: repeat(2,1fr) !important; }
 /* ===== a programme page: its own sign in and its own portal only ===== */
 #emrStage > .sidebar,#emrStage > .main,#emrStage > .topbar,#emrStage > .sidebar-overlay,#progSignin{display:none !important}
 #emrStage{overflow:hidden}
-#progPortal .main{height:100% !important;overflow-y:auto}
+/* the portal page fills the space between the header and the footer and scrolls inside it, to the very end */
+#progPortal .main{height:100% !important;min-height:0 !important;max-height:100% !important;overflow-y:auto;-webkit-overflow-scrolling:touch}
 #progPortal .sidebar{height:100% !important}
 /* no "Access, staff directory" link on the sign in */
 #staffDirBtn{display:none !important}
 #progPortal .nav-group-btn{display:flex;align-items:center;gap:10px}
 #progPortal .nav-group-label{flex:1}
 #progPortal .nav-child .nav-num{opacity:.75;margin-right:6px}
-#progPortal .pa-flow{display:flex;align-items:stretch;gap:10px;padding:16px;overflow-x:auto}
-#progPortal .pa-col{flex:1 1 0;min-width:150px;display:flex;flex-direction:column;gap:8px}
-#progPortal .pa-h{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--blue-dk,#1f4a6a);padding:4px 2px}
-#progPortal .pa-box{background:#fff;border:1px solid var(--border,#d0dde8);border-left:4px solid var(--blue,#2c6793);border-radius:8px;padding:9px 10px;font-size:12.5px;line-height:1.4;color:#1f2d3d}
-#progPortal .pa-main .pa-box{border-left-color:#009E73}
-#progPortal .pa-arrow{align-self:center;font-size:22px;color:var(--blue,#2c6793);flex:0 0 auto}
-@media (max-width:900px){ #progPortal .pa-flow{flex-direction:column} #progPortal .pa-arrow{transform:rotate(90deg)} #progPortal .pa-col{min-width:0} }
-html.w-p #progPortal .pa-flow,html.w-t #progPortal .pa-flow{flex-direction:column}
-html.w-p #progPortal .pa-arrow,html.w-t #progPortal .pa-arrow{transform:rotate(90deg)}
+#progPortal #ppMain.pp-has-frame{padding-left:0 !important;padding-right:0 !important;padding-bottom:0 !important;overflow:hidden}
+#progPortal #ppMain.pp-has-frame:not([data-x]){padding-top:0}
+#progPortal .pp-frame{display:block;width:100%;height:100%;border:0;background:#fff}
+#progPortal .pp-missing{margin:24px 8px;font-size:14px;color:var(--muted,#5b6b7c)}
+@media (max-width:900px){ #progPortal #ppMain.pp-has-frame:not([data-x]){padding-top:64px} }
+html.w-p #progPortal #ppMain.pp-has-frame:not([data-x]),html.w-t #progPortal #ppMain.pp-has-frame:not([data-x]){padding-top:64px}
 </style>
 </head>
 <body>
@@ -1110,7 +1110,7 @@ applyView();
 </script>
 <header class="e-appbar">
   <img class="e-logo" src="data:image/jpeg;base64,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" alt="Ministry of Health logo">
-  <div class="e-ctx"><b id="emrTitle"><span class="t-long">National Tuberculosis Programme (TB)</span><span class="t-short">TB</span></b><small id="emrSub"><span class="t-long">Ministry of Health</span><span class="t-short">National Tuberculosis Programme</span></small></div>
+  <div class="e-ctx"><b id="emrTitle"><span class="t-long">National Tuberculosis Programme (TB)</span><span class="t-short">TB</span></b><small id="emrSub"><span class="t-short">National Tuberculosis Programme</span></small></div>
   <a class="e-iconbtn" href="../../index.html" title="Back to the main menu" aria-label="Back to the main menu"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></a>
   <button class="e-iconbtn e-menubtn" id="emrMenuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="emrMenu"><span></span><span></span><span></span></button>
   <nav class="e-menu" id="emrMenu" aria-label="Main menu"><button type="button" class="e-subtog" id="eViewTog" aria-expanded="false" aria-controls="vtabs"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/></svg><span class="e-subtxt">Screen view<small id="eViewNow"></small></span><i class="e-chev" aria-hidden="true"></i></button><div class="e-vlist" id="vtabs" role="tablist" aria-label="Screen view" hidden><button data-vw="auto" role="tab"><svg viewBox="0 0 24 24"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg><span>Auto<small id="vtauto"></small></span></button><button data-vw="p" role="tab"><svg viewBox="0 0 24 24"><rect x="7" y="2.5" width="10" height="19" rx="2"/><path d="M11 18.5h2"/></svg><span>Phone</span></button><button data-vw="t" role="tab"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M11 18h2"/></svg><span>Tablet</span></button><button data-vw="l" role="tab"><svg viewBox="0 0 24 24"><rect x="4" y="4.5" width="16" height="11" rx="1.5"/><path d="M2 19h20"/></svg><span>Computer</span></button></div><hr><a href="../../index.html"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><span>Main menu</span></a><a href="../../facility_register/facility_register.html"><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V7l7-4 7 4v14"/><path d="M12 9v6M9 12h6"/></svg><span>Health Facility Registry</span></a><a href="../../phu_emr/phu_emr.html"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 3h6v3H9zM9 11h6M9 15h4"/></svg><span>Case Based Entry Form</span></a><a href="../../index.html#moh"><svg viewBox="0 0 24 24"><rect x="9" y="2.5" width="6" height="4.5" rx="1"/><rect x="2.5" y="16" width="6" height="4.5" rx="1"/><rect x="9" y="16" width="6" height="4.5" rx="1"/><rect x="15.5" y="16" width="6" height="4.5" rx="1"/><path d="M12 7v4.5M5.5 16v-4.5h13V16M12 11.5V16"/></svg><span>MoH Analytics</span></a></nav>
@@ -3034,6 +3034,10 @@ function doRemove(id){
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
                 Main menu
             </button>
+            <button class="home-btn" id="ppBackProg" type="button" onclick="backToProgrammes()" title="Back to the programmes in MoH Analytics">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                Back to programmes
+            </button>
             <button class="update-btn" id="ppUpdate" type="button" title="Download the latest version of this portal">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
                 Update<span class="update-status" id="ppUpdateStatus"></span>
@@ -3492,6 +3496,10 @@ function doRemove(id){
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
             Main menu
         </button>
+            <button class="home-btn" id="portalBackProg" type="button" onclick="backToProgrammes()" title="Back to the programmes in MoH Analytics">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                Back to programmes
+            </button>
         <button class="update-btn" id="nmdrUpdate" type="button"
                 title="Download the latest version of the portal and its tools">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
@@ -5716,15 +5724,18 @@ var PROGRAMME = {
    "subs": [
     {
      "num": "1.1",
-     "title": "Presumptive TB"
+     "title": "Presumptive TB",
+     "file": "presumptive_tb.html"
     },
     {
      "num": "1.2",
-     "title": "Notified cases"
+     "title": "Notified cases",
+     "file": "notified_cases.html"
     },
     {
      "num": "1.3",
-     "title": "Childhood TB"
+     "title": "Childhood TB",
+     "file": "childhood_tb.html"
     }
    ]
   },
@@ -5735,11 +5746,13 @@ var PROGRAMME = {
    "subs": [
     {
      "num": "2.1",
-     "title": "GeneXpert tests"
+     "title": "GeneXpert tests",
+     "file": "genexpert_tests.html"
     },
     {
      "num": "2.2",
-     "title": "Smear microscopy"
+     "title": "Smear microscopy",
+     "file": "smear_microscopy.html"
     }
    ]
   },
@@ -5750,11 +5763,13 @@ var PROGRAMME = {
    "subs": [
     {
      "num": "3.1",
-     "title": "Treatment success"
+     "title": "Treatment success",
+     "file": "treatment_success.html"
     },
     {
      "num": "3.2",
-     "title": "Loss to follow up and deaths"
+     "title": "Loss to follow up and deaths",
+     "file": "loss_to_follow_up_and_deaths.html"
     }
    ]
   },
@@ -5765,11 +5780,13 @@ var PROGRAMME = {
    "subs": [
     {
      "num": "4.1",
-     "title": "DR-TB enrolment"
+     "title": "DR-TB enrolment",
+     "file": "dr_tb_enrolment.html"
     },
     {
      "num": "4.2",
-     "title": "DR-TB outcomes"
+     "title": "DR-TB outcomes",
+     "file": "dr_tb_outcomes.html"
     }
    ]
   },
@@ -5780,11 +5797,13 @@ var PROGRAMME = {
    "subs": [
     {
      "num": "5.1",
-     "title": "HIV testing among TB patients"
+     "title": "HIV testing among TB patients",
+     "file": "hiv_testing_among_tb_patients.html"
     },
     {
      "num": "5.2",
-     "title": "ART among co-infected"
+     "title": "ART among co-infected",
+     "file": "art_among_co_infected.html"
     }
    ]
   },
@@ -5795,11 +5814,13 @@ var PROGRAMME = {
    "subs": [
     {
      "num": "6.1",
-     "title": "Contacts screened"
+     "title": "Contacts screened",
+     "file": "contacts_screened.html"
     },
     {
      "num": "6.2",
-     "title": "TPT started and completed"
+     "title": "TPT started and completed",
+     "file": "tpt_started_and_completed.html"
     }
    ]
   },
@@ -5810,11 +5831,13 @@ var PROGRAMME = {
    "subs": [
     {
      "num": "7.1",
-     "title": "Completeness and timeliness"
+     "title": "Completeness and timeliness",
+     "file": "completeness_and_timeliness.html"
     },
     {
      "num": "7.2",
-     "title": "Outliers and consistency"
+     "title": "Outliers and consistency",
+     "file": "outliers_and_consistency.html"
     }
    ]
   },
@@ -5825,11 +5848,13 @@ var PROGRAMME = {
    "subs": [
     {
      "num": "8.1",
-     "title": "National dashboard"
+     "title": "National dashboard",
+     "file": "national_dashboard.html"
     },
     {
      "num": "8.2",
-     "title": "District dashboard"
+     "title": "District dashboard",
+     "file": "district_dashboard.html"
     }
    ]
   },
@@ -5840,11 +5865,13 @@ var PROGRAMME = {
    "subs": [
     {
      "num": "9.1",
-     "title": "Trends over time"
+     "title": "Trends over time",
+     "file": "trends_over_time.html"
     },
     {
      "num": "9.2",
-     "title": "District comparison"
+     "title": "District comparison",
+     "file": "district_comparison.html"
     }
    ]
   },
@@ -5855,11 +5882,13 @@ var PROGRAMME = {
    "subs": [
     {
      "num": "10.1",
-     "title": "Guidelines and protocols"
+     "title": "Guidelines and protocols",
+     "file": "guidelines_and_protocols.html"
     },
     {
      "num": "10.2",
-     "title": "Training material"
+     "title": "Training material",
+     "file": "training_material.html"
     }
    ]
   }
@@ -5957,6 +5986,7 @@ var PROGRAMME = {
     window.ppShow = function(which){
       var main = document.getElementById('ppMain');
       main.scrollTop = 0;
+      main.classList.remove('pp-has-frame');
       var Wd = P.welcome;
       function icon(d){ return '<div class="card-icon"><svg viewBox="0 0 24 24">' + d + '</svg></div>'; }
       function icard(ic, num, title, items){
@@ -5983,58 +6013,27 @@ var PROGRAMME = {
           + '</div>';
         return;
       }
-      if (which === 'w:arch'){
-        document.getElementById('ppTopPage').textContent = 'Architecture & Data Flow';
-        var col = function(t, items, cls){ return '<div class="pa-col ' + (cls || '') + '"><div class="pa-h">' + t + '</div>' + items.map(function(i){ return '<div class="pa-box">' + i + '</div>'; }).join('') + '</div>'; };
-        main.innerHTML = '<div class="section-label" style="margin-top:4px;">' + esc2(Wd.repo) + ' Architecture &amp; Data Flow</div>'
-          + '<div class="nmdr-info-block"><div class="nmdr-info-header"><span class="tag">Ministry of Health</span><span>Government of Sierra Leone &mdash; ' + esc2(Wd.repo) + '</span></div>'
-          + '<div class="pa-flow">'
-          + col('1. Data sources', Wd.sources.map(esc2))
-          + '<div class="pa-arrow" aria-hidden="true">&#10140;</div>'
-          + col('2. Automated pipelines', ['Read each source where it stands, nothing moved', 'Data quality checks: completeness, timeliness, outliers flagged', 'Cleaned and joined by district, chiefdom, facility and month'])
-          + '<div class="pa-arrow" aria-hidden="true">&#10140;</div>'
-          + col('3. ' + esc2(Wd.repo), P.areas.map(function(a){ return a.num + ' ' + esc2(a.title); }), 'pa-main')
-          + '<div class="pa-arrow" aria-hidden="true">&#10140;</div>'
-          + col('4. Users', ['National programme team', 'District health management teams', 'Chiefdom supervisors and PHUs', 'Partners'])
-          + '</div></div>';
-        return;
+      /* every page except Background is its own HTML file in this programme's folder */
+      var PAGES = { 'w:arch': ['Architecture & Data Flow', 'architecture.html'], 'w:nav': ['Navigation', 'navigation.html'],
+                    'w:uses': ['Use Cases', 'use_cases.html'], 'w:learn': ['E-learning Modules', 'e_learning.html'] };
+      var pg = PAGES[which];
+      if (!pg){
+        var ij = String(which).split(':'), a = P.areas[+ij[0]], x = a && a.subs[+ij[1]];
+        if (!x) return;
+        pg = [x.title, x.file];
       }
-      if (which === 'w:nav'){
-        document.getElementById('ppTopPage').textContent = 'Navigation';
-        main.innerHTML = '<div class="hero"><div class="hero-tag">Navigation</div><h1>Finding your way around</h1>'
-          + '<p>The menu on the left is set out by subject area. Open an area to see its pages; the shared tools come last.</p></div>'
-          + '<div class="section-label">What is in the menu</div><div class="cards-grid">'
-          + card('W', 'Welcome', ['Overview, Background, Architecture and Data Flow, Navigation, Use Cases and E-learning Modules'])
-          + P.areas.map(function(a){ return card(a.num, a.title, [esc2(a.desc), a.subs.map(function(x){ return x.num + ' ' + esc2(x.title); }).join('<br>')]); }).join('')
-          + card('&#8962;', 'At the bottom of the menu', ['<strong>Main menu:</strong> back to the EMR', '<strong>Update:</strong> load the newest version of this portal', '<strong>Logout:</strong> sign out on this device'])
-          + '</div>';
-        return;
-      }
-      if (which === 'w:uses'){
-        document.getElementById('ppTopPage').textContent = 'Use Cases';
-        main.innerHTML = '<div class="hero"><div class="hero-tag">Use Cases</div><h1>What the ' + esc2(Wd.repo) + ' is used for</h1>'
-          + '<p>The questions the programme answers with the repository.</p></div>'
-          + '<div class="section-label">Use cases</div><div class="cards-grid">'
-          + Wd.uses.map(function(u, i){ return card('Use case ' + (i + 1), u[0], [esc2(u[1])]); }).join('')
-          + '</div>';
-        return;
-      }
-      if (which === 'w:learn'){
-        document.getElementById('ppTopPage').textContent = 'E-learning Modules';
-        main.innerHTML = '<div class="slides-container" style="padding:40px 20px;text-align:center;color:var(--muted);font-size:13px;">The ' + esc2(P.label) + ' e-learning modules will appear here.</div>';
-        return;
-      }
-      var ij = String(which).split(':'), a = P.areas[+ij[0]], x = a && a.subs[+ij[1]];
-      if (!x) return;
-      document.getElementById('ppTopPage').textContent = x.title;
-      main.innerHTML = '<div class="hero"><div class="hero-tag">' + esc2(P.label) + ' &middot; ' + a.num + ' ' + esc2(a.title) + '</div><h1>' + x.num + ' ' + esc2(x.title) + '</h1>'
-        + '<p>' + esc2(a.desc) + '</p></div>'
-        + '<div class="pp-soon"><strong>' + esc2(x.title) + ' is not connected yet.</strong> This page will hold the data, analysis and documents for this topic once ' + esc2(P.label) + ' is brought on board.</div>'
-        + '<div class="section-label">What will appear here</div><div class="cards-grid">'
-        + card(1, 'Data', ['Read from the warehouses the programme already uses', 'By district, chiefdom, facility and month'])
-        + card(2, 'Analysis and dashboards', ['Figures and charts for this topic', 'Trends, comparisons and outliers flagged'])
-        + card(3, 'Documents', ['Guidelines, reports and templates for this topic', 'Always the current version'])
-        + '</div>';
+      document.getElementById('ppTopPage').textContent = pg[0];
+      main.classList.add('pp-has-frame');
+      main.innerHTML = '<iframe class="pp-frame" title="' + esc2(pg[0]) + '" allow="fullscreen; clipboard-write"></iframe>';
+      var fr = main.querySelector('iframe');
+      function load(){ fr.src = pg[1]; }
+      /* on the website, a page not uploaded yet gets a one line note instead of an error page */
+      if ((location.protocol === 'http:' || location.protocol === 'https:') && navigator.onLine){
+        fetch(pg[1], { method: 'HEAD', cache: 'no-store' }).then(function(r){
+          if (r.ok) load();
+          else { main.classList.remove('pp-has-frame'); main.innerHTML = '<p class="pp-missing">Add <strong>' + esc2(pg[1]) + '</strong> to this folder to show this page.</p>'; }
+        }).catch(load);
+      } else load();
     };
 
     /* Update: fetch the newest copy of this page, bypassing anything saved on the device */

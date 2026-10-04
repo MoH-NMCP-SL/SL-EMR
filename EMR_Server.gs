@@ -43,6 +43,9 @@
  *  5. Check it any time: choose selfTest at the top and click Run, then read the Execution log.
  *     It also adds any missing PHU EMR tab, and lists any tab it could not find.
  *
+ * DHIS2: HF1 summaries are pushed to DHIS2 (HF01 Outpatient morbidity) every night at 11 pm and an
+ * email goes out after each push. Run turnOnNightlyPush once to start it. See section C.
+ *
  * HOW REQUESTS ARE SHARED OUT
  *   GET  ?action=all                         -> Health Facility Register
  *   GET  (no action)                         -> server check for the PHU EMR
@@ -310,6 +313,11 @@ function saveAggregate(b) {
   s.getRange(1, 1, 1, AGG_HEAD.length).setValues([AGG_HEAD]);
   if (all.length) writeText_(s, 2, 1, all);
   if (cmbReady_() && b.form !== 'HF12') { try { cmbSummary_(b.form, f, period, b.values, b.vars); } catch (e) { waLog_('', f.facility, b.form, '', 'Not sent: ' + e.message); } }
+  /* HF1 also brings the values for DHIS2 (HF01 Outpatient morbidity): they wait in the DHIS2 queue */
+  if (b.form === 'HF1' && b.d2 && b.d2.length) {
+    d2Queue_(f, period, b.d2DataSet || D2.dataSet, b.d2);
+    if (d2Mode_() === 'onsave') { try { d2PushPending_('when the summary arrived'); } catch (e) { d2Log_(f.facility, period, 'Not pushed: ' + e.message); } }
+  }
   return { ok: true, saved: add.length };
 }
 
@@ -479,7 +487,11 @@ function testWhatsApp() {
 /* Spreadsheet menu                                                    */
 /* ------------------------------------------------------------------ */
 function onOpen() {
-  SpreadsheetApp.getUi().createMenu('EMR').addItem('Set access key', 'setAccessKey').addToUi();
+  SpreadsheetApp.getUi().createMenu('EMR').addItem('Set access key', 'setAccessKey').addSeparator()
+    .addItem('Push to DHIS2 now', 'pushToDhis2Now')
+    .addItem('Turn on nightly push (11 pm)', 'turnOnNightlyPush')
+    .addItem('Push as soon as a summary arrives', 'pushOnSave')
+    .addItem('Turn off nightly push', 'turnOffNightlyPush').addToUi();
 }
 
 function setAccessKey() {
@@ -860,6 +872,123 @@ function setUpSheets(){
 function countsFromEditor(){
   Logger.log(JSON.stringify(allData().counts));
 }
+
+
+/* ################################################################## */
+/* C. PUSH TO DHIS2 (HF1 -> HF01 Outpatient morbidity)                 */
+/* ################################################################## */
+/* Every HF1 summary the EMR sends brings its DHIS2 values, already matched and added up by the EMR
+   (only the 49 data elements that match go). They wait in the "DHIS2 queue" sheet and are pushed:
+     nightly  every night at 11 pm (default; run turnOnNightlyPush once), or
+     onsave   as soon as a summary arrives, or
+     off      only when you choose EMR > Push to DHIS2 now.
+   After each push an email goes to the people on the list.
+   Settings: Project Settings > Script properties (these replace the defaults below)
+     D2_URL, D2_USER, D2_PASS   the DHIS2 server and an account allowed to enter data
+     D2_MODE                    nightly, onsave or off
+     D2_EMAILS                  who gets the email, separated by commas
+   Facilities are found in DHIS2 by name at level 4 and kept in the "DHIS2 org units" sheet,
+   where a wrong match can be corrected by hand. */
+const D2 = {
+  url: 'https://play.im.dhis2.org/dev-2-40', user: 'admin', pass: 'district',
+  dataSet: 'ij1VNJwxKCh', ouLevel: 4, mode: 'nightly',
+  emails: 'sillahmohamedkanu@gmail.com'
+};
+const D2_QUEUE = 'DHIS2 queue', D2_OUS = 'DHIS2 org units', D2_LOG = 'DHIS2 push log';
+const D2_QHEAD = ['Key', 'District', 'Chiefdom', 'Facility', 'Period', 'Data set', 'Values (do not edit)', 'Saved at', 'Pushed at', 'Result'];
+function d2Cfg_() { return { url: String(prop_('D2_URL', D2.url)).replace(/\/(dhis-web-.*|api\/?.*)$/i, '').replace(/\/+$/, ''), user: prop_('D2_USER', D2.user), pass: prop_('D2_PASS', D2.pass) }; }
+function d2Mode_() { return String(prop_('D2_MODE', D2.mode)).toLowerCase(); }
+function d2Log_(fac, period, note) { const s = sheet_(D2_LOG, ['Time', 'Facility', 'Period', 'Result']); writeText_(s, s.getLastRow() + 1, 1, [[now_(), fac, period, note]]); }
+/* keep one row per facility and month: a newer summary replaces the older one and waits again */
+function d2Queue_(f, period, dataSet, values) {
+  const s = sheet_(D2_QUEUE, D2_QHEAD), key = [norm_(f.district), norm_(f.facility), period].join('|');
+  const line = [key, f.district || '', f.chiefdom || '', f.facility || '', String(period), dataSet, JSON.stringify(values), now_(), '', 'Waiting'];
+  const rows = rows_(s); let at = 0;
+  rows.forEach((r, i) => { if (String(r[0]) === key) at = i + 2; });
+  if (at) {
+    const old = rows[at - 2];
+    if (String(old[6]) === line[6] && String(old[8])) return;          /* the same figures were pushed already */
+    writeText_(s, at, 1, [line]);
+  } else writeText_(s, s.getLastRow() + 1, 1, [line]);
+}
+function d2Fetch_(cfg, path, method, payload) {
+  const opt = { method: method || 'get', muteHttpExceptions: true, contentType: 'application/json',
+    headers: { Authorization: 'Basic ' + Utilities.base64Encode(cfg.user + ':' + cfg.pass), Accept: 'application/json' } };
+  if (payload) opt.payload = JSON.stringify(payload);
+  const res = UrlFetchApp.fetch(cfg.url + '/api/' + path, opt), code = res.getResponseCode(), text = res.getContentText();
+  let data = null; try { data = JSON.parse(text); } catch (e) {}
+  if (code === 401) throw new Error('DHIS2 refused the login (check D2_USER and D2_PASS)');
+  if (code >= 400 && !(data && (data.response || data.importCount))) throw new Error('DHIS2 answered ' + code + (data && data.message ? ': ' + data.message : ''));
+  return data;
+}
+/* the facility's org unit ID: from the sheet, or found by name at level 4 (the right chiefdom wins) */
+function d2OrgUnit_(cfg, district, chiefdom, facility) {
+  const s = sheet_(D2_OUS, ['District', 'Chiefdom', 'Facility', 'Org unit ID', 'Name in DHIS2', 'Found at']);
+  const hit = rows_(s).find(r => norm_(r[0]) === norm_(district) && norm_(r[2]) === norm_(facility) && String(r[3]));
+  if (hit) return String(hit[3]);
+  const data = d2Fetch_(cfg, 'organisationUnits.json?filter=name:ilike:' + encodeURIComponent(facility) + '&filter=level:eq:' + D2.ouLevel + '&fields=id,name,parent[name]&paging=false');
+  const list = (data && data.organisationUnits) || [];
+  const pick = list.find(o => norm_(o.name) === norm_(facility) && o.parent && norm_(o.parent.name).indexOf(norm_(chiefdom)) >= 0)
+    || list.find(o => norm_(o.name) === norm_(facility)) || (list.length === 1 ? list[0] : null);
+  if (!pick) return '';
+  writeText_(s, s.getLastRow() + 1, 1, [[district, chiefdom, facility, pick.id, pick.name, now_()]]);
+  return pick.id;
+}
+/* push every waiting HF1 summary; returns the results and emails them */
+function d2PushPending_(why) {
+  const cfg = d2Cfg_(), s = sheet_(D2_QUEUE, D2_QHEAD), rows = rows_(s), done = [];
+  rows.forEach((r, i) => {
+    if (String(r[8]) && String(r[8]) >= String(r[7])) return;            /* pushed since it last changed */
+    const [key, district, chiefdom, facility, period, dataSet, json] = r.map(String);
+    let note;
+    try {
+      const ou = d2OrgUnit_(cfg, district, chiefdom, facility);
+      if (!ou) throw new Error('facility not found in DHIS2 at level ' + D2.ouLevel + ' (put its org unit ID in the "' + D2_OUS + '" sheet)');
+      const res = d2Fetch_(cfg, 'dataValueSets', 'post', { dataSet: dataSet, period: period, orgUnit: ou, dataValues: JSON.parse(json) });
+      const d = (res && res.response) || res || {}, ic = d.importCount || d.stats || {};
+      const conflicts = (d.conflicts || []).length;
+      note = (String(d.status || '').toUpperCase() === 'ERROR' ? 'Error' : 'Pushed') + ': imported ' + (ic.imported || 0) + ', updated ' + (ic.updated || 0) + ', ignored ' + (ic.ignored || 0) + (conflicts ? ', ' + conflicts + ' conflict(s)' : '');
+      writeText_(s, i + 2, 9, [[now_(), note]]);
+    } catch (e) {
+      note = 'Not pushed: ' + e.message;
+      writeText_(s, i + 2, 10, [[note]]);
+    }
+    d2Log_(facility, period, note);
+    done.push({ district, facility, period, note });
+  });
+  if (done.length) d2Email_(done, why);
+  return done;
+}
+/* the email that tells people the data have been synced to DHIS2 */
+function d2Email_(done, why) {
+  const to = String(prop_('D2_EMAILS', D2.emails)).split(/[,;\s]+/).filter(x => /@/.test(x)).join(',');
+  if (!to) return;
+  const ok = done.filter(x => /^Pushed/.test(x.note)).length, bad = done.length - ok;
+  const month = p => { const m = MONTH_NAMES[+String(p).slice(4, 6) - 1] || ''; return m + ' ' + String(p).slice(0, 4); };
+  const rowsHtml = done.map(x => '<tr><td style="padding:6px 10px;border-bottom:1px solid #dde5ee">' + x.district + '</td><td style="padding:6px 10px;border-bottom:1px solid #dde5ee">' + x.facility + '</td><td style="padding:6px 10px;border-bottom:1px solid #dde5ee">' + month(x.period) + '</td><td style="padding:6px 10px;border-bottom:1px solid #dde5ee;color:' + (/^Pushed/.test(x.note) ? '#00704f' : '#b3261e') + '">' + x.note + '</td></tr>').join('');
+  const html = '<div style="font-family:Arial,Helvetica,sans-serif;color:#0b2540">'
+    + '<div style="background:#2c6693;color:#fff;padding:14px 18px;border-bottom:6px solid #009E73"><b style="font-size:18px">EMR to DHIS2: HF1 data synced</b><br>Ministry of Health, Sierra Leone</div>'
+    + '<p style="margin:16px 0">The HF1 summary data below were pushed from the EMR to DHIS2 (HF01 Outpatient morbidity) ' + (why || '') + '. '
+    + ok + ' facility month(s) pushed' + (bad ? ', ' + bad + ' could not be pushed' : '') + '.</p>'
+    + '<table style="border-collapse:collapse;font-size:14px"><tr style="background:#eef2f6"><th style="padding:6px 10px;text-align:left">District</th><th style="padding:6px 10px;text-align:left">Facility</th><th style="padding:6px 10px;text-align:left">Month</th><th style="padding:6px 10px;text-align:left">Result</th></tr>' + rowsHtml + '</table>'
+    + '<p style="margin:16px 0;font-size:12.5px;color:#5b6b7c">Only the data elements that match the EMR are pushed. Sent automatically by the ICF-SL EMR server.</p></div>';
+  MailApp.sendEmail({ to: to, subject: 'EMR to DHIS2: HF1 data synced (' + ok + ' pushed' + (bad ? ', ' + bad + ' not pushed' : '') + ')', htmlBody: html });
+}
+/* run by the nightly trigger */
+function nightlyDhis2Push() { if (d2Mode_() !== 'off') d2PushPending_('in the nightly push at 11 pm'); }
+/* run these from the editor or from the spreadsheet menu */
+function pushToDhis2Now() { const done = d2PushPending_('on request'); try { SpreadsheetApp.getUi().alert(done.length ? done.length + ' facility month(s) handled. See the "' + D2_LOG + '" sheet.' : 'Nothing is waiting to be pushed.'); } catch (e) { Logger.log(done.length + ' handled'); } }
+function turnOnNightlyPush() {
+  ScriptApp.getProjectTriggers().filter(t => t.getHandlerFunction() === 'nightlyDhis2Push').forEach(t => ScriptApp.deleteTrigger(t));
+  ScriptApp.newTrigger('nightlyDhis2Push').timeBased().everyDays(1).atHour(23).nearMinute(0).create();
+  props_().setProperty('D2_MODE', 'nightly');
+  try { SpreadsheetApp.getUi().alert('The nightly push is on: every night at 11 pm (the project time zone).'); } catch (e) { Logger.log('nightly push on'); }
+}
+function turnOffNightlyPush() {
+  ScriptApp.getProjectTriggers().filter(t => t.getHandlerFunction() === 'nightlyDhis2Push').forEach(t => ScriptApp.deleteTrigger(t));
+  try { SpreadsheetApp.getUi().alert('The nightly push is off.'); } catch (e) { Logger.log('nightly push off'); }
+}
+function pushOnSave() { props_().setProperty('D2_MODE', 'onsave'); try { SpreadsheetApp.getUi().alert('Each HF1 summary is now pushed to DHIS2 as soon as it reaches the sheet.'); } catch (e) { Logger.log('push on save'); } }
 
 
 /* ################################################################## */
